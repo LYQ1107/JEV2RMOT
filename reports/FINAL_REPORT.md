@@ -12,7 +12,7 @@ YesTrack 和 FlexHook 到底还有多少可修复空间，错误主要在哪里�
 - 发现并记录 FlexHook 原始 checkout 中 `SwinTransformer/utils.py:22` 与 `deit/main.py:44` 的语法错误；未修改官方代码；
 - 对历史 TempRMOT V2 输出抽样 40 个表达式对，仅做格式/结构审计，明确标记为 `AUXILIARY_NOT_COMPARABLE`；
 - 生成了所需 CSV、Oracle 状态表和空的错误事件表，未填假数字。
-- 重新清点 A800，生成 [`analysis/a800_resource_manifest.csv`](../analysis/a800_resource_manifest.csv)，记录文件大小、数量、官方 checkpoint SHA256 和非官方 YesTrack 实验资产边界；未复制大权重进 Git 仓库。
+- 重新清点 A800，生成 [`analysis/a800_resource_manifest.csv`](../analysis/a800_resource_manifest.csv)，记录完整数据、FlexHook 官方 checkpoint、TempRMOT baseline checkpoint/R50 pretrain、文件大小和非官方 YesTrack 实验资产边界；未复制大权重进 Git 仓库。
 
 因此目前能说的科学结论只有机制级结论：JEV 若继续，优先切入已有候选上的 selection + identity/short-term state decision；不能宣称它能修复候选缺失、bbox 几何错误或协议错位。是否值得做、可修复空间的大小，必须等 O0/O1/O2 和共享候选跑通后由数字决定。
 

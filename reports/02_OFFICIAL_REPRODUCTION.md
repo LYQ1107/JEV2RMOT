@@ -41,6 +41,15 @@ TEST_CFG_NAME=kitti2.yaml
 
 本地主机的 base/RMOT2 预检仍分别缺 `ftfy`/Qwen3-VL 类；A800 运行环境已通过模型加载并报告 `All keys matched successfully`。本地官方 checkout 的语法问题仍保留为独立审计项，未在上游目录打补丁；远端全量运行完成后还需核对其代码工作树、commit 和输出 receipt，避免把“已启动”误写成“已完成可比复现”。
 
+## A800 上新增的 TempRMOT baseline 资源
+
+继续清点 A800 后发现：
+
+- `/home/liuyeqiang/remote/A800/data3/user/TTA-RMOT-assets/checkpoints/temprmot_refer_kitti_v2_official_checkpoint_rk2.pth`，`1,096,316,824` bytes，Zip-format PyTorch archive；
+- `/home/liuyeqiang/remote/A800/data3/user/TTA-RMOT-assets/checkpoints/r50_deformable_detr_plus_iterative_bbox_refinement-checkpoint.pth`，`489,084,000` bytes。
+
+它们与 A800 上的 TempRMOT 训练脚本和 Refer-KITTI-V2 baseline 命名一致，可作为独立 RMOT baseline 的权重/预训练输入；没有把它们接入 YesTrack 或 FlexHook，也没有把它们当作 YesTrack 官方 `v1/v2bestweight` 的替代品。两份大文件仍留在 A800 挂载上，未复制进报告仓库。
+
 ## 已完成的非推理验证
 
 - 两个官方仓库均已固定 commit 并保持 clean。

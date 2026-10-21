@@ -4,7 +4,7 @@
 
 ## 结论
 
-A800 上已经找到 FlexHook 的“完整 Refer-KITTI-V2 数据 + Temp-NeuralSORT-kitti2 候选 + 官方 checkpoint”三元组，并启动了官方单卡全量推理；本次复核最后记录为 `500/7443`，之后暂未看到新日志或结果文件，因此只记为未完成，不声称任务仍在正常推进。YesTrack 的官方 `yestrack.zip` 已能通过公开分享正常列目录，但下载接口仍返回签名错误，官方 `v1/v2` 权重和官方候选字节尚未落地。因此不能给出 YesTrack 官方指标，也不把 A800 上用户自训的 OneJev/GroundJEV 权重当作官方 YesTrack 替代品。
+A800 上已经找到 FlexHook 的“完整 Refer-KITTI-V2 数据 + Temp-NeuralSORT-kitti2 候选 + 官方 checkpoint”三元组，并启动了官方单卡全量推理；本次复核最后记录为 `500/7443`，之后暂未看到新日志或结果文件，因此只记为未完成，不声称任务仍在正常推进。继续清点还找到一份按路径/文件名对应的官方 TempRMOT Refer-KITTI-V2 baseline checkpoint（以及其 R50 Deformable-DETR 预训练），可用于独立 RMOT baseline，但不能冒充 YesTrack 或 FlexHook 权重。YesTrack 的官方 `yestrack.zip` 已能通过公开分享正常列目录，但下载接口仍返回签名错误，官方 `v1/v2` 权重和官方候选字节尚未落地。因此不能给出 YesTrack 官方指标，也不把 A800 上用户自训的 OneJev/GroundJEV 权重当作官方 YesTrack 替代品。
 
 ## 主机与 GPU
 
@@ -52,6 +52,8 @@ A800 上已经找到 FlexHook 的“完整 Refer-KITTI-V2 数据 + Temp-NeuralSO
 | V1 | NAS 归档中的 `refer-kitti-v1` / `TempRMOT` 链接指向缺失的本地 RMOT 数据 | `BLOCKED` |
 | A800 FlexHook checkpoint | `.../TTA-RMOT-assets/flexhook/SOTA_ckpts/refer-kitti-v2-best.pth`，995,768,450 bytes，SHA256 `71db...d613` | `FOUND_OFFICIAL` |
 | A800 FlexHook candidates | `.../flexhook/tracker_outputs/Temp-NeuralSORT-kitti2`，4 test videos × car/pedestrian | `FOUND_CANDIDATE_INPUT` |
+| A800 TempRMOT baseline checkpoint | `.../TTA-RMOT-assets/checkpoints/temprmot_refer_kitti_v2_official_checkpoint_rk2.pth`，1,096,316,824 bytes，Zip-format PyTorch archive | `FOUND_OFFICIAL_BASELINE`，不属于 YesTrack/FlexHook |
+| A800 TempRMOT R50 pretrain | `.../TTA-RMOT-assets/checkpoints/r50_deformable_detr_plus_iterative_bbox_refinement-checkpoint.pth`，489,084,000 bytes | `FOUND_OFFICIAL_PRETRAIN`，不属于 YesTrack/FlexHook |
 | A800 YesTrack native runs | `.../LocateMOT-runs/YesTrack/training/yestrack_native_gpu7_v1/` 有 merged/adapter | `FOUND_NON_OFFICIAL`，不可替代官方 Qwen3-VL |
 
 ## Baidu 官方分享
@@ -60,7 +62,7 @@ YesTrack 分享（提取码 `z5kt`）已在不使用代理的普通 HTTPS 请求
 
 FlexHook 分享（提取码 `d3qj`）不再是当前阻塞项，因为官方 checkpoint、预训练 backbone、V2 数据和候选已经在 A800 找到。A800 资源明细见 [`analysis/a800_resource_manifest.csv`](../analysis/a800_resource_manifest.csv)。
 
-YesTrack 仍是外部发布包下载阻塞；FlexHook 已进入远端推理阶段。待 A800 全量结果封存或用户提供 YesTrack 官方文件后，才能继续完整官方比较。
+YesTrack 仍是外部发布包下载阻塞；本次还确认 A800 有 `BaiduPCS-Go` 客户端，但该二进制在本地主机因需要 glibc `>=2.32` 无法执行，而 A800 SSH key 是强制 SFTP、不能远程执行客户端。没有改用代理、绕过验证码或复制私有 cookie。FlexHook 已进入远端推理阶段。待 A800 全量结果封存或用户提供 YesTrack 官方文件后，才能继续完整官方比较。
 
 ## 环境
 
@@ -82,5 +84,6 @@ YesTrack 仍是外部发布包下载阻塞；FlexHook 已进入远端推理阶�
 
 - YesTrack `v2bestweight`、`v2best_track_result`、`refer_kitti_motc_gt_v2` 和完整 V2 图像/标签；
 - FlexHook 全量日志完成并取得 raw result/receipt，随后计算 TrackEval、Oracle 和错误案例；
+- 如需独立复核 TempRMOT baseline，可直接使用 A800 上已找到的 rk2 checkpoint 与 R50 pretrain；它们不解除 YesTrack 官方权重阻塞；
 - 可写的输出空间或允许使用当前项目目录。
 
