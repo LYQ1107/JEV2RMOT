@@ -1,0 +1,4 @@
+iou_threshold,target_tracks,tracks_with_any_match,tracks_with_any_match_rate,matched_target_frames,target_track_frames,matched_frame_recall,mean_id_purity,id_switches,tracks_with_switch,switches_per_100_matched_frames
+0.3,8043,7547,0.9383314684,370039,491286,0.7532048542,0.9258147958,6027,2687,1.6287472402
+0.5,8043,7542,0.9377098098,362304,491286,0.7374604609,0.9351301401,4725,2363,1.3041534181
+0.7,8043,7538,0.9372124829,343094,491286,0.6983590007,0.9420042322,4155,2204,1.2110383743

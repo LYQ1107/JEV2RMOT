@@ -10,6 +10,8 @@
 - A800 contains `BaiduPCS-Go`, but the local host cannot execute that binary because it requires glibc >=2.32; the A800 key is forced SFTP-only, so no remote client execution or archive download was attempted through it.
 - A800 FlexHook official full inference started and loaded all checkpoint keys; last observed progress was batch 500/7443.
 - Historical TempRMOT V2 auxiliary file-schema sample: 40 expression pairs, four videos.
+- Candidate ceiling computation completed on A800 FlexHook test tuple: 862 expressions, 491286 GT target boxes; at IoU 0.5, 362304 boxes matched (73.746%), with 26.254% outside any candidate. This is not HOTA/IDF1 or completed O0/O1/O2.
+- Candidate identity proxy completed: at IoU 0.5, mean ID purity 93.513%, 4725 ID switches over 362304 matched target frames; see `analysis/flexhook_identity_proxy.csv`.
 - Delivery tests: 7 passed after allowing explicit `RUNNING`/`PENDING` states with blank metrics.
 - Read-only entrypoint preflight: YesTrack base/RMOT2 and FlexHook base failed at dependency import; exact errors are in `analysis/entrypoint_preflight.csv`.
 

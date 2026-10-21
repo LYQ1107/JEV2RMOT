@@ -1,6 +1,6 @@
 # 详细错误分类
 
-A800 的完整图像/标签和 FlexHook 候选已经可读，但全量预测尚未完成，因此 `analysis/error_events.csv` 和 `analysis/temporal_error_chains.csv` 暂为空；这表示没有可合法标注的事件，不表示错误率为零。
+A800 的完整图像/标签和 FlexHook 候选已经可读，但全量模型预测尚未完成，因此 `analysis/error_events.csv` 和 `analysis/temporal_error_chains.csv` 暂为空；这表示没有可合法标注的模型事件，不表示错误率为零。独立候选覆盖统计已完成：IoU 0.5 下 `362,304/491,286 = 73.75%` 的 GT 目标框有候选覆盖，剩余 `26.25%` 属于 JEV 无法通过二阶段选择修复的候选缺失/几何类上限问题。
 
 ## 预定标签
 
