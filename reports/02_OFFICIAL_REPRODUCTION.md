@@ -47,7 +47,7 @@ TEST_CFG_NAME=kitti2.yaml
 - 已核对 YesTrack 的 `results_root` 输入格式、帧映射、V1 158-entry seqmap、V2 逗号表达式和阈值说明。
 - 已核对 FlexHook 测试 DataLoader、`all/gt.txt` 特殊分支、`argmax(score)>0` 决策、原始 logits 保存结构和结果缓存逻辑。
 - 已对本地历史 TempRMOT V2 结果做 40 个表达式对的文件格式抽样，输出不纳入官方 metrics。
-- 只读入口预检也已执行：YesTrack base 环境缺 `transformers`，RMOT2 的 Transformers 不含 Qwen3-VL 类，FlexHook base 环境缺 `ftfy`；错误见 [`entrypoint_preflight.csv`](/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/analysis/entrypoint_preflight.csv)。
+- 只读入口预检也已执行：YesTrack base 环境缺 `transformers`，RMOT2 的 Transformers 不含 Qwen3-VL 类，FlexHook base 环境缺 `ftfy`；错误见 [`entrypoint_preflight.csv`](../analysis/entrypoint_preflight.csv)。
 
 ## 没有执行的项目
 

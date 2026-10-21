@@ -15,7 +15,7 @@ YesTrack 和 FlexHook 到底还有多少可修复空间，错误主要在哪里�
 
 因此目前能说的科学结论只有机制级结论：JEV 若继续，优先切入已有候选上的 selection + identity/short-term state decision；不能宣称它能修复候选缺失、bbox 几何错误或协议错位。是否值得做、可修复空间的大小，必须等 O0/O1/O2 和共享候选跑通后由数字决定。
 
-主结果表见 [`analysis/metrics.csv`](/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/analysis/metrics.csv)，其中官方方法明确为 `BLOCKED`；Oracle 见 [`analysis/oracle_results.csv`](/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/analysis/oracle_results.csv)。资源和阻塞证据见 [`00_RESOURCE_AUDIT.md`](/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/reports/00_RESOURCE_AUDIT.md)。
+主结果表见 [`analysis/metrics.csv`](../analysis/metrics.csv)，其中官方方法明确为 `BLOCKED`；Oracle 见 [`analysis/oracle_results.csv`](../analysis/oracle_results.csv)。资源和阻塞证据见 [`00_RESOURCE_AUDIT.md`](00_RESOURCE_AUDIT.md)。
 
 ## 解阻塞后的最短闭环
 

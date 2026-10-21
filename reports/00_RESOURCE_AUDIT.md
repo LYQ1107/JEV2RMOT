@@ -25,9 +25,9 @@
 
 | 仓库 | 路径 | commit | 状态 |
 |---|---|---|---|
-| YesTrack | [`upstream/YesTrack`](/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/upstream/YesTrack) | `ed42b8315b28c94dc595d83b0d49bf57002bb281` | clean，已核对为当前 `main` |
-| FlexHook | [`upstream/FlexHook`](/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/upstream/FlexHook) | `bd1acc38634b28525d54dc6e0fcb38335f0029f9` | clean，已核对为当前 `main` |
-| LLM2Jev | [`upstream/LLM2Jev`](/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/upstream/LLM2Jev) | `93d4fcdcc81e0732026a65195eca3b45333af451` | clean，仅作设计参考，本轮未训练 |
+| YesTrack | [官方仓库](https://github.com/ggbondrighthere24/YesTrack) | `ed42b8315b28c94dc595d83b0d49bf57002bb281` | clean，已核对为当前 `main` |
+| FlexHook | [官方仓库](https://github.com/buptLwz/FlexHook) | `bd1acc38634b28525d54dc6e0fcb38335f0029f9` | clean，已核对为当前 `main` |
+| LLM2Jev | [官方仓库](https://github.com/Yinsongxu/LLM2Jev) | `93d4fcdcc81e0732026a65195eca3b45333af451` | clean，仅作设计参考，本轮未训练 |
 
 官方仓库链接：[YesTrack](https://github.com/ggbondrighthere24/YesTrack)、[FlexHook](https://github.com/buptLwz/FlexHook)、[LLM2Jev](https://github.com/Yinsongxu/LLM2Jev)。两个目标仓库的 GitHub Releases 均未提供可直接下载的 checkpoint；仓库本身也不含目标权重或完整数据。
 
@@ -66,7 +66,7 @@
 
 ## 可用的历史辅助资产
 
-`/data1/liuyeqiang/nas/A100/codex_archive_20261014/TempRMOT/exps/default_rk_v2/results_epoch2` 存在 4 个视频（0005、0011、0013、0019）的历史 TempRMOT `gt.txt`/`predict.txt` 结果目录。日志和配置明确表明这是 TempRMOT 的最终结果树，不是 YesTrack 的 `v2best_track_result`，也不是 FlexHook 的 `Temp-NeuralSORT-kitti2` 原始候选。因此只做格式/覆盖审计，输出见 [`legacy_temprmot_v2_inventory.csv`](/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/analysis/legacy_temprmot_v2_inventory.csv)，状态统一为 `AUXILIARY_NOT_COMPARABLE`。
+`/data1/liuyeqiang/nas/A100/codex_archive_20261014/TempRMOT/exps/default_rk_v2/results_epoch2` 存在 4 个视频（0005、0011、0013、0019）的历史 TempRMOT `gt.txt`/`predict.txt` 结果目录。日志和配置明确表明这是 TempRMOT 的最终结果树，不是 YesTrack 的 `v2best_track_result`，也不是 FlexHook 的 `Temp-NeuralSORT-kitti2` 原始候选。因此只做格式/覆盖审计，输出见 [`legacy_temprmot_v2_inventory.csv`](../analysis/legacy_temprmot_v2_inventory.csv)，状态统一为 `AUXILIARY_NOT_COMPARABLE`。
 
 ## 下一步解阻塞条件
 

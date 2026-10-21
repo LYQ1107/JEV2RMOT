@@ -6,7 +6,7 @@
 
 ## YesTrack 约束
 
-[`docs/USAGE.md`](/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/upstream/YesTrack/docs/USAGE.md) 明确要求数据根目录同时包含 `KITTI/`、`expression/`、`KITTI/labels_with_ids/`；官方发布资源应分别是 `v1bestweight`、`v2bestweight`、`v1best_track_result`、`v2best_track_result` 和匹配的 MOTC GT。当前这些目标目录均不可读。
+[YesTrack 的 `docs/USAGE.md`](https://github.com/ggbondrighthere24/YesTrack/blob/ed42b8315b28c94dc595d83b0d49bf57002bb281/docs/USAGE.md) 明确要求数据根目录同时包含 `KITTI/`、`expression/`、`KITTI/labels_with_ids/`；官方发布资源应分别是 `v1bestweight`、`v2bestweight`、`v1best_track_result`、`v2best_track_result` 和匹配的 MOTC GT。当前这些目标目录均不可读。
 
 V1 评测必须保留官方完整 158-entry seqmap；不能用 TempRMOT/TransRMOT 的缩减 seqmap 代替。V2 表达式文件名含逗号，seqmap 必须 CSV-safe，目录名和 GT 表达式名必须逐一匹配。当前 V2 expression 目录确实存在含逗号的文件名，说明不能用简单逗号分割或手工重命名。
 
@@ -35,5 +35,5 @@ FlexHook 测试 DataLoader 对 KITTI 读取 `<video>/car/predict.txt` 与 `<vide
 
 ## 可读资产的范围
 
-NAS 中的 `refer-kitti-v2/expression` 有 21 个视频目录；其 `KITTI` 符号链接目标缺失，所以不能生成官方 GT、不能做真实图像检查。历史 TempRMOT 结果只有 0005/0011/0013/0019 四个视频，且每个表达式目录中的 `predict.txt` 是历史最终输出，不是共享候选池；详情见 [`legacy_temprmot_v2_video_summary.csv`](/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/analysis/legacy_temprmot_v2_video_summary.csv)。
+NAS 中的 `refer-kitti-v2/expression` 有 21 个视频目录；其 `KITTI` 符号链接目标缺失，所以不能生成官方 GT、不能做真实图像检查。历史 TempRMOT 结果只有 0005/0011/0013/0019 四个视频，且每个表达式目录中的 `predict.txt` 是历史最终输出，不是共享候选池；详情见 [`legacy_temprmot_v2_video_summary.csv`](../analysis/legacy_temprmot_v2_video_summary.csv)。
 
