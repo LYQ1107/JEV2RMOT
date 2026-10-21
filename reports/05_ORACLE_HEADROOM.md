@@ -16,6 +16,8 @@ YesTrack 的 Selection/Identity Oracle 仍为 `BLOCKED`；FlexHook 的 O0 已随
 
 因此在 IoU 0.5 下，至少 `26.25%` 的目标框没有任何候选覆盖，JEV 的 selection/identity 决策无法修复这部分。严格全表达式覆盖很低是因为一个表达式只要任一目标帧缺候选就算失败，不应当直接当作 HOTA。
 
+缺口进一步拆分见 [`analysis/flexhook_candidate_gap_breakdown.csv`](../analysis/flexhook_candidate_gap_breakdown.csv)：IoU 0.3 时不可覆盖框为 `121,247/491,286 = 24.68%`，收紧到 0.5 后为 `128,982 = 26.25%`，收紧到 0.7 后为 `148,192 = 30.16%`。因此从 0.3 到 0.5 的额外几何损失为 7,735 框，从 0.5 到 0.7 的额外损失为 19,210 框；这些数字是候选质量诊断，不是模型选择错误事件。0019 贡献了 IoU 0.5 全局缺失框的 `68.45%`，应优先排查其候选生成与帧/类别协议。
+
 候选 ID 诊断见 [`analysis/flexhook_identity_proxy.csv`](../analysis/flexhook_identity_proxy.csv)：IoU 0.5 下平均 ID purity 为 `93.51%`，但有 `2,363/8,043` 个 GT 轨迹出现至少一次候选 ID 切换；这说明身份/时序仍有空间，但第一瓶颈更像候选覆盖而不是纯身份选择。
 
 ## 预定定义

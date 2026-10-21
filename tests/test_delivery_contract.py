@@ -44,6 +44,7 @@ class DeliveryContractTest(unittest.TestCase):
             "flexhook_identity_proxy.csv",
             "flexhook_candidate_error_summary.csv",
             "flexhook_top_expression_misses.csv",
+            "flexhook_candidate_gap_breakdown.csv",
             "representative_cases.json",
             "entrypoint_preflight.csv",
         ]
@@ -92,6 +93,25 @@ class DeliveryContractTest(unittest.TestCase):
         self.assertEqual(payload["status"], "BLOCKED")
         self.assertEqual(payload["official_case_count"], 0)
         self.assertEqual(payload["cases"], [])
+
+    def test_candidate_gap_summary_is_consistent(self) -> None:
+        with (ROOT / "analysis" / "flexhook_candidate_gap_breakdown.csv").open(
+            newline="", encoding="utf-8"
+        ) as handle:
+            records = list(csv.DictReader(handle))
+        by_metric = {(row["scope"], row["threshold"], row["metric"]): row for row in records}
+        self.assertEqual(
+            by_metric[("aggregate", "iou>=0.50", "matched_gt_boxes")]["numerator"],
+            "362304",
+        )
+        self.assertEqual(
+            by_metric[("aggregate", "iou>=0.50", "unmatched_gt_boxes")]["numerator"],
+            "128982",
+        )
+        self.assertEqual(
+            by_metric[("0019", "iou>=0.50", "share_of_global_missing_boxes")]["numerator"],
+            "88282",
+        )
 
 
 if __name__ == "__main__":

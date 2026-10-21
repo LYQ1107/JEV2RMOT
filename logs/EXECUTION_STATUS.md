@@ -13,6 +13,7 @@
 - Candidate ceiling computation completed on A800 FlexHook test tuple: 862 expressions, 491286 GT target boxes; at IoU 0.5, 362304 boxes matched (73.746%), with 26.254% outside any candidate. This is not HOTA/IDF1 or completed O0/O1/O2.
 - Candidate identity proxy completed: at IoU 0.5, mean ID purity 93.513%, 4725 ID switches over 362304 matched target frames; see `analysis/flexhook_identity_proxy.csv`.
 - Candidate error breakdown completed at IoU 0.5: video 0019 has the lowest coverage (71.265%), 88282 missing target boxes, 3829 candidate-ID switches, and a 77-frame longest missing run; see `analysis/flexhook_candidate_error_summary.csv`.
+- Candidate-gap summary completed: IoU 0.3/0.5/0.7 leave 24.68%/26.25%/30.16% of GT boxes uncovered; 0019 contributes 68.45% of the IoU 0.5 missing boxes; 501/8043 target tracks have no candidate match and 2363/8043 have a candidate-ID switch. Reproducible table: `analysis/flexhook_candidate_gap_breakdown.csv`.
 - Delivery tests: 7 passed after allowing explicit `RUNNING`/`PENDING` states with blank metrics.
 - Read-only entrypoint preflight: YesTrack base/RMOT2 and FlexHook base failed at dependency import; exact errors are in `analysis/entrypoint_preflight.csv`.
 

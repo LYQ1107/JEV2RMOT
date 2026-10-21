@@ -14,7 +14,20 @@ YesTrack 和 FlexHook 到底还有多少可修复空间，错误主要在哪里�
 - 生成了所需 CSV、Oracle 状态表和空的错误事件表，未填假数字。
 - 对 A800 FlexHook 候选完成 IoU 0.3/0.5/0.7 覆盖统计和候选 ID proxy 统计；结果写入 [`analysis/flexhook_candidate_ceiling.csv`](../analysis/flexhook_candidate_ceiling.csv) 与 [`analysis/flexhook_identity_proxy.csv`](../analysis/flexhook_identity_proxy.csv)。
 - 进一步按视频和表达式拆分候选缺失、最长连续缺失段与候选 ID 切换；0019 的候选覆盖最低（71.26%），缺失 88,282 个目标框、3,829 次 ID 切换，结果见 [`analysis/flexhook_candidate_error_summary.csv`](../analysis/flexhook_candidate_error_summary.csv)。
+- 将候选层的“不可修复缺口”单独统计：IoU 0.3/0.5/0.7 下分别有 24.68%/26.25%/30.16% GT 框没有候选；从 0.3 收紧到 0.5 额外损失 7,735 框，从 0.5 收紧到 0.7 额外损失 19,210 框。0019 一条视频贡献了 IoU 0.5 全部缺失框的 68.45%；8,043 条目标轨迹中 501 条完全没有候选匹配，2,363 条出现候选 ID 切换。可复算明细见 [`analysis/flexhook_candidate_gap_breakdown.csv`](../analysis/flexhook_candidate_gap_breakdown.csv)，生成脚本见 [`scripts/write_flexhook_candidate_gap_breakdown.py`](../scripts/write_flexhook_candidate_gap_breakdown.py)。
 - 重新清点 A800，生成 [`analysis/a800_resource_manifest.csv`](../analysis/a800_resource_manifest.csv)，记录完整数据、FlexHook 官方 checkpoint、TempRMOT baseline checkpoint/R50 pretrain、文件大小和非官方 YesTrack 实验资产边界；未复制大权重进 Git 仓库。
+
+## 直接回答：有没有可提升空间
+
+有，但当前证据把空间分成两段：
+
+| 环节 | 当前统计 | 对 JEV 的含义 |
+|---|---:|---|
+| 候选覆盖/检测 | IoU 0.5 仅覆盖 73.75%，26.25% 无候选 | 这部分不是二阶段 JEV 的可修复空间；应先修候选生成、检测或帧对齐，尤其是 0019 |
+| 候选框质量 | IoU 0.3→0.5 少 7,735 框，0.5→0.7 少 19,210 框 | 主要是几何/定位质量，不能直接归因给语言选择 |
+| 候选身份/时序 | 2,363/8,043 条目标轨迹有候选 ID 切换，4,725 次切换 | 这是 JEV 可以优先尝试的联合 selection + identity/短时状态决策入口，但仍是候选 proxy，不是官方 IDF1 |
+
+因此，若问题是“JEV 能不能让端到端 RMOT 明显提升”，目前不能只凭候选统计承诺；第一阶段覆盖已经给出硬上限。若问题是“JEV 是否值得做”，答案是有条件地值得：应把研究切口放在已有候选上的语言选择、身份连续性和短时轨迹状态联合决策，并用同一候选池的 O0→O1、O1→O2 差值验证，而不是从第一阶段漏检开始归因。当前 O0/O1/O2 尚未封存，故这些差值仍不能填写。
 
 因此目前能说的科学结论只有机制级结论：JEV 若继续，优先切入已有候选上的 selection + identity/short-term state decision；不能宣称它能修复候选缺失、bbox 几何错误或协议错位。是否值得做、可修复空间的大小，必须等 O0/O1/O2 和共享候选跑通后由数字决定。
 

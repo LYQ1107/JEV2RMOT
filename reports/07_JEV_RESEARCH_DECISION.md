@@ -4,6 +4,8 @@
 
 候选覆盖统计已经给出第一个数字边界，但官方 O0/O1/O2 仍没有运行。A800 FlexHook 候选在 IoU 0.5 下只覆盖 `362,304/491,286 = 73.75%` 的目标框，因此至少 `26.25%` 的目标框不能由 JEV 的二阶段选择或身份决策修复。可计算结果见 [`analysis/flexhook_candidate_ceiling.csv`](../analysis/flexhook_candidate_ceiling.csv)。
 
+进一步的可修复空间分解见 [`analysis/flexhook_candidate_gap_breakdown.csv`](../analysis/flexhook_candidate_gap_breakdown.csv)：IoU 0.3/0.5/0.7 的不可覆盖比例分别为 24.68%/26.25%/30.16%；0019 占 IoU 0.5 全部缺失框的 68.45%。候选层还有身份时序风险：2,363/8,043 条目标轨迹出现候选 ID 切换，但这只是候选 proxy，不能代替官方 IDF1。
+
 所以 JEV 不应直接从 bbox 修复或重新训练第一阶段开始；若继续，应切入已有候选上的联合决策——把语言选择分数、候选身份连续性和短时轨迹状态一起用于 selection/identity decision。但优先级应是“候选/检测覆盖问题 > 选择问题 > 身份时序问题”，而不是先宣称 JEV 有很大的总体收益。
 
 ## 为什么是这个环节
