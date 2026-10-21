@@ -1,10 +1,10 @@
 # 资源审计
 
-审计时间：2026-10-21 UTC。项目状态：`PARTIAL / FLEXHOOK_RUNNING / YESTRACK_BLOCKED`。本报告只记录实际可读的资源，不把目录名或论文数字当作资源证据。
+审计时间：2026-10-21 UTC。项目状态：`PARTIAL / FLEXHOOK_COMPLETE / YESTRACK_BLOCKED`。本报告只记录实际可读的资源，不把目录名或论文数字当作资源证据。
 
 ## 结论
 
-A800 上已经找到 FlexHook 的“完整 Refer-KITTI-V2 数据 + Temp-NeuralSORT-kitti2 候选 + 官方 checkpoint”三元组，并启动了官方单卡全量推理；本次复核最后记录为 `500/7443`，之后暂未看到新日志或结果文件，因此只记为未完成，不声称任务仍在正常推进。继续清点还找到一份按路径/文件名对应的官方 TempRMOT Refer-KITTI-V2 baseline checkpoint（以及其 R50 Deformable-DETR 预训练），可用于独立 RMOT baseline，但不能冒充 YesTrack 或 FlexHook 权重。YesTrack 的官方 `yestrack.zip` 已能通过公开分享正常列目录，但下载接口仍返回签名错误，官方 `v1/v2` 权重和官方候选字节尚未落地。因此不能给出 YesTrack 官方指标，也不把 A800 上用户自训的 OneJev/GroundJEV 权重当作官方 YesTrack 替代品。
+A800 上已经找到 FlexHook 的“完整 Refer-KITTI-V2 数据 + Temp-NeuralSORT-kitti2 候选 + 官方 checkpoint”三元组，并完成 4-GPU 官方前向、raw result 封存和 862 表达式 TrackEval。继续清点还找到一份按路径/文件名对应的官方 TempRMOT Refer-KITTI-V2 baseline checkpoint（以及其 R50 Deformable-DETR 预训练），可用于独立 RMOT baseline，但不能冒充 YesTrack 或 FlexHook 权重。YesTrack 的官方 `yestrack.zip` 已能通过公开分享正常列目录，但下载接口仍返回签名错误，官方 `v1/v2` 权重和官方候选字节尚未落地。因此不能给出 YesTrack 官方指标，也不把 A800 上用户自训的 OneJev/GroundJEV 权重当作官方 YesTrack 替代品。
 
 ## 主机与 GPU
 
@@ -62,7 +62,7 @@ YesTrack 分享（提取码 `z5kt`）已在不使用代理的普通 HTTPS 请求
 
 FlexHook 分享（提取码 `d3qj`）不再是当前阻塞项，因为官方 checkpoint、预训练 backbone、V2 数据和候选已经在 A800 找到。A800 资源明细见 [`analysis/a800_resource_manifest.csv`](../analysis/a800_resource_manifest.csv)。
 
-YesTrack 仍是外部发布包下载阻塞；本次还确认 A800 有 `BaiduPCS-Go` 客户端，但该二进制在本地主机因需要 glibc `>=2.32` 无法执行，而 A800 SSH key 是强制 SFTP、不能远程执行客户端。没有改用代理、绕过验证码或复制私有 cookie。FlexHook 已进入远端推理阶段。待 A800 全量结果封存或用户提供 YesTrack 官方文件后，才能继续完整官方比较。
+YesTrack 仍是外部发布包下载阻塞；本次还确认 A800 有 `BaiduPCS-Go` 客户端，但该二进制在本地主机因需要 glibc `>=2.32` 无法执行，而 A800 SSH key 是强制 SFTP、不能远程执行客户端。没有改用代理、绕过验证码或复制私有 cookie。FlexHook 全量结果已封存；剩余的完整官方比较只受 YesTrack 发布包和共享候选协议阻塞。FlexHook raw result、Oracle 和错误归因 receipt 已留在项目 run 目录，仓库只提交轻量 manifest/CSV/报告。
 
 ## 环境
 
@@ -83,7 +83,7 @@ YesTrack 仍是外部发布包下载阻塞；本次还确认 A800 有 `BaiduPCS-
 当前剩余条件：
 
 - YesTrack `v2bestweight`、`v2best_track_result`、`refer_kitti_motc_gt_v2` 和完整 V2 图像/标签；
-- FlexHook 全量日志完成并取得 raw result/receipt，随后计算 TrackEval、Oracle 和错误案例；
+- YesTrack 官方 archive/权重/候选字节，以及同候选的 YesTrack/FlexHook 公平比较；
 - 如需独立复核 TempRMOT baseline，可直接使用 A800 上已找到的 rk2 checkpoint 与 R50 pretrain；它们不解除 YesTrack 官方权重阻塞；
 - 可写的输出空间或允许使用当前项目目录。
 

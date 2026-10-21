@@ -1,38 +1,39 @@
 # 详细错误分类
 
-A800 的完整图像/标签和 FlexHook 候选已经可读，但全量模型预测尚未完成，因此 `analysis/error_events.csv` 和 `analysis/temporal_error_chains.csv` 暂为空；这表示没有可合法标注的模型事件，不表示错误率为零。独立候选覆盖统计已完成：IoU 0.5 下 `362,304/491,286 = 73.75%` 的 GT 目标框有候选覆盖，剩余 `26.25%` 属于 JEV 无法通过二阶段选择修复的候选缺失/几何类上限问题。
+## FlexHook V2 实测分解
 
-## 预定标签
+按 `(video, expression, frame, candidate_id)` 对齐官方 raw logits、固定候选和 GT；IoU 阈值为 0.5。事件允许重叠，假阳性是保留的非匹配候选，不与 GT-frame 分母混加。
 
-| 标签 | 定义 | 可归因的决策环节 |
-|---|---|---|
-| `geometry/detection` | 候选没有覆盖 GT 或 bbox/帧错位 | 第一阶段/输入协议，JEV 通常不能修复 |
-| `selection/false_negative` | 候选存在但被判 No | 语言选择/分数边界 |
-| `selection/false_positive` | 非目标候选被判 Yes | 语言选择/分数边界 |
-| `identity/fragmentation` | 目标候选存在但 ID 断裂或切换 | 关联/身份状态 |
-| `temporal_propagation` | TCP/TRP 或缓存把错误延续到后续帧 | 时序决策 |
-| `alignment/protocol` | frame、seqmap、逗号表达式或 GT 映射错误 | 评测协议，不能归因模型 |
-| `unresolvable_by_selection` | 候选缺失/几何错误，即使完美 Yes/No 也无法修复 | 第一阶段 |
+| 类别 | 数量 | 分母/解释 |
+|---|---:|---|
+| `CANDIDATE_MISSING` | 128,982 | 491,286 GT-frame 的 26.254%，二阶段不可修复 |
+| `MODEL_WINDOW_MISSING` | 7,750 | 1.577%，官方 DataLoader 末帧窗口缺 raw score，不归因语言选择 |
+| 合格候选 + raw score 的 matched TP | 314,142 | 选择正确的 GT-frame |
+| `REFER_FALSE_NEGATIVE` | 40,412 | 有合格候选且有 raw score 的 11.398% |
+| `REFER_FALSE_POSITIVE` | 436,690 | 750,832 个正决策中的 58.161%；候选被保留但未匹配当前表达式目标 |
 
-## 代码层面的已验证风险
+在有合格候选且有 raw score 的 354,554 个 GT-frame 中，选择正确率为 88.602%，假阴性率为 11.398%。假阴性平均 `p_yes=0.101` 左右，而假阳性平均 `p_yes` 约 0.93，说明错误不是单纯集中在 0.5 附近的阈值噪声；关系/竞争候选和身份历史值得检查。逐视频汇总见 [`analysis/flexhook_model_error_summary.csv`](../analysis/flexhook_model_error_summary.csv)，紧凑事件表见 [`analysis/error_events.csv`](../analysis/error_events.csv)。
 
-- YesTrack 的最终输出沿用候选 bbox 和 ID；二阶段主要修改 confidence/选择，不能凭空生成缺失候选。
-- FlexHook `test_utils.py` 的最终决策是 `argmax(score)>0`，没有基于 bbox 的二阶段修正；其 raw logits 在 `main.py:653–667` 可保存，后续应使用 logits 直接判定错误边界。
-- FlexHook 对候选帧做前后偏移，任何未核对首帧的结果都可能被错误标记为几何或选择失败。
-- `all/gt.txt` 特殊分支现在可以在 A800 evaluation copy 上做独立审计；全量结果尚未封存，不能把该潜在误归因写成已发生事件。
+### 按视频
 
-## 候选层错误拆分（IoU 0.5）
+| 视频 | 候选缺失 | 窗口缺口 | 选择假阴性 | 选择假阳性 |
+|---:|---:|---:|---:|---:|
+| 0005 | 5,734 | 1,259 | 5,771 | 16,388 |
+| 0011 | 27,449 | 1,286 | 13,085 | 33,191 |
+| 0013 | 7,517 | 1,233 | 2,949 | 48,810 |
+| 0019 | 88,282 | 3,972 | 18,607 | 338,301 |
 
-这部分统计不使用 FlexHook 未完成的模型输出，只回答“候选本身能不能覆盖目标”：
+0019 同时贡献 68.45% 的候选缺失和约 77.5% 的假阳性，仍是优先排查视频。假阳性不一定全部是视觉语言理解错误，也可能是表达式对应多个竞争候选、GT 对象未覆盖、或官方候选/表达式协议带来的非目标框保留。
 
-| 视频 | 候选覆盖 | 缺失目标框 | 最长连续缺失 | 候选 ID 切换 | 发生切换的目标轨迹 |
-|---:|---:|---:|---:|---:|---:|
-| 0005 | 86.88% | 5,734 / 43,688 | 34 帧 | 326 | 272 / 1,333（20.41%） |
-| 0011 | 73.64% | 27,449 / 104,124 | 92 帧 | 189 | 177 / 1,479（11.97%） |
-| 0013 | 79.26% | 7,517 / 36,248 | 30 帧 | 381 | 336 / 1,455（23.09%） |
-| 0019 | 71.26% | 88,282 / 307,226 | 77 帧 | 3,829 | 1,578 / 3,776（41.79%） |
+## 身份和时间
 
-因此 0019 是候选层的主要失败视频，不能把它的 28.74% 缺失归因给 JEV。最差表达式簇也集中在 0019；例如 `humans` 有 `1,817/6,047` 个目标框没有候选，覆盖率 69.95%，最长缺失段 77 帧。逐表达式结果见 [`analysis/flexhook_top_expression_misses.csv`](../analysis/flexhook_top_expression_misses.csv)，按视频汇总见 [`analysis/flexhook_candidate_error_summary.csv`](../analysis/flexhook_candidate_error_summary.csv)。
+官方 O0 CLEAR 指标为 IDSW=2,908；O1 仍有 4,601 次 IDSW，O2 通过离线 GT identity mapping 降为 0。候选层独立统计显示 4,725 次候选 ID 切换、2,363/8,043 条目标轨迹发生切换；这类问题不能全部归咎于 FlexHook selection。
 
-用户要求“每类至少一个无法由简单二阶段修复的反例”。在 FlexHook 全量结果封存前，本轮仍无法诚实构造或可视化这些反例，故保持 `PENDING`；A800 资源到位后优先从四个测试视频生成反例，而不是用历史 TempRMOT 结果替代。
+`analysis/temporal_error_chains.csv` 包含 15,486 条连续候选缺失/选择假阴性链。它们是描述性连续事件，不证明 TCP/TRP 因果；FlexHook 没有 YesTrack 的 TCP/TRP，但其 4-frame window 和候选 ID 历史仍可能造成错误延续。`MODEL_WINDOW_MISSING` 单独标注为协议/采样边界，不能计入 JEV 的语言错误。
 
+## 已验证的机制边界
+
+- FlexHook `test_utils.py` 的最终决策是 `argmax(score)>0`，输出沿用候选 bbox 和 ID。
+- 候选缺失、IoU 不足、末帧窗口缺失不能靠普通 Yes/No 修复。
+- 选择假阴性、假阳性由冻结 raw logits 直接归因；没有用最终 MOT 结果反推分数。
+- O1/O2 是离线 Oracle，不参与 O0 推理，也没有训练新参数。

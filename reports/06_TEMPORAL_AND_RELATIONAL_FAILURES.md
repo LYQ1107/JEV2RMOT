@@ -1,16 +1,19 @@
 # 时间与关系型失败
 
-## 已验证的机制
+## 已完成的实测
 
-YesTrack 的 TCP 保存每个 track ID 的历史最终 confidence，在窗口满足条件时提升当前分数；TRP 每隔若干帧完整推理，中间帧复用已有 ID 的 confidence。代码和官方文档都说明这些操作发生在候选轨迹之上，不能修复缺失 bbox 或重新建立身份。
+FlexHook raw result 已封存。每个候选帧包含 `negative_logit/positive_logit`，最终决策为 `argmax(score)>0`；O0 的 TrackEval 为 HOTA 42.526、IDSW 2,908。离线对齐得到 40,412 个合格候选上的选择假阴性和 436,690 个选择假阳性，连续事件链见 [`analysis/temporal_error_chains.csv`](../analysis/temporal_error_chains.csv)。
 
-FlexHook 的模型输出保存为 `video/object/frame/expression -> [negative_logit, positive_logit]`，随后 `test_utils.py` 依据 argmax 选择并从候选轨迹中取 bbox。该结构允许后续拆解“视觉/语言选择错误”和“候选身份/时序错误”，但本轮没有 raw result.json。
+连续链是描述性证据，不等同于已证明的 TCP/TRP 传播：FlexHook 没有 YesTrack 的 TCP/TRP 开关，且模型使用 4-frame window。要把链归因成“上一帧错误导致下一帧错误”，仍需同一候选上的窗口消融或逐帧重放；本轮没有把这种因果关系写成已证事实。
 
-## 候选层时间统计
+## 候选层与身份层
 
-A800 的 FlexHook 官方全量模型运行仍没有完整 raw result，因此不能报告模型的传播错误或官方 IDF1。但候选层已经可以独立统计：IoU 0.5 下，0005/0011/0013/0019 的最长连续候选缺失分别为 34/92/30/77 帧；候选 ID 切换分别为 326/189/381/3829。对应的覆盖、缺失和轨迹切换汇总见 [`analysis/flexhook_candidate_error_summary.csv`](../analysis/flexhook_candidate_error_summary.csv)。这些帧在候选池中不存在，即使完美 selection 也无法恢复。
+IoU 0.5 下，0019 的候选缺失 88,282/307,226 GT-frame，最长连续缺失 77 帧；全局候选 ID proxy 有 4,725 次切换、2,363/8,043 条目标轨迹发生切换。O1 保留候选原 ID 后 IDSW=4,601，O2 做 GT identity mapping 后 IDSW=0，HOTA 从 65.423 增到 69.125。这给出了“身份/短时关联”可研究但不能直接承诺可实现的空间。
 
-## 对 JEV 的预判
+另有 314 个候选 frame-object 条目因官方 DataLoader 的末帧采样边界没有 raw score，对应 7,750 GT-frame，单列为 `MODEL_WINDOW_MISSING`。它属于官方输入窗口实现/评估协议边界，不应被 JEV 归因。
 
-若资源恢复，优先检查“已有候选下的联合选择 + 身份状态更新”这一决策环节：它有 raw score、候选 ID 和时间邻接，且能与 bbox 覆盖错误严格隔离。不要从当前证据推出 JEV 能修复第一阶段漏检或坐标偏差。
+## 关系型研究含义
 
+假阳性平均 `p_yes` 约 0.93，且主要集中在 0019；假阴性平均 `p_yes` 约 0.10。仅调一个全局阈值很难同时消除两类高置信错误。更合理的 JEV 入口是：在同一候选池上联合表达式语义、候选之间的竞争关系、空间/运动历史和候选 ID 连续性，再对 selection/identity 做决策。
+
+但第一优先级仍是候选覆盖和窗口协议：至少 26.254% GT-frame 没有 IoU 0.5 候选，另有 1.577% 被官方测试窗口漏掉。普通二阶段模型不能凭空恢复这两类目标。

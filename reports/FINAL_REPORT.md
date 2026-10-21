@@ -1,39 +1,53 @@
-YesTrack 和 FlexHook 到底还有多少可修复空间，错误主要在哪里，JEV 该不该做、应该切入哪一个决策环节？
-
 # FINAL_REPORT
 
-当前仍不能诚实给出最终官方 HOTA/IDF1：交付状态是 `PARTIAL`，其中 FlexHook 为 `RUNNING/未完成`、YesTrack 为 `BLOCKED`。但候选级可修复空间已经统计：A800 FlexHook 的 862 个测试表达式、491,286 个目标框中，IoU 0.5 下有 362,304 个被候选覆盖，即 73.75%；至少 26.25% 不可能由 JEV 二阶段选择/身份决策修复。A800 已找到完整 Refer-KITTI-V2 数据、官方 FlexHook checkpoint 和 `Temp-NeuralSORT-kitti2` 候选，并启动了官方全量推理；最后可见日志为 `500/7443`，暂未出现最终结果。YesTrack 官方 Baidu 包已能列出 `/Yestrack/yestrack.zip`，但普通直连下载接口返回签名错误，官方 Yes/No 权重和候选字节尚未取得。没有把论文表格、历史 TempRMOT 结果或 A800 上的自训 OneJev 权重当成本地官方指标。
+## 结论先行
 
-已完成：
+有可提升空间，但不是“JEV 可以把第一阶段漏检全部救回来”。FlexHook Refer-KITTI-V2 的真实官方 O0 为 **HOTA 42.526 / DetA 30.629 / AssA 59.185 / IDF1 46.496**。固定同一候选池做离线反事实后：
 
-- 固定并核验 YesTrack、FlexHook、LLM2Jev 官方仓库 commit；
-- 完成 GPU、磁盘、NAS、远端挂载、Python 环境与模型缓存审计；
-- 核对 V1 158-entry seqmap、V2 逗号表达式、YesTrack frame mapping、FlexHook 候选帧偏移、`all/gt.txt` 分支、argmax 决策和 result 缓存；
-- 发现并记录 FlexHook 原始 checkout 中 `SwinTransformer/utils.py:22` 与 `deit/main.py:44` 的语法错误；未修改官方代码；
-- 对历史 TempRMOT V2 输出抽样 40 个表达式对，仅做格式/结构审计，明确标记为 `AUXILIARY_NOT_COMPARABLE`；
-- 生成了所需 CSV、Oracle 状态表和空的错误事件表，未填假数字。
-- 对 A800 FlexHook 候选完成 IoU 0.3/0.5/0.7 覆盖统计和候选 ID proxy 统计；结果写入 [`analysis/flexhook_candidate_ceiling.csv`](../analysis/flexhook_candidate_ceiling.csv) 与 [`analysis/flexhook_identity_proxy.csv`](../analysis/flexhook_identity_proxy.csv)。
-- 进一步按视频和表达式拆分候选缺失、最长连续缺失段与候选 ID 切换；0019 的候选覆盖最低（71.26%），缺失 88,282 个目标框、3,829 次 ID 切换，结果见 [`analysis/flexhook_candidate_error_summary.csv`](../analysis/flexhook_candidate_error_summary.csv)。
-- 将候选层的“不可修复缺口”单独统计：IoU 0.3/0.5/0.7 下分别有 24.68%/26.25%/30.16% GT 框没有候选；从 0.3 收紧到 0.5 额外损失 7,735 框，从 0.5 收紧到 0.7 额外损失 19,210 框。0019 一条视频贡献了 IoU 0.5 全部缺失框的 68.45%；8,043 条目标轨迹中 501 条完全没有候选匹配，2,363 条出现候选 ID 切换。可复算明细见 [`analysis/flexhook_candidate_gap_breakdown.csv`](../analysis/flexhook_candidate_gap_breakdown.csv)，生成脚本见 [`scripts/write_flexhook_candidate_gap_breakdown.py`](../scripts/write_flexhook_candidate_gap_breakdown.py)。
-- 重新清点 A800，生成 [`analysis/a800_resource_manifest.csv`](../analysis/a800_resource_manifest.csv)，记录完整数据、FlexHook 官方 checkpoint、TempRMOT baseline checkpoint/R50 pretrain、文件大小和非官方 YesTrack 实验资产边界；未复制大权重进 Git 仓库。
+- 完美 selection：O1 HOTA **65.423**，相对 O0 **+22.897**；
+- selection + identity：O2 HOTA **69.125**，相对 O1 再 **+3.702**；
+- GT sanity：O3 四项指标均 **100**，仅证明评测协议正确，不是方法收益。
 
-## 直接回答：有没有可提升空间
+因此 JEV 值得做，但研究切口应是“已有候选上的 selection + 竞争关系 + identity/短时状态联合决策”。第一阶段候选覆盖 IoU 0.5 只有 **362,304/491,286=73.746%**，至少 **26.254%** GT-frame 无候选；这部分不能靠冻结二阶段 JEV 修复。
 
-有，但当前证据把空间分成两段：
+## 实测错误来源
 
-| 环节 | 当前统计 | 对 JEV 的含义 |
+| 类别 | 数量 | 解释 |
 |---|---:|---|
-| 候选覆盖/检测 | IoU 0.5 仅覆盖 73.75%，26.25% 无候选 | 这部分不是二阶段 JEV 的可修复空间；应先修候选生成、检测或帧对齐，尤其是 0019 |
-| 候选框质量 | IoU 0.3→0.5 少 7,735 框，0.5→0.7 少 19,210 框 | 主要是几何/定位质量，不能直接归因给语言选择 |
-| 候选身份/时序 | 2,363/8,043 条目标轨迹有候选 ID 切换，4,725 次切换 | 这是 JEV 可以优先尝试的联合 selection + identity/短时状态决策入口，但仍是候选 proxy，不是官方 IDF1 |
+| 候选缺失 `CANDIDATE_MISSING` | 128,982 | GT-frame 的 26.254%，第一阶段/几何/帧协议问题 |
+| 官方窗口缺口 `MODEL_WINDOW_MISSING` | 7,750 | DataLoader 末帧采样边界导致没有 raw score，不能算语言错误 |
+| 合格候选上的选择假阴性 | 40,412 | 有候选、有 raw score 但 argmax 判 No，11.398% |
+| 选择假阳性 | 436,690 | 750,832 个正决策中未匹配当前表达式目标，58.161% |
 
-因此，若问题是“JEV 能不能让端到端 RMOT 明显提升”，目前不能只凭候选统计承诺；第一阶段覆盖已经给出硬上限。若问题是“JEV 是否值得做”，答案是有条件地值得：应把研究切口放在已有候选上的语言选择、身份连续性和短时轨迹状态联合决策，并用同一候选池的 O0→O1、O1→O2 差值验证，而不是从第一阶段漏检开始归因。当前 O0/O1/O2 尚未封存，故这些差值仍不能填写。
+假阴性平均 `p_yes≈0.10`，假阳性平均 `p_yes≈0.93`；错误不只是一个全局阈值附近的抖动。0019 是主失败视频：候选缺失 88,282、选择假阴性 18,607、选择假阳性 338,301。
 
-因此目前能说的科学结论只有机制级结论：JEV 若继续，优先切入已有候选上的 selection + identity/short-term state decision；不能宣称它能修复候选缺失、bbox 几何错误或协议错位。是否值得做、可修复空间的大小，必须等 O0/O1/O2 和共享候选跑通后由数字决定。
+## 官方复现状态
 
-主结果表见 [`analysis/metrics.csv`](../analysis/metrics.csv)，其中 FlexHook 记录为 `RUNNING`、YesTrack 仍为 `BLOCKED`；Oracle 见 [`analysis/oracle_results.csv`](../analysis/oracle_results.csv)。资源和阻塞证据见 [`00_RESOURCE_AUDIT.md`](00_RESOURCE_AUDIT.md)。
+FlexHook 已完成 4-GPU 官方 forward，297,706 validation samples、862 expression sequences，raw result SHA-256 为 `4af904f8ea839c9cf00c6fa6e6ee5d85d799c116e89019b29da6a183b18c5c3d`；checkpoint SHA-256 为 `71dbd691e7633a3d20facb1ebc405908863aff786e5af30899d4cb666250d613`。详细 receipt 见 [`analysis/flexhook_official_run_receipt.json`](../analysis/flexhook_official_run_receipt.json)。
 
-## 解阻塞后的最短闭环
+YesTrack 仍为 `BLOCKED`：官方 Baidu 分享页能列出 `/Yestrack/yestrack.zip`，但普通直连下载返回 `errno=113` 签名错误。没有把 A800 上的 OneJev/GroundJEV 资产或论文数字冒充 YesTrack 实测，因此 YesTrack HOTA/IDF1 和同候选比较仍留空。
 
-下一步仍需等待/监控 A800 FlexHook 全量运行，封存 raw score/logit、代码/权重 receipt 和预测目录，再计算官方 O0/O1/O2、模型错误事件、模型时间链和 30 个可视化案例；候选 recall ceiling 已完成。并行地，YesTrack 需要官方 `yestrack.zip` 的真实下载字节；拿到后再运行同一候选池比较。只有完成这条闭环后，才能把 JEV 结论从“候选上限已知”升级为“模型 O0→Oracle 的实际收益已知”。
+## Oracle 解释
 
+O1 保留原候选 bbox 和原 Track ID，只用 GT 选择 IoU≥0.5 的候选；O2 在 O1 框上将 ID 映射到 GT ID；O3 使用 GT 框/ID 做评测 sanity。三者都在模型 forward 之后生成，不参与 O0。
+
+O1–O0 的 +22.897 HOTA 是选择/过滤和官方窗口覆盖的理想差距，不是 JEV 实际提升；O2–O1 的 +3.702 HOTA 是身份连续性的离线理想空间。候选覆盖率、Oracle 表和 raw-score 错误汇总分别见：
+
+- [`analysis/oracle_results.csv`](../analysis/oracle_results.csv)
+- [`analysis/flexhook_candidate_gap_breakdown.csv`](../analysis/flexhook_candidate_gap_breakdown.csv)
+- [`analysis/flexhook_model_error_summary.csv`](../analysis/flexhook_model_error_summary.csv)
+
+## 对 RMOT2JEV 的建议
+
+先不要做“全模态端到端 JEV 替换”。推荐顺序：
+
+1. 修复并固定官方 DataLoader 末帧窗口协议，确保候选 frame-object 都有 raw score。
+2. 在冻结候选和官方分数上比较全局/表达式阈值、同帧竞争抑制、简单 ID 稳定规则。
+3. 若简单规则不能解释主要 FN/FP，再训练 JEV；输入应包含表达式、候选框、同帧竞争候选、Track ID 历史和短时视觉状态。
+4. 以 O0→规则→JEV 的 HOTA/DetA/AssA/IDF1，以及 0019 和关系类型分层结果作为验收。
+
+当前证据足以支持“做一个窄的候选内 JEV”，不足以支持“JEV 能解决主要端到端瓶颈”或“立即做跨方法结论”。
+
+## 交付状态
+
+项目整体仍为 `PARTIAL`：FlexHook V2 已完成；YesTrack 官方资源和公平共享候选比较仍 `BLOCKED/NOT_COMPARABLE`。所有缺失项都保留明确状态，没有用 0、论文数字或 Oracle 数字冒充模型结果。

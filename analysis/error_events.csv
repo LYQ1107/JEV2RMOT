@@ -1,1 +1,21 @@
 method,dataset,protocol,sequence,expression,frame,track_id,error_type,source_stage,status,confidence_raw,confidence_final,notes
+FlexHook,Refer-KITTI-V2,official-v2,0005,*,aggregate,*,CANDIDATE_MISSING,stage1_candidate,AGGREGATED_FROM_RAW_LOGITS,,,Compact aggregate; raw result.json is retained in the ignored run receipt.
+FlexHook,Refer-KITTI-V2,official-v2,0005,*,aggregate,*,MATCHED_TRUE_POSITIVE,audit,AGGREGATED_FROM_RAW_LOGITS,0.9877820807588108,,Compact aggregate; raw result.json is retained in the ignored run receipt.
+FlexHook,Refer-KITTI-V2,official-v2,0005,*,aggregate,*,MODEL_WINDOW_MISSING,official_test_window,AGGREGATED_FROM_RAW_LOGITS,,,Compact aggregate; raw result.json is retained in the ignored run receipt.
+FlexHook,Refer-KITTI-V2,official-v2,0005,*,aggregate,*,REFER_FALSE_NEGATIVE,stage2_selection,AGGREGATED_FROM_RAW_LOGITS,0.053463675978994894,,Compact aggregate; raw result.json is retained in the ignored run receipt.
+FlexHook,Refer-KITTI-V2,official-v2,0005,*,aggregate,*,REFER_FALSE_POSITIVE,stage2_selection,AGGREGATED_FROM_RAW_LOGITS,0.9466969308370567,,Compact aggregate; raw result.json is retained in the ignored run receipt.
+FlexHook,Refer-KITTI-V2,official-v2,0011,*,aggregate,*,CANDIDATE_MISSING,stage1_candidate,AGGREGATED_FROM_RAW_LOGITS,,,Compact aggregate; raw result.json is retained in the ignored run receipt.
+FlexHook,Refer-KITTI-V2,official-v2,0011,*,aggregate,*,MATCHED_TRUE_POSITIVE,audit,AGGREGATED_FROM_RAW_LOGITS,0.9747995718798197,,Compact aggregate; raw result.json is retained in the ignored run receipt.
+FlexHook,Refer-KITTI-V2,official-v2,0011,*,aggregate,*,MODEL_WINDOW_MISSING,official_test_window,AGGREGATED_FROM_RAW_LOGITS,,,Compact aggregate; raw result.json is retained in the ignored run receipt.
+FlexHook,Refer-KITTI-V2,official-v2,0011,*,aggregate,*,REFER_FALSE_NEGATIVE,stage2_selection,AGGREGATED_FROM_RAW_LOGITS,0.07617609661204926,,Compact aggregate; raw result.json is retained in the ignored run receipt.
+FlexHook,Refer-KITTI-V2,official-v2,0011,*,aggregate,*,REFER_FALSE_POSITIVE,stage2_selection,AGGREGATED_FROM_RAW_LOGITS,0.9206364389374648,,Compact aggregate; raw result.json is retained in the ignored run receipt.
+FlexHook,Refer-KITTI-V2,official-v2,0013,*,aggregate,*,CANDIDATE_MISSING,stage1_candidate,AGGREGATED_FROM_RAW_LOGITS,,,Compact aggregate; raw result.json is retained in the ignored run receipt.
+FlexHook,Refer-KITTI-V2,official-v2,0013,*,aggregate,*,MATCHED_TRUE_POSITIVE,audit,AGGREGATED_FROM_RAW_LOGITS,0.9692899439762593,,Compact aggregate; raw result.json is retained in the ignored run receipt.
+FlexHook,Refer-KITTI-V2,official-v2,0013,*,aggregate,*,MODEL_WINDOW_MISSING,official_test_window,AGGREGATED_FROM_RAW_LOGITS,,,Compact aggregate; raw result.json is retained in the ignored run receipt.
+FlexHook,Refer-KITTI-V2,official-v2,0013,*,aggregate,*,REFER_FALSE_NEGATIVE,stage2_selection,AGGREGATED_FROM_RAW_LOGITS,0.13081563413397382,,Compact aggregate; raw result.json is retained in the ignored run receipt.
+FlexHook,Refer-KITTI-V2,official-v2,0013,*,aggregate,*,REFER_FALSE_POSITIVE,stage2_selection,AGGREGATED_FROM_RAW_LOGITS,0.9232414847727604,,Compact aggregate; raw result.json is retained in the ignored run receipt.
+FlexHook,Refer-KITTI-V2,official-v2,0019,*,aggregate,*,CANDIDATE_MISSING,stage1_candidate,AGGREGATED_FROM_RAW_LOGITS,,,Compact aggregate; raw result.json is retained in the ignored run receipt.
+FlexHook,Refer-KITTI-V2,official-v2,0019,*,aggregate,*,MATCHED_TRUE_POSITIVE,audit,AGGREGATED_FROM_RAW_LOGITS,0.9661555373225489,,Compact aggregate; raw result.json is retained in the ignored run receipt.
+FlexHook,Refer-KITTI-V2,official-v2,0019,*,aggregate,*,MODEL_WINDOW_MISSING,official_test_window,AGGREGATED_FROM_RAW_LOGITS,,,Compact aggregate; raw result.json is retained in the ignored run receipt.
+FlexHook,Refer-KITTI-V2,official-v2,0019,*,aggregate,*,REFER_FALSE_NEGATIVE,stage2_selection,AGGREGATED_FROM_RAW_LOGITS,0.140962201217439,,Compact aggregate; raw result.json is retained in the ignored run receipt.
+FlexHook,Refer-KITTI-V2,official-v2,0019,*,aggregate,*,REFER_FALSE_POSITIVE,stage2_selection,AGGREGATED_FROM_RAW_LOGITS,0.9331466558215495,,Compact aggregate; raw result.json is retained in the ignored run receipt.

@@ -2,7 +2,7 @@
 
 ## 审计结果
 
-V1/V2 未混用。A800 上已找到完整的 Refer-KITTI-V2 表达式、labels_with_ids 和 image_02 文件树；FlexHook 的 evaluation copy 还包含 `labels.json`、`gt_template` 与数据元数据。YesTrack 官方权重/候选仍未从公开 Baidu 包落地，因此 YesTrack 官方推理仍阻塞；FlexHook 已进入全量推理阶段。
+V1/V2 未混用。A800 上已找到完整的 Refer-KITTI-V2 表达式、labels_with_ids 和 image_02 文件树；FlexHook 的 evaluation copy 还包含 `labels.json`、`gt_template` 与数据元数据。YesTrack 官方权重/候选仍未从公开 Baidu 包落地，因此 YesTrack 官方推理仍阻塞；FlexHook 已完成 4-GPU 官方 checkpoint forward、快速结果物化和 862 expression 的 TrackEval O0。
 
 ## YesTrack 约束
 
@@ -29,7 +29,7 @@ FlexHook 测试 DataLoader 对 KITTI 读取 `<video>/car/predict.txt` 与 `<vide
 | YesTrack `results_root` | MOT 1-based、图像通常 `000000.png`：`image = raw_mot - 1 + offset` | 已从代码/文档核对，未在真实图像上可视化 |
 | YesTrack GT converter | MOTC GT 固定写为 1-based；V2 需核对 JSON key convention | 已核对代码/文档，缺数据无法执行 |
 | FlexHook KITTI candidate loader | 读候选帧后减 1，供模型使用 | 已核对代码；A800 候选已到位，首帧对照待全量输出 |
-| FlexHook final writer | 非 MIX 分支将内部帧再加 1 | 已核对代码；官方结果尚未完成，闭环待验证 |
+| FlexHook final writer | 非 MIX 分支将内部帧再加 1 | 已核对代码；862 expression 的结果已物化并通过官方 TrackEval O0 |
 
 后续真实运行必须保存首帧五行 raw MOT、图像文件名、JSON key、模型输入 frame id 和最终输出 frame id；并用 GT/pred 叠加图检查首帧、末帧和一条长轨迹。
 

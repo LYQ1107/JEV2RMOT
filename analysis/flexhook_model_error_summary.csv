@@ -1,0 +1,21 @@
+method,dataset,protocol,video,error_type,event_count,gt_frame_count,gt_frame_share,mean_p_yes,notes
+FlexHook,Refer-KITTI-V2,official-v2,0005,CANDIDATE_MISSING,5734,5734,0.13124885552096685,,GT is used only for offline attribution; matched true positives are included for denominator audit.
+FlexHook,Refer-KITTI-V2,official-v2,0005,MATCHED_TRUE_POSITIVE,30924,30924,0.7078373924189709,0.9877820807588108,GT is used only for offline attribution; matched true positives are included for denominator audit.
+FlexHook,Refer-KITTI-V2,official-v2,0005,MODEL_WINDOW_MISSING,1259,1259,0.02881798205456876,,GT is used only for offline attribution; matched true positives are included for denominator audit.
+FlexHook,Refer-KITTI-V2,official-v2,0005,REFER_FALSE_NEGATIVE,5771,5771,0.1320957700054935,0.053463675978994894,GT is used only for offline attribution; matched true positives are included for denominator audit.
+FlexHook,Refer-KITTI-V2,official-v2,0005,REFER_FALSE_POSITIVE,16388,0,0.0,0.9466969308370567,GT is used only for offline attribution; matched true positives are included for denominator audit.
+FlexHook,Refer-KITTI-V2,official-v2,0011,CANDIDATE_MISSING,27449,27449,0.2636183780876647,,GT is used only for offline attribution; matched true positives are included for denominator audit.
+FlexHook,Refer-KITTI-V2,official-v2,0011,MATCHED_TRUE_POSITIVE,62304,62304,0.5983634896853751,0.9747995718798197,GT is used only for offline attribution; matched true positives are included for denominator audit.
+FlexHook,Refer-KITTI-V2,official-v2,0011,MODEL_WINDOW_MISSING,1286,1286,0.01235065882985671,,GT is used only for offline attribution; matched true positives are included for denominator audit.
+FlexHook,Refer-KITTI-V2,official-v2,0011,REFER_FALSE_NEGATIVE,13085,13085,0.12566747339710346,0.07617609661204926,GT is used only for offline attribution; matched true positives are included for denominator audit.
+FlexHook,Refer-KITTI-V2,official-v2,0011,REFER_FALSE_POSITIVE,33191,0,0.0,0.9206364389374648,GT is used only for offline attribution; matched true positives are included for denominator audit.
+FlexHook,Refer-KITTI-V2,official-v2,0013,CANDIDATE_MISSING,7517,7517,0.20737695872875744,,GT is used only for offline attribution; matched true positives are included for denominator audit.
+FlexHook,Refer-KITTI-V2,official-v2,0013,MATCHED_TRUE_POSITIVE,24549,24549,0.677251158684617,0.9692899439762593,GT is used only for offline attribution; matched true positives are included for denominator audit.
+FlexHook,Refer-KITTI-V2,official-v2,0013,MODEL_WINDOW_MISSING,1233,1233,0.03401566983005959,,GT is used only for offline attribution; matched true positives are included for denominator audit.
+FlexHook,Refer-KITTI-V2,official-v2,0013,REFER_FALSE_NEGATIVE,2949,2949,0.08135621275656588,0.13081563413397382,GT is used only for offline attribution; matched true positives are included for denominator audit.
+FlexHook,Refer-KITTI-V2,official-v2,0013,REFER_FALSE_POSITIVE,48810,0,0.0,0.9232414847727604,GT is used only for offline attribution; matched true positives are included for denominator audit.
+FlexHook,Refer-KITTI-V2,official-v2,0019,CANDIDATE_MISSING,88282,88282,0.28735198192861283,,GT is used only for offline attribution; matched true positives are included for denominator audit.
+FlexHook,Refer-KITTI-V2,official-v2,0019,MATCHED_TRUE_POSITIVE,196365,196365,0.639154889234635,0.9661555373225489,GT is used only for offline attribution; matched true positives are included for denominator audit.
+FlexHook,Refer-KITTI-V2,official-v2,0019,MODEL_WINDOW_MISSING,3972,3972,0.012928593283120569,,GT is used only for offline attribution; matched true positives are included for denominator audit.
+FlexHook,Refer-KITTI-V2,official-v2,0019,REFER_FALSE_NEGATIVE,18607,18607,0.060564535553631525,0.140962201217439,GT is used only for offline attribution; matched true positives are included for denominator audit.
+FlexHook,Refer-KITTI-V2,official-v2,0019,REFER_FALSE_POSITIVE,338301,0,0.0,0.9331466558215495,GT is used only for offline attribution; matched true positives are included for denominator audit.

@@ -1,12 +1,3262 @@
 {
-  "status": "BLOCKED",
-  "official_case_count": 0,
+  "status": "COMPLETE",
+  "official_case_count": 30,
   "required_case_count": 30,
-  "reason": "No complete official image/GT/candidate/weight tuple was readable on this host; no visual case is claimed.",
-  "auxiliary_asset": {
-    "path": "/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/analysis/legacy_temprmot_v2_representative.json",
-    "status": "AUXILIARY_NOT_COMPARABLE",
-    "reason": "Archived TempRMOT final outputs are not a shared YesTrack/FlexHook candidate set."
-  },
-  "cases": []
+  "protocol": "FlexHook Refer-KITTI-V2 official raw output + fixed candidate + GT offline attribution",
+  "image_dir": "/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/visualizations/flexhook_cases",
+  "caveat": "Images are local ignored artifacts; GT is used only for offline labels, never for O0 inference.",
+  "cases": [
+    {
+      "video": "0005",
+      "expression": "automobiles-are-located-to-the-left",
+      "sentence": "automobiles are located to the left",
+      "frame0": 10,
+      "error_type": "CANDIDATE_MISSING",
+      "candidate_id": null,
+      "gt_id": 13,
+      "score": null,
+      "final_decision": null,
+      "o1_repairable": false,
+      "o2_identity_repairable": false,
+      "gt_boxes": [
+        {
+          "track_id": 11,
+          "bbox": [
+            33.99975,
+            171.0,
+            105.999732,
+            46.000125
+          ]
+        },
+        {
+          "track_id": 12,
+          "bbox": [
+            200.000502,
+            175.999875,
+            59.999778,
+            28.999875
+          ]
+        },
+        {
+          "track_id": 13,
+          "bbox": [
+            372.999924,
+            177.0,
+            27.999648,
+            16.000125
+          ]
+        }
+      ],
+      "candidate_boxes": [
+        {
+          "track_id": 1,
+          "bbox": [
+            32.18,
+            172.61,
+            107.37,
+            45.01
+          ],
+          "selected": true,
+          "score": [
+            -3.8103551864624023,
+            4.516341209411621
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 2,
+          "bbox": [
+            200.51,
+            176.03,
+            58.71,
+            28.71
+          ],
+          "selected": true,
+          "score": [
+            -4.275661468505859,
+            4.381396293640137
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 3,
+          "bbox": [
+            570.87,
+            176.98,
+            41.45,
+            35.74
+          ],
+          "selected": false,
+          "score": [
+            8.885259628295898,
+            -8.93321418762207
+          ],
+          "matched_to_gt": false
+        }
+      ],
+      "case_id": "case_01",
+      "image": "/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/visualizations/flexhook_cases/case_01.png",
+      "temporal_chain": {
+        "error_type": "CANDIDATE_MISSING_CHAIN",
+        "start_frame": "11",
+        "end_frame": "12",
+        "duration": "2",
+        "propagation_status": "DESCRIPTIVE_NOT_CAUSAL_TCP_TRP_PROOF"
+      }
+    },
+    {
+      "video": "0005",
+      "expression": "automobiles-are-located-to-the-left",
+      "sentence": "automobiles are located to the left",
+      "frame0": 11,
+      "error_type": "CANDIDATE_MISSING",
+      "candidate_id": null,
+      "gt_id": 13,
+      "score": null,
+      "final_decision": null,
+      "o1_repairable": false,
+      "o2_identity_repairable": false,
+      "gt_boxes": [
+        {
+          "track_id": 11,
+          "bbox": [
+            0.0,
+            169.999875,
+            111.999834,
+            49.999875
+          ]
+        },
+        {
+          "track_id": 12,
+          "bbox": [
+            181.000386,
+            175.999875,
+            64.00026,
+            30.0
+          ]
+        },
+        {
+          "track_id": 13,
+          "bbox": [
+            366.999822,
+            177.0,
+            28.999458,
+            16.999875
+          ]
+        }
+      ],
+      "candidate_boxes": [
+        {
+          "track_id": 1,
+          "bbox": [
+            -0.46,
+            172.49,
+            112.7,
+            48.03
+          ],
+          "selected": true,
+          "score": [
+            -4.313269138336182,
+            4.455032825469971
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 2,
+          "bbox": [
+            182.06,
+            175.7,
+            62.28,
+            30.56
+          ],
+          "selected": true,
+          "score": [
+            -4.278753757476807,
+            4.3101806640625
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 3,
+          "bbox": [
+            571.68,
+            177.7,
+            41.78,
+            35.77
+          ],
+          "selected": false,
+          "score": [
+            8.946301460266113,
+            -8.999703407287598
+          ],
+          "matched_to_gt": false
+        }
+      ],
+      "case_id": "case_02",
+      "image": "/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/visualizations/flexhook_cases/case_02.png",
+      "temporal_chain": {
+        "error_type": "CANDIDATE_MISSING_CHAIN",
+        "start_frame": "11",
+        "end_frame": "12",
+        "duration": "2",
+        "propagation_status": "DESCRIPTIVE_NOT_CAUSAL_TCP_TRP_PROOF"
+      }
+    },
+    {
+      "video": "0005",
+      "expression": "automobiles-are-located-to-the-left",
+      "sentence": "automobiles are located to the left",
+      "frame0": 28,
+      "error_type": "CANDIDATE_MISSING",
+      "candidate_id": null,
+      "gt_id": 14,
+      "score": null,
+      "final_decision": null,
+      "o1_repairable": false,
+      "o2_identity_repairable": false,
+      "gt_boxes": [
+        {
+          "track_id": 13,
+          "bbox": [
+            185.999436,
+            175.999875,
+            65.00007,
+            28.000125
+          ]
+        },
+        {
+          "track_id": 14,
+          "bbox": [
+            359.99991,
+            174.0,
+            30.00051,
+            15.0
+          ]
+        }
+      ],
+      "candidate_boxes": [
+        {
+          "track_id": 3,
+          "bbox": [
+            569.99,
+            172.7,
+            44.79,
+            41.12
+          ],
+          "selected": false,
+          "score": [
+            9.884492874145508,
+            -10.060004234313965
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 5,
+          "bbox": [
+            184.85,
+            175.77,
+            66.61,
+            27.64
+          ],
+          "selected": true,
+          "score": [
+            -4.363346576690674,
+            3.737703323364258
+          ],
+          "matched_to_gt": true
+        }
+      ],
+      "case_id": "case_03",
+      "image": "/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/visualizations/flexhook_cases/case_03.png",
+      "temporal_chain": {
+        "error_type": "CANDIDATE_MISSING_CHAIN",
+        "start_frame": "29",
+        "end_frame": "33",
+        "duration": "5",
+        "propagation_status": "DESCRIPTIVE_NOT_CAUSAL_TCP_TRP_PROOF"
+      }
+    },
+    {
+      "video": "0005",
+      "expression": "automobiles-are-located-to-the-left",
+      "sentence": "automobiles are located to the left",
+      "frame0": 29,
+      "error_type": "CANDIDATE_MISSING",
+      "candidate_id": null,
+      "gt_id": 14,
+      "score": null,
+      "final_decision": null,
+      "o1_repairable": false,
+      "o2_identity_repairable": false,
+      "gt_boxes": [
+        {
+          "track_id": 13,
+          "bbox": [
+            167.000562,
+            175.000125,
+            70.000362,
+            28.999875
+          ]
+        },
+        {
+          "track_id": 14,
+          "bbox": [
+            354.999618,
+            172.999875,
+            30.00051,
+            15.0
+          ]
+        }
+      ],
+      "candidate_boxes": [
+        {
+          "track_id": 3,
+          "bbox": [
+            569.26,
+            171.85,
+            45.87,
+            41.34
+          ],
+          "selected": false,
+          "score": [
+            9.890451431274414,
+            -10.215644836425781
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 5,
+          "bbox": [
+            166.39,
+            174.94,
+            71.18,
+            29.24
+          ],
+          "selected": true,
+          "score": [
+            -4.356634140014648,
+            3.691819667816162
+          ],
+          "matched_to_gt": true
+        }
+      ],
+      "case_id": "case_04",
+      "image": "/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/visualizations/flexhook_cases/case_04.png",
+      "temporal_chain": {
+        "error_type": "CANDIDATE_MISSING_CHAIN",
+        "start_frame": "29",
+        "end_frame": "33",
+        "duration": "5",
+        "propagation_status": "DESCRIPTIVE_NOT_CAUSAL_TCP_TRP_PROOF"
+      }
+    },
+    {
+      "video": "0005",
+      "expression": "automobiles-are-located-to-the-left",
+      "sentence": "automobiles are located to the left",
+      "frame0": 30,
+      "error_type": "CANDIDATE_MISSING",
+      "candidate_id": null,
+      "gt_id": 14,
+      "score": null,
+      "final_decision": null,
+      "o1_repairable": false,
+      "o2_identity_repairable": false,
+      "gt_boxes": [
+        {
+          "track_id": 13,
+          "bbox": [
+            146.999394,
+            174.0,
+            74.999412,
+            31.000125
+          ]
+        },
+        {
+          "track_id": 14,
+          "bbox": [
+            348.999516,
+            172.000125,
+            31.00032,
+            16.000125
+          ]
+        }
+      ],
+      "candidate_boxes": [
+        {
+          "track_id": 3,
+          "bbox": [
+            569.67,
+            170.41,
+            45.54,
+            42.17
+          ],
+          "selected": false,
+          "score": [
+            9.807313919067383,
+            -10.409156799316406
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 5,
+          "bbox": [
+            145.86,
+            174.45,
+            77.14,
+            30.13
+          ],
+          "selected": true,
+          "score": [
+            -4.2968926429748535,
+            3.7068886756896973
+          ],
+          "matched_to_gt": true
+        }
+      ],
+      "case_id": "case_05",
+      "image": "/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/visualizations/flexhook_cases/case_05.png",
+      "temporal_chain": {
+        "error_type": "CANDIDATE_MISSING_CHAIN",
+        "start_frame": "29",
+        "end_frame": "33",
+        "duration": "5",
+        "propagation_status": "DESCRIPTIVE_NOT_CAUSAL_TCP_TRP_PROOF"
+      }
+    },
+    {
+      "video": "0005",
+      "expression": "automobiles-are-located-to-the-left",
+      "sentence": "automobiles are located to the left",
+      "frame0": 31,
+      "error_type": "CANDIDATE_MISSING",
+      "candidate_id": null,
+      "gt_id": 14,
+      "score": null,
+      "final_decision": null,
+      "o1_repairable": false,
+      "o2_identity_repairable": false,
+      "gt_boxes": [
+        {
+          "track_id": 13,
+          "bbox": [
+            124.999848,
+            172.999875,
+            82.000566,
+            31.999875
+          ]
+        },
+        {
+          "track_id": 14,
+          "bbox": [
+            344.000466,
+            172.000125,
+            31.00032,
+            15.0
+          ]
+        }
+      ],
+      "candidate_boxes": [
+        {
+          "track_id": 3,
+          "bbox": [
+            568.42,
+            169.36,
+            46.81,
+            42.55
+          ],
+          "selected": false,
+          "score": [
+            10.086146354675293,
+            -10.671229362487793
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 5,
+          "bbox": [
+            125.38,
+            173.86,
+            81.4,
+            31.77
+          ],
+          "selected": true,
+          "score": [
+            -4.1692304611206055,
+            3.6615967750549316
+          ],
+          "matched_to_gt": true
+        }
+      ],
+      "case_id": "case_06",
+      "image": "/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/visualizations/flexhook_cases/case_06.png",
+      "temporal_chain": {
+        "error_type": "CANDIDATE_MISSING_CHAIN",
+        "start_frame": "29",
+        "end_frame": "33",
+        "duration": "5",
+        "propagation_status": "DESCRIPTIVE_NOT_CAUSAL_TCP_TRP_PROOF"
+      }
+    },
+    {
+      "video": "0005",
+      "expression": "automobiles-in-a-light-shade-going-in-opposite-paths",
+      "sentence": "automobiles in a light shade going in opposite paths",
+      "frame0": 169,
+      "error_type": "REFER_FALSE_NEGATIVE",
+      "candidate_id": 28,
+      "gt_id": 21,
+      "score": [
+        1.1885368824005127,
+        0.17014500498771667
+      ],
+      "final_decision": false,
+      "o1_repairable": true,
+      "o2_identity_repairable": false,
+      "gt_boxes": [
+        {
+          "track_id": 21,
+          "bbox": [
+            536.000004,
+            181.999875,
+            19.999926,
+            18.0
+          ]
+        }
+      ],
+      "candidate_boxes": [
+        {
+          "track_id": 3,
+          "bbox": [
+            560.4,
+            180.61,
+            54.66,
+            51.21
+          ],
+          "selected": false,
+          "score": [
+            15.03019905090332,
+            -13.496946334838867
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 21,
+          "bbox": [
+            226.19,
+            180.87,
+            49.91,
+            26.17
+          ],
+          "selected": true,
+          "score": [
+            -0.4330836534500122,
+            1.4023219347000122
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 24,
+          "bbox": [
+            967.93,
+            195.9,
+            72.66,
+            24.49
+          ],
+          "selected": true,
+          "score": [
+            -1.0762569904327393,
+            2.5354437828063965
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 28,
+          "bbox": [
+            536.47,
+            181.61,
+            20.97,
+            18.11
+          ],
+          "selected": false,
+          "score": [
+            1.1885368824005127,
+            0.17014500498771667
+          ],
+          "matched_to_gt": true
+        }
+      ],
+      "case_id": "case_07",
+      "image": "/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/visualizations/flexhook_cases/case_07.png"
+    },
+    {
+      "video": "0005",
+      "expression": "automobiles-in-a-light-shade-going-in-opposite-paths",
+      "sentence": "automobiles in a light shade going in opposite paths",
+      "frame0": 191,
+      "error_type": "REFER_FALSE_NEGATIVE",
+      "candidate_id": 38,
+      "gt_id": 22,
+      "score": [
+        4.522579669952393,
+        -3.9173548221588135
+      ],
+      "final_decision": false,
+      "o1_repairable": true,
+      "o2_identity_repairable": false,
+      "gt_boxes": [
+        {
+          "track_id": 7,
+          "bbox": [
+            70.000362,
+            187.999875,
+            102.000492,
+            36.0
+          ]
+        },
+        {
+          "track_id": 21,
+          "bbox": [
+            80.999514,
+            195.0,
+            276.999534,
+            169.000125
+          ]
+        },
+        {
+          "track_id": 22,
+          "bbox": [
+            550.999638,
+            181.000125,
+            21.999546,
+            18.0
+          ]
+        },
+        {
+          "track_id": 23,
+          "bbox": [
+            492.99948,
+            184.999875,
+            52.000056,
+            34.000125
+          ]
+        }
+      ],
+      "candidate_boxes": [
+        {
+          "track_id": 3,
+          "bbox": [
+            580.35,
+            179.43,
+            49.16,
+            46.28
+          ],
+          "selected": false,
+          "score": [
+            15.422815322875977,
+            -13.710186958312988
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 21,
+          "bbox": [
+            0.14,
+            183.66,
+            66.23,
+            46.74
+          ],
+          "selected": false,
+          "score": [
+            12.739583969116211,
+            -10.812803268432617
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 28,
+          "bbox": [
+            81.52,
+            195.37,
+            279.96,
+            167.45
+          ],
+          "selected": true,
+          "score": [
+            -2.3014190196990967,
+            4.031649589538574
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 29,
+          "bbox": [
+            170.5,
+            186.91,
+            73.22,
+            29.24
+          ],
+          "selected": false,
+          "score": [
+            11.107244491577148,
+            -9.34277057647705
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 34,
+          "bbox": [
+            69.6,
+            186.35,
+            100.89,
+            36.92
+          ],
+          "selected": true,
+          "score": [
+            -3.1710543632507324,
+            5.262623310089111
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 35,
+          "bbox": [
+            493.62,
+            184.61,
+            50.34,
+            36.53
+          ],
+          "selected": true,
+          "score": [
+            -2.7899065017700195,
+            4.717745304107666
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 38,
+          "bbox": [
+            550.19,
+            179.39,
+            23.72,
+            19.18
+          ],
+          "selected": false,
+          "score": [
+            4.522579669952393,
+            -3.9173548221588135
+          ],
+          "matched_to_gt": true
+        }
+      ],
+      "case_id": "case_08",
+      "image": "/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/visualizations/flexhook_cases/case_08.png",
+      "temporal_chain": {
+        "error_type": "REFER_FALSE_NEGATIVE_CHAIN",
+        "start_frame": "192",
+        "end_frame": "193",
+        "duration": "2",
+        "propagation_status": "DESCRIPTIVE_NOT_CAUSAL_TCP_TRP_PROOF"
+      }
+    },
+    {
+      "video": "0005",
+      "expression": "automobiles-in-a-light-shade-going-in-opposite-paths",
+      "sentence": "automobiles in a light shade going in opposite paths",
+      "frame0": 192,
+      "error_type": "REFER_FALSE_NEGATIVE",
+      "candidate_id": 38,
+      "gt_id": 22,
+      "score": [
+        4.433945178985596,
+        -3.672271490097046
+      ],
+      "final_decision": false,
+      "o1_repairable": true,
+      "o2_identity_repairable": false,
+      "gt_boxes": [
+        {
+          "track_id": 7,
+          "bbox": [
+            52.000056,
+            187.999875,
+            103.000302,
+            18.0
+          ]
+        },
+        {
+          "track_id": 21,
+          "bbox": [
+            0.0,
+            204.0,
+            268.000002,
+            171.0
+          ]
+        },
+        {
+          "track_id": 22,
+          "bbox": [
+            549.999828,
+            181.000125,
+            21.999546,
+            18.0
+          ]
+        },
+        {
+          "track_id": 23,
+          "bbox": [
+            482.000328,
+            184.999875,
+            57.000348,
+            39.0
+          ]
+        }
+      ],
+      "candidate_boxes": [
+        {
+          "track_id": 3,
+          "bbox": [
+            581.0,
+            179.15,
+            49.27,
+            46.12
+          ],
+          "selected": false,
+          "score": [
+            15.117837905883789,
+            -13.44579029083252
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 21,
+          "bbox": [
+            0.26,
+            184.73,
+            39.75,
+            35.02
+          ],
+          "selected": false,
+          "score": null,
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 28,
+          "bbox": [
+            0.05,
+            201.61,
+            269.87,
+            173.7
+          ],
+          "selected": true,
+          "score": [
+            -0.7132986187934875,
+            2.17690110206604
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 29,
+          "bbox": [
+            166.22,
+            187.19,
+            67.71,
+            27.41
+          ],
+          "selected": false,
+          "score": [
+            9.786707878112793,
+            -8.227007865905762
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 34,
+          "bbox": [
+            54.06,
+            186.69,
+            101.74,
+            20.47
+          ],
+          "selected": true,
+          "score": [
+            -3.372727632522583,
+            5.595448970794678
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 35,
+          "bbox": [
+            483.04,
+            185.29,
+            56.4,
+            39.51
+          ],
+          "selected": true,
+          "score": [
+            -2.594493865966797,
+            4.602034091949463
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 38,
+          "bbox": [
+            549.61,
+            179.38,
+            22.89,
+            19.2
+          ],
+          "selected": false,
+          "score": [
+            4.433945178985596,
+            -3.672271490097046
+          ],
+          "matched_to_gt": true
+        }
+      ],
+      "case_id": "case_09",
+      "image": "/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/visualizations/flexhook_cases/case_09.png",
+      "temporal_chain": {
+        "error_type": "REFER_FALSE_NEGATIVE_CHAIN",
+        "start_frame": "192",
+        "end_frame": "193",
+        "duration": "2",
+        "propagation_status": "DESCRIPTIVE_NOT_CAUSAL_TCP_TRP_PROOF"
+      }
+    },
+    {
+      "video": "0005",
+      "expression": "automobiles-in-a-light-shade-going-in-opposite-paths",
+      "sentence": "automobiles in a light shade going in opposite paths",
+      "frame0": 194,
+      "error_type": "REFER_FALSE_NEGATIVE",
+      "candidate_id": 38,
+      "gt_id": 22,
+      "score": [
+        1.7616190910339355,
+        -0.6701704263687134
+      ],
+      "final_decision": false,
+      "o1_repairable": true,
+      "o2_identity_repairable": false,
+      "gt_boxes": [
+        {
+          "track_id": 7,
+          "bbox": [
+            0.99981,
+            187.000125,
+            121.000608,
+            40.999875
+          ]
+        },
+        {
+          "track_id": 22,
+          "bbox": [
+            546.000588,
+            181.000125,
+            25.000218,
+            19.999875
+          ]
+        },
+        {
+          "track_id": 23,
+          "bbox": [
+            452.999628,
+            187.000125,
+            71.999982,
+            48.0
+          ]
+        }
+      ],
+      "candidate_boxes": [
+        {
+          "track_id": 3,
+          "bbox": [
+            582.98,
+            179.36,
+            48.68,
+            45.56
+          ],
+          "selected": false,
+          "score": [
+            14.991098403930664,
+            -13.291111946105957
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 29,
+          "bbox": [
+            125.14,
+            187.75,
+            85.66,
+            33.84
+          ],
+          "selected": false,
+          "score": [
+            10.308433532714844,
+            -8.53453254699707
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 34,
+          "bbox": [
+            1.02,
+            186.58,
+            121.35,
+            42.98
+          ],
+          "selected": true,
+          "score": [
+            -3.1466362476348877,
+            5.400792121887207
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 35,
+          "bbox": [
+            454.3,
+            186.84,
+            71.53,
+            48.75
+          ],
+          "selected": true,
+          "score": [
+            -2.2797751426696777,
+            3.850447177886963
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 38,
+          "bbox": [
+            544.79,
+            179.63,
+            25.78,
+            20.56
+          ],
+          "selected": false,
+          "score": [
+            1.7616190910339355,
+            -0.6701704263687134
+          ],
+          "matched_to_gt": true
+        }
+      ],
+      "case_id": "case_10",
+      "image": "/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/visualizations/flexhook_cases/case_10.png"
+    },
+    {
+      "video": "0005",
+      "expression": "automobiles-in-a-light-shade-going-in-opposite-paths",
+      "sentence": "automobiles in a light shade going in opposite paths",
+      "frame0": 245,
+      "error_type": "REFER_FALSE_NEGATIVE",
+      "candidate_id": 49,
+      "gt_id": 37,
+      "score": [
+        4.8177337646484375,
+        -3.179816484451294
+      ],
+      "final_decision": false,
+      "o1_repairable": true,
+      "o2_identity_repairable": false,
+      "gt_boxes": [
+        {
+          "track_id": 37,
+          "bbox": [
+            556.99974,
+            178.999875,
+            19.999926,
+            18.0
+          ]
+        }
+      ],
+      "candidate_boxes": [
+        {
+          "track_id": 3,
+          "bbox": [
+            583.08,
+            178.91,
+            39.46,
+            35.29
+          ],
+          "selected": false,
+          "score": [
+            16.010051727294922,
+            -14.296555519104004
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 47,
+          "bbox": [
+            379.14,
+            180.48,
+            28.57,
+            17.27
+          ],
+          "selected": true,
+          "score": [
+            -3.1028761863708496,
+            4.787097454071045
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 48,
+          "bbox": [
+            0.56,
+            177.85,
+            120.33,
+            52.29
+          ],
+          "selected": false,
+          "score": [
+            11.130593299865723,
+            -9.90007495880127
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 49,
+          "bbox": [
+            557.93,
+            178.67,
+            21.63,
+            17.48
+          ],
+          "selected": false,
+          "score": [
+            4.8177337646484375,
+            -3.179816484451294
+          ],
+          "matched_to_gt": true
+        }
+      ],
+      "case_id": "case_11",
+      "image": "/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/visualizations/flexhook_cases/case_11.png",
+      "temporal_chain": {
+        "error_type": "REFER_FALSE_NEGATIVE_CHAIN",
+        "start_frame": "246",
+        "end_frame": "253",
+        "duration": "8",
+        "propagation_status": "DESCRIPTIVE_NOT_CAUSAL_TCP_TRP_PROOF"
+      }
+    },
+    {
+      "video": "0005",
+      "expression": "automobiles-in-a-light-shade-going-in-opposite-paths",
+      "sentence": "automobiles in a light shade going in opposite paths",
+      "frame0": 246,
+      "error_type": "REFER_FALSE_NEGATIVE",
+      "candidate_id": 49,
+      "gt_id": 37,
+      "score": [
+        6.021590709686279,
+        -4.551486968994141
+      ],
+      "final_decision": false,
+      "o1_repairable": true,
+      "o2_identity_repairable": false,
+      "gt_boxes": [
+        {
+          "track_id": 37,
+          "bbox": [
+            555.00012,
+            178.999875,
+            19.999926,
+            16.999875
+          ]
+        }
+      ],
+      "candidate_boxes": [
+        {
+          "track_id": 3,
+          "bbox": [
+            583.0,
+            178.11,
+            39.11,
+            35.28
+          ],
+          "selected": false,
+          "score": [
+            15.728187561035156,
+            -13.924909591674805
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 47,
+          "bbox": [
+            374.12,
+            179.88,
+            28.82,
+            17.56
+          ],
+          "selected": true,
+          "score": [
+            -3.195516586303711,
+            5.0895233154296875
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 48,
+          "bbox": [
+            0.09,
+            176.75,
+            94.03,
+            55.55
+          ],
+          "selected": false,
+          "score": [
+            10.152352333068848,
+            -9.153838157653809
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 49,
+          "bbox": [
+            555.55,
+            178.75,
+            22.96,
+            17.15
+          ],
+          "selected": false,
+          "score": [
+            6.021590709686279,
+            -4.551486968994141
+          ],
+          "matched_to_gt": true
+        }
+      ],
+      "case_id": "case_12",
+      "image": "/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/visualizations/flexhook_cases/case_12.png",
+      "temporal_chain": {
+        "error_type": "REFER_FALSE_NEGATIVE_CHAIN",
+        "start_frame": "246",
+        "end_frame": "253",
+        "duration": "8",
+        "propagation_status": "DESCRIPTIVE_NOT_CAUSAL_TCP_TRP_PROOF"
+      }
+    },
+    {
+      "video": "0005",
+      "expression": "automobiles-are-located-to-the-left",
+      "sentence": "automobiles are located to the left",
+      "frame0": 43,
+      "error_type": "REFER_FALSE_POSITIVE",
+      "candidate_id": 3,
+      "gt_id": null,
+      "score": [
+        9.056075096130371,
+        -9.511726379394531
+      ],
+      "final_decision": false,
+      "o1_repairable": true,
+      "o2_identity_repairable": false,
+      "gt_boxes": [
+        {
+          "track_id": 14,
+          "bbox": [
+            255.999798,
+            177.0,
+            45.999954,
+            19.999875
+          ]
+        }
+      ],
+      "candidate_boxes": [
+        {
+          "track_id": 3,
+          "bbox": [
+            569.69,
+            172.34,
+            48.86,
+            46.42
+          ],
+          "selected": false,
+          "score": [
+            9.056075096130371,
+            -9.511726379394531
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 10,
+          "bbox": [
+            254.16,
+            171.24,
+            72.5,
+            25.99
+          ],
+          "selected": true,
+          "score": [
+            -4.367730617523193,
+            3.545032501220703
+          ],
+          "matched_to_gt": false
+        }
+      ],
+      "case_id": "case_13",
+      "image": "/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/visualizations/flexhook_cases/case_13.png"
+    },
+    {
+      "video": "0005",
+      "expression": "automobiles-are-located-to-the-left",
+      "sentence": "automobiles are located to the left",
+      "frame0": 45,
+      "error_type": "REFER_FALSE_POSITIVE",
+      "candidate_id": 3,
+      "gt_id": null,
+      "score": [
+        9.546422958374023,
+        -9.611337661743164
+      ],
+      "final_decision": false,
+      "o1_repairable": true,
+      "o2_identity_repairable": false,
+      "gt_boxes": [
+        {
+          "track_id": 1,
+          "bbox": [
+            274.999914,
+            172.999875,
+            38.000232,
+            24.0
+          ]
+        },
+        {
+          "track_id": 14,
+          "bbox": [
+            236.999682,
+            178.000125,
+            50.000436,
+            21.0
+          ]
+        }
+      ],
+      "candidate_boxes": [
+        {
+          "track_id": 3,
+          "bbox": [
+            570.13,
+            173.12,
+            49.71,
+            46.15
+          ],
+          "selected": false,
+          "score": [
+            9.546422958374023,
+            -9.611337661743164
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 10,
+          "bbox": [
+            233.04,
+            171.17,
+            80.79,
+            27.97
+          ],
+          "selected": true,
+          "score": [
+            -4.121025085449219,
+            3.3776166439056396
+          ],
+          "matched_to_gt": false
+        }
+      ],
+      "case_id": "case_14",
+      "image": "/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/visualizations/flexhook_cases/case_14.png",
+      "temporal_chain": {
+        "error_type": "CANDIDATE_MISSING_CHAIN",
+        "start_frame": "45",
+        "end_frame": "46",
+        "duration": "2",
+        "propagation_status": "DESCRIPTIVE_NOT_CAUSAL_TCP_TRP_PROOF"
+      }
+    },
+    {
+      "video": "0005",
+      "expression": "automobiles-are-located-to-the-left",
+      "sentence": "automobiles are located to the left",
+      "frame0": 50,
+      "error_type": "REFER_FALSE_POSITIVE",
+      "candidate_id": 3,
+      "gt_id": null,
+      "score": [
+        10.322572708129883,
+        -10.642731666564941
+      ],
+      "final_decision": false,
+      "o1_repairable": true,
+      "o2_identity_repairable": false,
+      "gt_boxes": [
+        {
+          "track_id": 1,
+          "bbox": [
+            217.999566,
+            172.999875,
+            54.999486,
+            28.999875
+          ]
+        },
+        {
+          "track_id": 14,
+          "bbox": [
+            169.000182,
+            180.0,
+            67.9995,
+            24.0
+          ]
+        }
+      ],
+      "candidate_boxes": [
+        {
+          "track_id": 3,
+          "bbox": [
+            571.56,
+            173.22,
+            51.96,
+            47.9
+          ],
+          "selected": false,
+          "score": [
+            10.322572708129883,
+            -10.642731666564941
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 10,
+          "bbox": [
+            224.84,
+            171.71,
+            50.33,
+            29.8
+          ],
+          "selected": true,
+          "score": [
+            -4.421670913696289,
+            3.6563780307769775
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 13,
+          "bbox": [
+            167.89,
+            178.55,
+            68.73,
+            27.15
+          ],
+          "selected": true,
+          "score": [
+            -4.387150764465332,
+            3.785233974456787
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 15,
+          "bbox": [
+            383.2,
+            172.96,
+            20.44,
+            16.12
+          ],
+          "selected": true,
+          "score": [
+            -3.294417142868042,
+            3.0875935554504395
+          ],
+          "matched_to_gt": false
+        }
+      ],
+      "case_id": "case_15",
+      "image": "/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/visualizations/flexhook_cases/case_15.png"
+    },
+    {
+      "video": "0005",
+      "expression": "automobiles-are-located-to-the-left",
+      "sentence": "automobiles are located to the left",
+      "frame0": 51,
+      "error_type": "REFER_FALSE_POSITIVE",
+      "candidate_id": 3,
+      "gt_id": null,
+      "score": [
+        10.109447479248047,
+        -10.60493278503418
+      ],
+      "final_decision": false,
+      "o1_repairable": true,
+      "o2_identity_repairable": false,
+      "gt_boxes": [
+        {
+          "track_id": 1,
+          "bbox": [
+            207.000414,
+            174.0,
+            57.000348,
+            28.000125
+          ]
+        },
+        {
+          "track_id": 14,
+          "bbox": [
+            152.999496,
+            181.000125,
+            71.999982,
+            25.000125
+          ]
+        }
+      ],
+      "candidate_boxes": [
+        {
+          "track_id": 3,
+          "bbox": [
+            571.35,
+            173.22,
+            52.7,
+            48.03
+          ],
+          "selected": false,
+          "score": [
+            10.109447479248047,
+            -10.60493278503418
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 10,
+          "bbox": [
+            211.24,
+            171.61,
+            53.78,
+            30.04
+          ],
+          "selected": true,
+          "score": [
+            -4.811682224273682,
+            3.7549846172332764
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 13,
+          "bbox": [
+            152.73,
+            179.07,
+            73.39,
+            27.37
+          ],
+          "selected": true,
+          "score": [
+            -4.566338062286377,
+            3.913606643676758
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 15,
+          "bbox": [
+            376.67,
+            173.17,
+            23.82,
+            16.34
+          ],
+          "selected": true,
+          "score": [
+            -3.4713122844696045,
+            3.2945756912231445
+          ],
+          "matched_to_gt": false
+        }
+      ],
+      "case_id": "case_16",
+      "image": "/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/visualizations/flexhook_cases/case_16.png"
+    },
+    {
+      "video": "0005",
+      "expression": "automobiles-are-located-to-the-left",
+      "sentence": "automobiles are located to the left",
+      "frame0": 52,
+      "error_type": "REFER_FALSE_POSITIVE",
+      "candidate_id": 3,
+      "gt_id": null,
+      "score": [
+        10.323516845703125,
+        -10.837666511535645
+      ],
+      "final_decision": false,
+      "o1_repairable": true,
+      "o2_identity_repairable": false,
+      "gt_boxes": [
+        {
+          "track_id": 1,
+          "bbox": [
+            193.00059,
+            174.0,
+            61.999398,
+            30.0
+          ]
+        },
+        {
+          "track_id": 14,
+          "bbox": [
+            135.000432,
+            181.000125,
+            72.999792,
+            25.999875
+          ]
+        }
+      ],
+      "candidate_boxes": [
+        {
+          "track_id": 3,
+          "bbox": [
+            571.68,
+            173.16,
+            52.06,
+            48.97
+          ],
+          "selected": false,
+          "score": [
+            10.323516845703125,
+            -10.837666511535645
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 10,
+          "bbox": [
+            196.58,
+            170.85,
+            59.13,
+            32.79
+          ],
+          "selected": true,
+          "score": [
+            -4.6940131187438965,
+            3.869719982147217
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 13,
+          "bbox": [
+            135.73,
+            180.27,
+            83.59,
+            26.96
+          ],
+          "selected": true,
+          "score": [
+            -4.289438724517822,
+            3.8937056064605713
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 15,
+          "bbox": [
+            374.24,
+            173.53,
+            22.46,
+            16.29
+          ],
+          "selected": true,
+          "score": [
+            -3.48315691947937,
+            3.258648157119751
+          ],
+          "matched_to_gt": false
+        }
+      ],
+      "case_id": "case_17",
+      "image": "/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/visualizations/flexhook_cases/case_17.png"
+    },
+    {
+      "video": "0005",
+      "expression": "automobiles-are-located-to-the-left",
+      "sentence": "automobiles are located to the left",
+      "frame0": 137,
+      "error_type": "REFER_FALSE_POSITIVE",
+      "candidate_id": 3,
+      "gt_id": null,
+      "score": [
+        8.222521781921387,
+        -8.993182182312012
+      ],
+      "final_decision": false,
+      "o1_repairable": true,
+      "o2_identity_repairable": false,
+      "gt_boxes": [
+        {
+          "track_id": 40,
+          "bbox": [
+            0.0,
+            171.0,
+            51.000246,
+            36.0
+          ]
+        }
+      ],
+      "candidate_boxes": [
+        {
+          "track_id": 3,
+          "bbox": [
+            550.56,
+            177.69,
+            66.12,
+            60.33
+          ],
+          "selected": false,
+          "score": [
+            8.222521781921387,
+            -8.993182182312012
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 21,
+          "bbox": [
+            325.66,
+            177.98,
+            32.82,
+            16.7
+          ],
+          "selected": true,
+          "score": [
+            -4.200015068054199,
+            3.4796628952026367
+          ],
+          "matched_to_gt": false
+        }
+      ],
+      "case_id": "case_18",
+      "image": "/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/visualizations/flexhook_cases/case_18.png",
+      "temporal_chain": {
+        "error_type": "CANDIDATE_MISSING_CHAIN",
+        "start_frame": "107",
+        "end_frame": "140",
+        "duration": "34",
+        "propagation_status": "DESCRIPTIVE_NOT_CAUSAL_TCP_TRP_PROOF"
+      }
+    },
+    {
+      "video": "0011",
+      "expression": "automobiles-on-the-right-side",
+      "sentence": "automobiles on the right side",
+      "frame0": 104,
+      "error_type": "IDENTITY_ERROR_STAGE1",
+      "candidate_id": 25,
+      "gt_id": null,
+      "score": [
+        -3.585082769393921,
+        3.16778302192688
+      ],
+      "final_decision": true,
+      "o1_repairable": false,
+      "o2_identity_repairable": true,
+      "gt_boxes": [
+        {
+          "track_id": 7,
+          "bbox": [
+            669.999384,
+            180.0,
+            32.00013,
+            37.000125
+          ]
+        },
+        {
+          "track_id": 9,
+          "bbox": [
+            691.000362,
+            175.999875,
+            40.999662,
+            43.999875
+          ]
+        },
+        {
+          "track_id": 21,
+          "bbox": [
+            700.999704,
+            175.999875,
+            98.00001,
+            51.0
+          ]
+        },
+        {
+          "track_id": 98,
+          "bbox": [
+            658.000422,
+            177.0,
+            45.000144,
+            34.999875
+          ]
+        }
+      ],
+      "candidate_boxes": [
+        {
+          "track_id": 4,
+          "bbox": [
+            590.88,
+            179.0,
+            45.35,
+            41.28
+          ],
+          "selected": false,
+          "score": [
+            3.0259687900543213,
+            -2.329064130783081
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 18,
+          "bbox": [
+            204.01,
+            188.57,
+            107.88,
+            53.66
+          ],
+          "selected": false,
+          "score": [
+            9.490152359008789,
+            -10.129801750183105
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 19,
+          "bbox": [
+            690.85,
+            176.25,
+            106.45,
+            50.58
+          ],
+          "selected": true,
+          "score": [
+            -3.94588041305542,
+            3.8486227989196777
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 21,
+          "bbox": [
+            304.13,
+            182.39,
+            70.12,
+            46.45
+          ],
+          "selected": false,
+          "score": [
+            8.687723159790039,
+            -8.516352653503418
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 22,
+          "bbox": [
+            667.25,
+            179.24,
+            45.59,
+            36.94
+          ],
+          "selected": true,
+          "score": [
+            -3.7276628017425537,
+            3.4027953147888184
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 25,
+          "bbox": [
+            656.32,
+            178.11,
+            39.47,
+            32.6
+          ],
+          "selected": true,
+          "score": [
+            -3.585082769393921,
+            3.16778302192688
+          ],
+          "matched_to_gt": true
+        }
+      ],
+      "case_id": "case_19",
+      "image": "/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/visualizations/flexhook_cases/case_19.png",
+      "temporal_chain": {
+        "error_type": "CANDIDATE_MISSING_CHAIN",
+        "start_frame": "91",
+        "end_frame": "109",
+        "duration": "19",
+        "propagation_status": "DESCRIPTIVE_NOT_CAUSAL_TCP_TRP_PROOF"
+      }
+    },
+    {
+      "video": "0011",
+      "expression": "automobiles-on-the-right-side",
+      "sentence": "automobiles on the right side",
+      "frame0": 123,
+      "error_type": "IDENTITY_ERROR_STAGE1",
+      "candidate_id": 33,
+      "gt_id": null,
+      "score": [
+        -3.875365972518921,
+        3.6232802867889404
+      ],
+      "final_decision": true,
+      "o1_repairable": false,
+      "o2_identity_repairable": true,
+      "gt_boxes": [
+        {
+          "track_id": 7,
+          "bbox": [
+            809.000298,
+            178.999875,
+            198.99945,
+            124.000125
+          ]
+        },
+        {
+          "track_id": 9,
+          "bbox": [
+            972.000378,
+            172.000125,
+            269.999622,
+            202.999875
+          ]
+        },
+        {
+          "track_id": 23,
+          "bbox": [
+            704.000376,
+            169.000125,
+            85.999806,
+            61.999875
+          ]
+        },
+        {
+          "track_id": 24,
+          "bbox": [
+            686.99988,
+            175.999875,
+            26.999838,
+            40.000125
+          ]
+        },
+        {
+          "track_id": 25,
+          "bbox": [
+            723.000492,
+            180.0,
+            39.000042,
+            61.000125
+          ]
+        },
+        {
+          "track_id": 35,
+          "bbox": [
+            662.999472,
+            175.000125,
+            46.999764,
+            30.0
+          ]
+        },
+        {
+          "track_id": 36,
+          "bbox": [
+            648.999648,
+            174.0,
+            24.000408,
+            25.000125
+          ]
+        },
+        {
+          "track_id": 98,
+          "bbox": [
+            746.999658,
+            166.999875,
+            135.000432,
+            94.999875
+          ]
+        }
+      ],
+      "candidate_boxes": [
+        {
+          "track_id": 4,
+          "bbox": [
+            592.88,
+            173.85,
+            45.88,
+            43.68
+          ],
+          "selected": false,
+          "score": [
+            4.332765102386475,
+            -3.1357243061065674
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 22,
+          "bbox": [
+            808.45,
+            178.54,
+            200.42,
+            123.32
+          ],
+          "selected": true,
+          "score": [
+            -3.03893780708313,
+            3.0252556800842285
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 25,
+          "bbox": [
+            746.83,
+            168.83,
+            138.05,
+            94.35
+          ],
+          "selected": true,
+          "score": [
+            -4.063887596130371,
+            3.840763568878174
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 28,
+          "bbox": [
+            971.62,
+            171.14,
+            270.84,
+            202.51
+          ],
+          "selected": true,
+          "score": [
+            -3.158295154571533,
+            3.078903913497925
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 29,
+          "bbox": [
+            722.88,
+            174.9,
+            60.85,
+            67.88
+          ],
+          "selected": true,
+          "score": [
+            -3.8268566131591797,
+            3.8333215713500977
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 31,
+          "bbox": [
+            498.47,
+            180.03,
+            30.33,
+            22.57
+          ],
+          "selected": false,
+          "score": [
+            9.9257230758667,
+            -10.812332153320312
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 32,
+          "bbox": [
+            661.72,
+            174.37,
+            44.67,
+            30.13
+          ],
+          "selected": true,
+          "score": [
+            -3.693812370300293,
+            4.002086162567139
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 33,
+          "bbox": [
+            703.13,
+            170.79,
+            63.73,
+            60.33
+          ],
+          "selected": true,
+          "score": [
+            -3.875365972518921,
+            3.6232802867889404
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 34,
+          "bbox": [
+            686.86,
+            175.59,
+            26.34,
+            40.59
+          ],
+          "selected": true,
+          "score": [
+            -3.8616042137145996,
+            3.665463447570801
+          ],
+          "matched_to_gt": true
+        }
+      ],
+      "case_id": "case_20",
+      "image": "/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/visualizations/flexhook_cases/case_20.png",
+      "temporal_chain": {
+        "error_type": "CANDIDATE_MISSING_CHAIN",
+        "start_frame": "113",
+        "end_frame": "134",
+        "duration": "22",
+        "propagation_status": "DESCRIPTIVE_NOT_CAUSAL_TCP_TRP_PROOF"
+      }
+    },
+    {
+      "video": "0011",
+      "expression": "automobiles-parked",
+      "sentence": "automobiles parked",
+      "frame0": 104,
+      "error_type": "IDENTITY_ERROR_STAGE1",
+      "candidate_id": 25,
+      "gt_id": null,
+      "score": [
+        -3.594038486480713,
+        3.148771286010742
+      ],
+      "final_decision": true,
+      "o1_repairable": false,
+      "o2_identity_repairable": true,
+      "gt_boxes": [
+        {
+          "track_id": 6,
+          "bbox": [
+            206.000604,
+            190.000125,
+            104.000112,
+            52.999875
+          ]
+        },
+        {
+          "track_id": 7,
+          "bbox": [
+            669.999384,
+            180.0,
+            32.00013,
+            37.000125
+          ]
+        },
+        {
+          "track_id": 8,
+          "bbox": [
+            302.999562,
+            181.999875,
+            71.000172,
+            46.999875
+          ]
+        },
+        {
+          "track_id": 9,
+          "bbox": [
+            691.000362,
+            175.999875,
+            40.999662,
+            43.999875
+          ]
+        },
+        {
+          "track_id": 21,
+          "bbox": [
+            700.999704,
+            175.999875,
+            98.00001,
+            51.0
+          ]
+        },
+        {
+          "track_id": 98,
+          "bbox": [
+            658.000422,
+            177.0,
+            45.000144,
+            34.999875
+          ]
+        }
+      ],
+      "candidate_boxes": [
+        {
+          "track_id": 4,
+          "bbox": [
+            590.88,
+            179.0,
+            45.35,
+            41.28
+          ],
+          "selected": true,
+          "score": [
+            -2.9797799587249756,
+            2.1758744716644287
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 18,
+          "bbox": [
+            204.01,
+            188.57,
+            107.88,
+            53.66
+          ],
+          "selected": true,
+          "score": [
+            -1.0374934673309326,
+            0.3471374213695526
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 19,
+          "bbox": [
+            690.85,
+            176.25,
+            106.45,
+            50.58
+          ],
+          "selected": true,
+          "score": [
+            -3.904794692993164,
+            3.3835971355438232
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 21,
+          "bbox": [
+            304.13,
+            182.39,
+            70.12,
+            46.45
+          ],
+          "selected": true,
+          "score": [
+            -1.626510739326477,
+            1.797785758972168
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 22,
+          "bbox": [
+            667.25,
+            179.24,
+            45.59,
+            36.94
+          ],
+          "selected": true,
+          "score": [
+            -3.9909965991973877,
+            3.7593977451324463
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 25,
+          "bbox": [
+            656.32,
+            178.11,
+            39.47,
+            32.6
+          ],
+          "selected": true,
+          "score": [
+            -3.594038486480713,
+            3.148771286010742
+          ],
+          "matched_to_gt": true
+        }
+      ],
+      "case_id": "case_21",
+      "image": "/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/visualizations/flexhook_cases/case_21.png",
+      "temporal_chain": {
+        "error_type": "CANDIDATE_MISSING_CHAIN",
+        "start_frame": "91",
+        "end_frame": "109",
+        "duration": "19",
+        "propagation_status": "DESCRIPTIVE_NOT_CAUSAL_TCP_TRP_PROOF"
+      }
+    },
+    {
+      "video": "0011",
+      "expression": "automobiles-parked",
+      "sentence": "automobiles parked",
+      "frame0": 123,
+      "error_type": "IDENTITY_ERROR_STAGE1",
+      "candidate_id": 33,
+      "gt_id": null,
+      "score": [
+        -4.081078052520752,
+        3.6483051776885986
+      ],
+      "final_decision": true,
+      "o1_repairable": false,
+      "o2_identity_repairable": true,
+      "gt_boxes": [
+        {
+          "track_id": 7,
+          "bbox": [
+            809.000298,
+            178.999875,
+            198.99945,
+            124.000125
+          ]
+        },
+        {
+          "track_id": 9,
+          "bbox": [
+            972.000378,
+            172.000125,
+            269.999622,
+            202.999875
+          ]
+        },
+        {
+          "track_id": 23,
+          "bbox": [
+            704.000376,
+            169.000125,
+            85.999806,
+            61.999875
+          ]
+        },
+        {
+          "track_id": 24,
+          "bbox": [
+            686.99988,
+            175.999875,
+            26.999838,
+            40.000125
+          ]
+        },
+        {
+          "track_id": 25,
+          "bbox": [
+            723.000492,
+            180.0,
+            39.000042,
+            61.000125
+          ]
+        },
+        {
+          "track_id": 34,
+          "bbox": [
+            475.000416,
+            175.000125,
+            28.999458,
+            19.000125
+          ]
+        },
+        {
+          "track_id": 35,
+          "bbox": [
+            662.999472,
+            175.000125,
+            46.999764,
+            30.0
+          ]
+        },
+        {
+          "track_id": 36,
+          "bbox": [
+            648.999648,
+            174.0,
+            24.000408,
+            25.000125
+          ]
+        },
+        {
+          "track_id": 61,
+          "bbox": [
+            453.999438,
+            177.0,
+            19.000116,
+            15.0
+          ]
+        },
+        {
+          "track_id": 98,
+          "bbox": [
+            746.999658,
+            166.999875,
+            135.000432,
+            94.999875
+          ]
+        }
+      ],
+      "candidate_boxes": [
+        {
+          "track_id": 4,
+          "bbox": [
+            592.88,
+            173.85,
+            45.88,
+            43.68
+          ],
+          "selected": true,
+          "score": [
+            -1.9561595916748047,
+            1.6350648403167725
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 22,
+          "bbox": [
+            808.45,
+            178.54,
+            200.42,
+            123.32
+          ],
+          "selected": true,
+          "score": [
+            -3.482300281524658,
+            3.5373363494873047
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 25,
+          "bbox": [
+            746.83,
+            168.83,
+            138.05,
+            94.35
+          ],
+          "selected": true,
+          "score": [
+            -4.050168991088867,
+            3.7530856132507324
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 28,
+          "bbox": [
+            971.62,
+            171.14,
+            270.84,
+            202.51
+          ],
+          "selected": true,
+          "score": [
+            -3.4599366188049316,
+            3.9106626510620117
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 29,
+          "bbox": [
+            722.88,
+            174.9,
+            60.85,
+            67.88
+          ],
+          "selected": true,
+          "score": [
+            -4.273795127868652,
+            4.010851860046387
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 31,
+          "bbox": [
+            498.47,
+            180.03,
+            30.33,
+            22.57
+          ],
+          "selected": true,
+          "score": [
+            -2.333071231842041,
+            2.7894935607910156
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 32,
+          "bbox": [
+            661.72,
+            174.37,
+            44.67,
+            30.13
+          ],
+          "selected": true,
+          "score": [
+            -4.168581485748291,
+            4.343942642211914
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 33,
+          "bbox": [
+            703.13,
+            170.79,
+            63.73,
+            60.33
+          ],
+          "selected": true,
+          "score": [
+            -4.081078052520752,
+            3.6483051776885986
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 34,
+          "bbox": [
+            686.86,
+            175.59,
+            26.34,
+            40.59
+          ],
+          "selected": true,
+          "score": [
+            -3.9730160236358643,
+            4.020304203033447
+          ],
+          "matched_to_gt": true
+        }
+      ],
+      "case_id": "case_22",
+      "image": "/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/visualizations/flexhook_cases/case_22.png",
+      "temporal_chain": {
+        "error_type": "CANDIDATE_MISSING_CHAIN",
+        "start_frame": "110",
+        "end_frame": "133",
+        "duration": "24",
+        "propagation_status": "DESCRIPTIVE_NOT_CAUSAL_TCP_TRP_PROOF"
+      }
+    },
+    {
+      "video": "0005",
+      "expression": "automobiles-in-a-light-shade-going-in-opposite-paths",
+      "sentence": "automobiles in a light shade going in opposite paths",
+      "frame0": 0,
+      "error_type": "RELATIONAL_EXPRESSION_ERROR",
+      "candidate_id": 1,
+      "gt_id": null,
+      "score": [
+        -3.1920015811920166,
+        5.105774879455566
+      ],
+      "final_decision": true,
+      "o1_repairable": true,
+      "o2_identity_repairable": false,
+      "gt_boxes": [],
+      "candidate_boxes": [
+        {
+          "track_id": 1,
+          "bbox": [
+            255.76,
+            174.28,
+            47.33,
+            27.07
+          ],
+          "selected": true,
+          "score": [
+            -3.1920015811920166,
+            5.105774879455566
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 2,
+          "bbox": [
+            321.9,
+            175.23,
+            35.95,
+            21.07
+          ],
+          "selected": false,
+          "score": [
+            2.6208038330078125,
+            -1.472942590713501
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 3,
+          "bbox": [
+            570.37,
+            175.34,
+            38.95,
+            34.23
+          ],
+          "selected": false,
+          "score": [
+            14.950976371765137,
+            -13.576948165893555
+          ],
+          "matched_to_gt": false
+        }
+      ],
+      "case_id": "case_23",
+      "image": "/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/visualizations/flexhook_cases/case_23.png"
+    },
+    {
+      "video": "0005",
+      "expression": "automobiles-in-a-light-shade-going-in-opposite-paths",
+      "sentence": "automobiles in a light shade going in opposite paths",
+      "frame0": 165,
+      "error_type": "RELATIONAL_EXPRESSION_ERROR",
+      "candidate_id": null,
+      "gt_id": 21,
+      "score": null,
+      "final_decision": null,
+      "o1_repairable": false,
+      "o2_identity_repairable": false,
+      "gt_boxes": [
+        {
+          "track_id": 21,
+          "bbox": [
+            538.999434,
+            181.000125,
+            17.000496,
+            15.0
+          ]
+        }
+      ],
+      "candidate_boxes": [
+        {
+          "track_id": 3,
+          "bbox": [
+            556.81,
+            180.08,
+            56.33,
+            53.13
+          ],
+          "selected": false,
+          "score": [
+            15.047985076904297,
+            -13.330802917480469
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 21,
+          "bbox": [
+            221.5,
+            182.03,
+            54.75,
+            24.55
+          ],
+          "selected": false,
+          "score": [
+            12.697623252868652,
+            -10.74966049194336
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 24,
+          "bbox": [
+            927.29,
+            193.93,
+            74.78,
+            23.12
+          ],
+          "selected": true,
+          "score": [
+            0.2650667428970337,
+            0.7279486656188965
+          ],
+          "matched_to_gt": false
+        }
+      ],
+      "case_id": "case_24",
+      "image": "/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/visualizations/flexhook_cases/case_24.png",
+      "temporal_chain": {
+        "error_type": "CANDIDATE_MISSING_CHAIN",
+        "start_frame": "166",
+        "end_frame": "169",
+        "duration": "4",
+        "propagation_status": "DESCRIPTIVE_NOT_CAUSAL_TCP_TRP_PROOF"
+      }
+    },
+    {
+      "video": "0005",
+      "expression": "automobiles-in-light-hues-can-be-found-on-the-left",
+      "sentence": "automobiles in light hues can be found on the left",
+      "frame0": 15,
+      "error_type": "RELATIONAL_EXPRESSION_ERROR",
+      "candidate_id": 2,
+      "gt_id": 12,
+      "score": [
+        1.6687092781066895,
+        -0.6066316366195679
+      ],
+      "final_decision": false,
+      "o1_repairable": true,
+      "o2_identity_repairable": false,
+      "gt_boxes": [
+        {
+          "track_id": 12,
+          "bbox": [
+            79.999704,
+            174.0,
+            89.000478,
+            37.999875
+          ]
+        }
+      ],
+      "candidate_boxes": [
+        {
+          "track_id": 2,
+          "bbox": [
+            80.85,
+            174.26,
+            88.28,
+            37.48
+          ],
+          "selected": false,
+          "score": [
+            1.6687092781066895,
+            -0.6066316366195679
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 3,
+          "bbox": [
+            571.85,
+            175.03,
+            42.98,
+            38.04
+          ],
+          "selected": false,
+          "score": [
+            11.846921920776367,
+            -10.73976993560791
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 5,
+          "bbox": [
+            340.58,
+            175.12,
+            35.45,
+            18.14
+          ],
+          "selected": false,
+          "score": [
+            8.935445785522461,
+            -7.720232963562012
+          ],
+          "matched_to_gt": false
+        }
+      ],
+      "case_id": "case_25",
+      "image": "/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/visualizations/flexhook_cases/case_25.png",
+      "temporal_chain": {
+        "error_type": "REFER_FALSE_NEGATIVE_CHAIN",
+        "start_frame": "16",
+        "end_frame": "17",
+        "duration": "2",
+        "propagation_status": "DESCRIPTIVE_NOT_CAUSAL_TCP_TRP_PROOF"
+      }
+    },
+    {
+      "video": "0005",
+      "expression": "automobiles-in-light-hues-can-be-found-on-the-left",
+      "sentence": "automobiles in light hues can be found on the left",
+      "frame0": 168,
+      "error_type": "RELATIONAL_EXPRESSION_ERROR",
+      "candidate_id": 3,
+      "gt_id": null,
+      "score": [
+        13.120710372924805,
+        -12.081498146057129
+      ],
+      "final_decision": false,
+      "o1_repairable": true,
+      "o2_identity_repairable": false,
+      "gt_boxes": [],
+      "candidate_boxes": [
+        {
+          "track_id": 3,
+          "bbox": [
+            559.55,
+            180.93,
+            54.29,
+            51.52
+          ],
+          "selected": false,
+          "score": [
+            13.120710372924805,
+            -12.081498146057129
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 21,
+          "bbox": [
+            225.02,
+            181.16,
+            51.12,
+            25.76
+          ],
+          "selected": true,
+          "score": [
+            -1.56820547580719,
+            2.075216770172119
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 24,
+          "bbox": [
+            969.33,
+            195.88,
+            59.91,
+            24.77
+          ],
+          "selected": false,
+          "score": [
+            6.075400352478027,
+            -6.97559928894043
+          ],
+          "matched_to_gt": false
+        }
+      ],
+      "case_id": "case_26",
+      "image": "/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/visualizations/flexhook_cases/case_26.png"
+    },
+    {
+      "video": "0005",
+      "expression": "automobiles-are-located-to-the-left",
+      "sentence": "automobiles are located to the left",
+      "frame0": 32,
+      "error_type": "CANDIDATE_MISSING",
+      "candidate_id": null,
+      "gt_id": 14,
+      "score": null,
+      "final_decision": null,
+      "o1_repairable": false,
+      "o2_identity_repairable": false,
+      "gt_boxes": [
+        {
+          "track_id": 13,
+          "bbox": [
+            100.99944,
+            174.0,
+            87.999426,
+            33.0
+          ]
+        },
+        {
+          "track_id": 14,
+          "bbox": [
+            337.000554,
+            171.0,
+            32.00013,
+            16.999875
+          ]
+        }
+      ],
+      "candidate_boxes": [
+        {
+          "track_id": 3,
+          "bbox": [
+            568.33,
+            169.76,
+            46.77,
+            42.75
+          ],
+          "selected": false,
+          "score": [
+            10.07662296295166,
+            -10.751667976379395
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 5,
+          "bbox": [
+            101.14,
+            174.33,
+            87.2,
+            32.47
+          ],
+          "selected": true,
+          "score": [
+            -4.156087875366211,
+            3.661072254180908
+          ],
+          "matched_to_gt": true
+        }
+      ],
+      "case_id": "case_27",
+      "image": "/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/visualizations/flexhook_cases/case_27.png",
+      "temporal_chain": {
+        "error_type": "CANDIDATE_MISSING_CHAIN",
+        "start_frame": "29",
+        "end_frame": "33",
+        "duration": "5",
+        "propagation_status": "DESCRIPTIVE_NOT_CAUSAL_TCP_TRP_PROOF"
+      }
+    },
+    {
+      "video": "0005",
+      "expression": "automobiles-are-located-to-the-left",
+      "sentence": "automobiles are located to the left",
+      "frame0": 44,
+      "error_type": "CANDIDATE_MISSING",
+      "candidate_id": null,
+      "gt_id": 1,
+      "score": null,
+      "final_decision": null,
+      "o1_repairable": false,
+      "o2_identity_repairable": false,
+      "gt_boxes": [
+        {
+          "track_id": 1,
+          "bbox": [
+            281.999826,
+            172.999875,
+            37.000422,
+            22.999875
+          ]
+        },
+        {
+          "track_id": 14,
+          "bbox": [
+            242.999784,
+            177.0,
+            51.000246,
+            19.999875
+          ]
+        }
+      ],
+      "candidate_boxes": [
+        {
+          "track_id": 3,
+          "bbox": [
+            569.93,
+            172.46,
+            49.16,
+            46.43
+          ],
+          "selected": false,
+          "score": [
+            8.821433067321777,
+            -9.225109100341797
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 10,
+          "bbox": [
+            242.86,
+            171.51,
+            77.68,
+            26.22
+          ],
+          "selected": true,
+          "score": [
+            -4.279170989990234,
+            3.5046536922454834
+          ],
+          "matched_to_gt": true
+        }
+      ],
+      "case_id": "case_28",
+      "image": "/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/visualizations/flexhook_cases/case_28.png",
+      "temporal_chain": {
+        "error_type": "CANDIDATE_MISSING_CHAIN",
+        "start_frame": "45",
+        "end_frame": "46",
+        "duration": "2",
+        "propagation_status": "DESCRIPTIVE_NOT_CAUSAL_TCP_TRP_PROOF"
+      }
+    },
+    {
+      "video": "0005",
+      "expression": "automobiles-are-located-to-the-left",
+      "sentence": "automobiles are located to the left",
+      "frame0": 55,
+      "error_type": "CANDIDATE_MISSING",
+      "candidate_id": null,
+      "gt_id": 5,
+      "score": null,
+      "final_decision": null,
+      "o1_repairable": false,
+      "o2_identity_repairable": false,
+      "gt_boxes": [
+        {
+          "track_id": 1,
+          "bbox": [
+            154.000548,
+            174.0,
+            69.000552,
+            34.000125
+          ]
+        },
+        {
+          "track_id": 3,
+          "bbox": [
+            363.000582,
+            174.0,
+            26.000028,
+            16.000125
+          ]
+        },
+        {
+          "track_id": 5,
+          "bbox": [
+            385.000128,
+            172.999875,
+            20.999736,
+            15.0
+          ]
+        },
+        {
+          "track_id": 14,
+          "bbox": [
+            74.999412,
+            181.000125,
+            92.999718,
+            30.0
+          ]
+        }
+      ],
+      "candidate_boxes": [
+        {
+          "track_id": 3,
+          "bbox": [
+            573.61,
+            172.96,
+            52.27,
+            49.84
+          ],
+          "selected": false,
+          "score": [
+            10.296378135681152,
+            -10.42932415008545
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 10,
+          "bbox": [
+            149.25,
+            172.91,
+            74.14,
+            33.9
+          ],
+          "selected": true,
+          "score": [
+            -4.524454593658447,
+            3.656433582305908
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 13,
+          "bbox": [
+            76.21,
+            181.86,
+            93.94,
+            31.01
+          ],
+          "selected": true,
+          "score": [
+            -4.194276809692383,
+            3.7757182121276855
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 15,
+          "bbox": [
+            362.43,
+            174.15,
+            26.29,
+            16.8
+          ],
+          "selected": true,
+          "score": [
+            -4.060000419616699,
+            3.9522736072540283
+          ],
+          "matched_to_gt": true
+        }
+      ],
+      "case_id": "case_29",
+      "image": "/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/visualizations/flexhook_cases/case_29.png",
+      "temporal_chain": {
+        "error_type": "CANDIDATE_MISSING_CHAIN",
+        "start_frame": "56",
+        "end_frame": "65",
+        "duration": "10",
+        "propagation_status": "DESCRIPTIVE_NOT_CAUSAL_TCP_TRP_PROOF"
+      }
+    },
+    {
+      "video": "0005",
+      "expression": "automobiles-are-located-to-the-left",
+      "sentence": "automobiles are located to the left",
+      "frame0": 56,
+      "error_type": "CANDIDATE_MISSING",
+      "candidate_id": null,
+      "gt_id": 5,
+      "score": null,
+      "final_decision": null,
+      "o1_repairable": false,
+      "o2_identity_repairable": false,
+      "gt_boxes": [
+        {
+          "track_id": 1,
+          "bbox": [
+            133.99938,
+            174.0,
+            76.000464,
+            34.999875
+          ]
+        },
+        {
+          "track_id": 3,
+          "bbox": [
+            358.00029,
+            172.999875,
+            28.999458,
+            16.999875
+          ]
+        },
+        {
+          "track_id": 5,
+          "bbox": [
+            381.999456,
+            172.000125,
+            21.999546,
+            15.0
+          ]
+        },
+        {
+          "track_id": 14,
+          "bbox": [
+            54.999486,
+            180.0,
+            98.00001,
+            34.000125
+          ]
+        }
+      ],
+      "candidate_boxes": [
+        {
+          "track_id": 3,
+          "bbox": [
+            573.84,
+            172.0,
+            52.87,
+            50.35
+          ],
+          "selected": false,
+          "score": [
+            10.297428131103516,
+            -10.61404037475586
+          ],
+          "matched_to_gt": false
+        },
+        {
+          "track_id": 10,
+          "bbox": [
+            136.12,
+            173.04,
+            75.15,
+            34.38
+          ],
+          "selected": true,
+          "score": [
+            -4.422633647918701,
+            3.6305487155914307
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 13,
+          "bbox": [
+            54.44,
+            181.65,
+            97.17,
+            31.92
+          ],
+          "selected": true,
+          "score": [
+            -4.385458946228027,
+            3.674849271774292
+          ],
+          "matched_to_gt": true
+        },
+        {
+          "track_id": 15,
+          "bbox": [
+            358.21,
+            173.28,
+            28.6,
+            16.8
+          ],
+          "selected": true,
+          "score": [
+            -4.257063865661621,
+            4.136080741882324
+          ],
+          "matched_to_gt": true
+        }
+      ],
+      "case_id": "case_30",
+      "image": "/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/visualizations/flexhook_cases/case_30.png",
+      "temporal_chain": {
+        "error_type": "CANDIDATE_MISSING_CHAIN",
+        "start_frame": "56",
+        "end_frame": "65",
+        "duration": "10",
+        "propagation_status": "DESCRIPTIVE_NOT_CAUSAL_TCP_TRP_PROOF"
+      }
+    }
+  ],
+  "temporal_chain_case_count": 22
 }

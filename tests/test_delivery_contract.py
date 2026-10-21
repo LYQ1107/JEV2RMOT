@@ -56,18 +56,24 @@ class DeliveryContractTest(unittest.TestCase):
             records = list(csv.DictReader(handle))
         self.assertGreaterEqual(len(records), 2)
         for record in records:
-            self.assertIn(record["status"], {"BLOCKED", "RUNNING", "PENDING"})
+            self.assertIn(record["status"], {"BLOCKED", "RUNNING", "PENDING", "COMPLETE"})
             for metric in ("HOTA", "DetA", "AssA", "IDF1"):
-                self.assertEqual(record[metric], "")
+                if record["status"] == "COMPLETE":
+                    self.assertNotEqual(record[metric], "", record)
+                else:
+                    self.assertEqual(record[metric], "")
 
     def test_oracle_rows_have_explicit_incomplete_status(self) -> None:
         with (ROOT / "analysis" / "oracle_results.csv").open(newline="", encoding="utf-8") as handle:
             records = list(csv.DictReader(handle))
         self.assertEqual({record["oracle"] for record in records}, {"O0", "O1", "O2", "O3"})
-        self.assertTrue(all(record["status"] in {"BLOCKED", "RUNNING", "PENDING"} for record in records))
+        self.assertTrue(all(record["status"] in {"BLOCKED", "RUNNING", "PENDING", "COMPLETE"} for record in records))
         for record in records:
             for metric in ("HOTA", "DetA", "AssA", "IDF1", "delta_hota_vs_o0"):
-                self.assertEqual(record[metric], "")
+                if record["status"] == "COMPLETE" and metric != "delta_hota_vs_o0":
+                    self.assertNotEqual(record[metric], "", record)
+                elif record["status"] != "COMPLETE":
+                    self.assertEqual(record[metric], "")
 
     def test_no_upstream_worktree_changes(self) -> None:
         for repo in ("YesTrack", "FlexHook", "LLM2Jev"):
@@ -90,9 +96,11 @@ class DeliveryContractTest(unittest.TestCase):
 
     def test_case_manifest_is_honest(self) -> None:
         payload = json.loads((ROOT / "analysis" / "representative_cases.json").read_text(encoding="utf-8"))
-        self.assertEqual(payload["status"], "BLOCKED")
-        self.assertEqual(payload["official_case_count"], 0)
-        self.assertEqual(payload["cases"], [])
+        self.assertEqual(payload["status"], "COMPLETE")
+        self.assertEqual(payload["official_case_count"], 30)
+        self.assertEqual(len(payload["cases"]), 30)
+        self.assertGreaterEqual(payload["temporal_chain_case_count"], 1)
+        self.assertTrue(all(Path(case["image"]).is_file() for case in payload["cases"]))
 
     def test_candidate_gap_summary_is_consistent(self) -> None:
         with (ROOT / "analysis" / "flexhook_candidate_gap_breakdown.csv").open(

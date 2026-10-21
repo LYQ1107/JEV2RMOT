@@ -1,64 +1,42 @@
-# 官方复现状态
+# 官方复现结果
 
 ## 状态
 
-YesTrack 与 FlexHook 都完成了仓库、入口、参数、输入协议和资源路径审计。YesTrack 仍在官方权重/候选下载处阻塞；FlexHook 已在 A800 找到资源并启动官方单卡全量推理。没有使用论文表格数字冒充本地测量。
+FlexHook Refer-KITTI-V2 已完成官方 checkpoint 的完整 4-GPU 前向、raw logits 封存和 862 表达式 TrackEval。YesTrack 仍因官方发布包下载签名阻塞，不能给出官方实测指标。
 
 ## YesTrack
 
 代码版本：`ed42b8315b28c94dc595d83b0d49bf57002bb281`。
 
-目标 V2 运行合同为：
+官方 Baidu 分享页可以验证提取码并列出 `/Yestrack/yestrack.zip`，但普通直连下载接口返回 `errno=113`，因此 `v1/v2bestweight`、`v1/v2best_track_result` 和完整 YesTrack GT/候选字节尚未取得。本轮没有用 A800 上的 OneJev/GroundJEV 自训资产替代官方 Qwen3-VL/LoRA。
 
-```bash
-cd /data1/liuyeqiang/RMOT_JEV_DIAG_20261021/upstream/YesTrack
-python refer_llm/llm_eval_from_mot.py \
-  --data_root <refer-kitti-v2> \
-  --lora_path <v2bestweight> \
-  --mot_input_type results_root \
-  --results_root <v2best_track_result> \
-  --mot_filename predict.txt \
-  --output_root /data1/liuyeqiang/RMOT_JEV_DIAG_20261021/runs/yestrack/v2 \
-  --stability_enable --stability_window 6 \
-  --stability_thresh 0.6 --stability_boost 0.3 \
-  --infer_every_n_frames 4
-```
+## FlexHook 官方 O0
 
-这是按官方文档保留候选、TCP/TRP 和 V2 起始阈值的命令模板；本轮仍没有执行模型前向，因为官方 `v2bestweight`、`v2best_track_result` 和 `yestrack.zip` 内的资源字节尚未可读。A800 上的 `yestrack_native_gpu7_v1` 是 OneJev/GroundJEV 自有实验，不具备官方 Qwen3-VL-2B/LoRA 兼容性，未替代官方资源。
+代码版本：`bd1acc38634b28525d54dc6e0fcb38335f0029f9`。使用官方 `configs/infer/kitti2.yaml`、`--eval`、`rope-swin-tiny+roberta`、A800 找到的 `refer-kitti-v2-best.pth` 和 `Temp-NeuralSORT-kitti2` 候选。为避免 SSHFS 图像逐帧 I/O，图像只缓存到本地；候选、runtime expression/labels 和 checkpoint 仍指向 A800 官方资源。
 
-## FlexHook
+运行 receipt：[`analysis/flexhook_official_run_receipt.json`](../analysis/flexhook_official_run_receipt.json)。raw result 为 227,060,055 bytes，SHA-256 为 `4af904f8ea839c9cf00c6fa6e6ee5d85d799c116e89019b29da6a183b18c5c3d`；checkpoint SHA-256 为 `71dbd691e7633a3d20facb1ebc405908863aff786e5af30899d4cb666250d613`。前向使用 4 个空闲 V100，297,706 validation samples，世界大小 4；模型加载日志为 `All keys matched successfully`。
 
-代码版本：`bd1acc38634b28525d54dc6e0fcb38335f0029f9`。官方 `infer.sh` 的 V2 组合为：
+### O0 官方实测指标
 
-```text
-DATASET_NAME=kitti-2
-CKPT_PATH=SOTA_ckpts/refer-kitti-v2-best
-TRACKER_ROOT=Temp-NeuralSORT-kitti2
-TEST_CFG_NAME=kitti2.yaml
-```
+| 指标 | 数值 |
+|---|---:|
+| HOTA | 42.526 |
+| DetA | 30.629 |
+| AssA | 59.185 |
+| IDF1 | 46.496 |
+| DetRe / DetPr | 63.965% / 41.854% |
+| IDSW | 2,908 |
+| GT boxes / output detections | 491,286 / 750,832 |
+| expression sequences | 862 |
 
-目标运行必须使用独立 `OUTPUT`，因为 `main.py` 会复用已有 `result.json`/`results`。A800 已启动独立运行：checkpoint 为 `.../flexhook/SOTA_ckpts/refer-kitti-v2-best.pth`，数据根为 GT-free runtime，候选根为 `Temp-NeuralSORT-kitti2-runtime`，日志记录 `runtime_dataset_samples=297706`、`batches=7443`、`gt_used_during_inference=false`。最后已读进度为 `500/7443`，之后暂未看到新日志或结果文件；没有中断或重启远端 GPU3，也没有在结果完成前填入 HOTA。历史 TempRMOT 输出没有替代 `Temp-NeuralSORT-kitti2`。
+TrackEval 使用官方仓库 evaluator、`seqmaps/kitti-2.txt` 和 V2 图像/GT 路径，结果日志在 run 目录的 `trackeval_o0.log`。官方 `main.py` 的 TrackEval 命令对 V2 仍硬编码 `./datasets/refer-kitti`；本轮在 isolated run 中增加了 `refer-kitti -> refer-kitti-v2` 兼容链接后，用相同 evaluator 独立重跑。该修正只解决路径，不改变模型输入、raw logits 或决策。
 
-本地主机的 base/RMOT2 预检仍分别缺 `ftfy`/Qwen3-VL 类；A800 运行环境已通过模型加载并报告 `All keys matched successfully`。本地官方 checkout 的语法问题仍保留为独立审计项，未在上游目录打补丁；远端全量运行完成后还需核对其代码工作树、commit 和输出 receipt，避免把“已启动”误写成“已完成可比复现”。
+官方 `generate_final_results` 在 SSHFS 上会在“每个候选帧 × 每个表达式”内层重复打开表达式 JSON，前向完成后长时间停在结果落盘。本轮在 raw `result.json` 已封存后使用预加载表达式映射的等价落盘脚本，保持 `argmax(raw_two_class_score)>0`、原候选 bbox 和合并 ID 不变；生成结果完整覆盖 862 个 `predict.txt`。
 
-## A800 上新增的 TempRMOT baseline 资源
+另发现 FlexHook 测试 DataLoader 的 `sample_end=obj_last-sample_frame_num` 会使 314 个候选 frame-object 条目没有 raw score，对应 7,750 个 GT-frame，记为 `MODEL_WINDOW_MISSING`，不归因给语言选择。该边界也写入错误汇总和后续 JEV 解释。
 
-继续清点 A800 后发现：
+## 复现边界
 
-- `/home/liuyeqiang/remote/A800/data3/user/TTA-RMOT-assets/checkpoints/temprmot_refer_kitti_v2_official_checkpoint_rk2.pth`，`1,096,316,824` bytes，Zip-format PyTorch archive；
-- `/home/liuyeqiang/remote/A800/data3/user/TTA-RMOT-assets/checkpoints/r50_deformable_detr_plus_iterative_bbox_refinement-checkpoint.pth`，`489,084,000` bytes。
-
-它们与 A800 上的 TempRMOT 训练脚本和 Refer-KITTI-V2 baseline 命名一致，可作为独立 RMOT baseline 的权重/预训练输入；没有把它们接入 YesTrack 或 FlexHook，也没有把它们当作 YesTrack 官方 `v1/v2bestweight` 的替代品。两份大文件仍留在 A800 挂载上，未复制进报告仓库。
-
-## 已完成的非推理验证
-
-- 两个官方仓库均已固定 commit 并保持 clean。
-- 已核对 YesTrack 的 `results_root` 输入格式、帧映射、V1 158-entry seqmap、V2 逗号表达式和阈值说明。
-- 已核对 FlexHook 测试 DataLoader、`all/gt.txt` 特殊分支、`argmax(score)>0` 决策、原始 logits 保存结构和结果缓存逻辑。
-- 已对本地历史 TempRMOT V2 结果做 40 个表达式对的文件格式抽样，输出不纳入官方 metrics。
-- 只读入口预检也已执行：YesTrack base 环境缺 `transformers`，RMOT2 的 Transformers 不含 Qwen3-VL 类，FlexHook base 环境缺 `ftfy`；A800 远端运行另有 `RUNNING` 记录，错误见 [`entrypoint_preflight.csv`](../analysis/entrypoint_preflight.csv)。
-
-## 没有执行的项目
-
-官方 HOTA/DetA/AssA/IDF1、共享候选二阶段比较、Selection/Identity Oracle、30 个可视化案例、时间链和错误事件表仍没有完成的合法输出，因此对应 CSV 使用 `BLOCKED`、`RUNNING` 或 `PENDING`，而不是填 0。
-
+- 没有训练新 JEV，也没有修改官方权重或官方 upstream checkout。
+- GT 没有进入模型 forward；GT 只用于 raw output 之后的 TrackEval、错误归因和 Oracle 反事实。
+- FlexHook 结果是官方 V2 tuple 的实测；YesTrack、共享候选 YesTrack/FlexHook 比较仍然是 `BLOCKED/NOT_COMPARABLE`，不能用两个原生方法的论文数字或不同候选结果做因果比较。

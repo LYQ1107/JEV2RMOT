@@ -130,7 +130,10 @@ def main() -> int:
         max_car_id = max((row[1] for row in car), default=0)
         # FlexHook applies the same offset when it concatenates the two classes.
         pedestrian = [
-            (frame, track_id + max_car_id + 1, x, y, width, height)
+            # FlexHook uses the maximum car ID itself as the pedestrian offset;
+            # the first pedestrian ID is therefore max_car_id+1 when IDs start
+            # at one, without adding a second +1 here.
+            (frame, track_id + max_car_id, x, y, width, height)
             for frame, track_id, x, y, width, height in pedestrian
         ]
         by_frame: DefaultDict[int, list[Row]] = defaultdict(list)
