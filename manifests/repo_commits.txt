@@ -1,0 +1,11 @@
+audit_date=2026-10-21T00:00:00Z
+YesTrack.path=/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/upstream/YesTrack
+YesTrack.commit=ed42b8315b28c94dc595d83b0d49bf57002bb281
+YesTrack.remote=https://github.com/ggbondrighthere24/YesTrack
+FlexHook.path=/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/upstream/FlexHook
+FlexHook.commit=bd1acc38634b28525d54dc6e0fcb38335f0029f9
+FlexHook.remote=https://github.com/buptLwz/FlexHook
+LLM2Jev.path=/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/upstream/LLM2Jev
+LLM2Jev.commit=93d4fcdcc81e0732026a65195eca3b45333af451
+LLM2Jev.remote=https://github.com/Yinsongxu/LLM2Jev
+upstream_worktrees=clean_at_audit

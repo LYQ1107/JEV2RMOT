@@ -1,0 +1,3 @@
+method,dataset,protocol,candidate_source,checkpoint,seqmap,code_commit,status,HOTA,DetA,AssA,IDF1,notes
+YesTrack,Refer-KITTI-V2,official-v2,missing-v2best_track_result,missing-v2bestweight,missing official seqmap,ed42b8315b28c94dc595d83b0d49bf57002bb281,BLOCKED,,,,,"Official inference not run: Baidu resource could not be read; local V2 image/label link is broken."
+FlexHook,Refer-KITTI-V2,official-v2,missing-Temp-NeuralSORT-kitti2,missing-SOTA_ckpts/refer-kitti-v2-best,configs/infer/kitti2.yaml,bd1acc38634b28525d54dc6e0fcb38335f0029f9,BLOCKED,,,,,"Official inference not run: tracker outputs and SOTA checkpoint unavailable; local KITTI assets are incomplete."

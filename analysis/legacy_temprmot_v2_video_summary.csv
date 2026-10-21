@@ -1,0 +1,5 @@
+dataset,protocol,status,video,expression_count,gt_files,predict_files,gt_rows,pred_rows
+Refer-KITTI-V2,legacy-TempRMOT-results_epoch2,AUXILIARY_NOT_COMPARABLE,0005,10,10,10,3246,3526
+Refer-KITTI-V2,legacy-TempRMOT-results_epoch2,AUXILIARY_NOT_COMPARABLE,0011,10,10,10,11518,8123
+Refer-KITTI-V2,legacy-TempRMOT-results_epoch2,AUXILIARY_NOT_COMPARABLE,0013,10,10,10,186,156
+Refer-KITTI-V2,legacy-TempRMOT-results_epoch2,AUXILIARY_NOT_COMPARABLE,0019,10,10,10,7286,4973

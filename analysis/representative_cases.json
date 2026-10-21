@@ -1,0 +1,12 @@
+{
+  "status": "BLOCKED",
+  "official_case_count": 0,
+  "required_case_count": 30,
+  "reason": "No complete official image/GT/candidate/weight tuple was readable on this host; no visual case is claimed.",
+  "auxiliary_asset": {
+    "path": "/data1/liuyeqiang/RMOT_JEV_DIAG_20261021/analysis/legacy_temprmot_v2_representative.json",
+    "status": "AUXILIARY_NOT_COMPARABLE",
+    "reason": "Archived TempRMOT final outputs are not a shared YesTrack/FlexHook candidate set."
+  },
+  "cases": []
+}

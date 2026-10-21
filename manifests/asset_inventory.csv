@@ -1,0 +1,9 @@
+asset,kind,path,status,bytes_or_size,protocol,source_or_reason
+YesTrack V2 LoRA,weight,,MISSING,,Refer-KITTI-V2,"Baidu share could not be listed; no local copy"
+YesTrack V2 track result,candidate,,MISSING,,Refer-KITTI-V2,"Baidu share could not be listed; no local copy"
+YesTrack V2 MOTC GT,gt,,MISSING,,Refer-KITTI-V2,"Baidu share could not be listed; no local copy"
+FlexHook V2 SOTA checkpoint,weight,,MISSING,,Refer-KITTI-V2,"No local SOTA_ckpts/refer-kitti-v2-best"
+FlexHook V2 tracker output,candidate,,MISSING,,Refer-KITTI-V2,"No local Temp-NeuralSORT-kitti2"
+Refer-KITTI-V2 expressions,dataset,/data1/liuyeqiang/nas/A100/codex_archive_20261014/TempMam/data/Dataset/refer-kitti-v2,PARTIAL,58M,Refer-KITTI-V2,"21 expression directories; KITTI link broken"
+Refer-KITTI-V2 KITTI image/labels,dataset,/data1/liuyeqiang/nas/A100/codex_archive_20261014/TempMam/data/Dataset/refer-kitti-v2/KITTI,MISSING,,Refer-KITTI-V2,"Symlink target /data1/liuyeqiang/RMOT/data/Dataset/refer-kitti/KITTI absent"
+TempRMOT historical result,auxiliary,/data1/liuyeqiang/nas/A100/codex_archive_20261014/TempRMOT/exps/default_rk_v2/results_epoch2,AUXILIARY_NOT_COMPARABLE,,Refer-KITTI-V2,"Final output tree, not a raw shared candidate set"

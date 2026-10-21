@@ -1,0 +1,8 @@
+# Do not add upstream repositories, large model/data artifacts, or runtime caches.
+upstream/*
+!upstream/.keep
+runs/**
+visualizations/**
+__pycache__/
+*.pyc
+*.log
