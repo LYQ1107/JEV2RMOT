@@ -1,6 +1,6 @@
 # 详细错误分类
 
-本轮没有官方预测与完整图像，因此 `analysis/error_events.csv` 和 `analysis/temporal_error_chains.csv` 为空；这表示没有可合法标注的事件，不表示错误率为零。
+A800 的完整图像/标签和 FlexHook 候选已经可读，但全量预测尚未完成，因此 `analysis/error_events.csv` 和 `analysis/temporal_error_chains.csv` 暂为空；这表示没有可合法标注的事件，不表示错误率为零。
 
 ## 预定标签
 
@@ -19,7 +19,7 @@
 - YesTrack 的最终输出沿用候选 bbox 和 ID；二阶段主要修改 confidence/选择，不能凭空生成缺失候选。
 - FlexHook `test_utils.py` 的最终决策是 `argmax(score)>0`，没有基于 bbox 的二阶段修正；其 raw logits 在 `main.py:653–667` 可保存，后续应使用 logits 直接判定错误边界。
 - FlexHook 对候选帧做前后偏移，任何未核对首帧的结果都可能被错误标记为几何或选择失败。
-- `all/gt.txt` 特殊分支在真实资源缺失时未被运行；不能把该潜在误归因写成已发生事件。
+- `all/gt.txt` 特殊分支现在可以在 A800 evaluation copy 上做独立审计；全量结果尚未封存，不能把该潜在误归因写成已发生事件。
 
-用户要求“每类至少一个无法由简单二阶段修复的反例”。由于没有完整图像、GT 与候选，本轮无法诚实构造或可视化这些反例，故保持 `BLOCKED`。
+用户要求“每类至少一个无法由简单二阶段修复的反例”。在 FlexHook 全量结果封存前，本轮仍无法诚实构造或可视化这些反例，故保持 `PENDING`；A800 资源到位后优先从四个测试视频生成反例，而不是用历史 TempRMOT 结果替代。
 

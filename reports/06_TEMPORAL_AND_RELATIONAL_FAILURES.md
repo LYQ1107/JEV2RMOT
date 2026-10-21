@@ -8,7 +8,7 @@ FlexHook 的模型输出保存为 `video/object/frame/expression -> [negative_lo
 
 ## 本轮没有数值结论
 
-没有完整官方运行，因此没有报告传播持续帧数、错误累积比例、ID switch、断裂长度或关系型错误率。任何这类数字都会把代码机制误写成测量结果。
+A800 的 FlexHook 官方全量运行正在进行，但尚未得到完整 raw result，因此没有报告传播持续帧数、错误累积比例、ID switch、断裂长度或关系型错误率。任何这类数字都会把未完成运行误写成测量结果。
 
 ## 对 JEV 的预判
 

@@ -1,6 +1,6 @@
 # Official V2 command templates
 
-These are templates only. They were not run because the placeholders have no verified local replacements.
+YesTrack remains a template because the official archive bytes are not downloaded. FlexHook has verified A800 replacements and a remote full run has started; keep the output isolated and do not infer final metrics from the last visible progress line.
 
 ## YesTrack
 
@@ -20,5 +20,5 @@ python refer_llm/llm_eval_from_mot.py \
 
 ## FlexHook
 
-Start from `upstream/FlexHook/infer.sh`, set `DATASET_NAME=kitti-2`, `CKPT_PATH=SOTA_ckpts/refer-kitti-v2-best`, `TRACKER_ROOT=Temp-NeuralSORT-kitti2`, and use an isolated `OUTPUT`. Do not reuse an existing `result.json` or `results` directory.
+The A800 run uses the equivalent of `DATASET_NAME=kitti-2`, checkpoint `/data3/user/TTA-RMOT-assets/flexhook/SOTA_ckpts/refer-kitti-v2-best.pth`, GT-free runtime data `/data3/user/TTA-RMOT-assets/flexhook/refer-kitti-v2-runtime`, and runtime tracker root `/data3/user/TTA-RMOT-assets/flexhook/tracker_outputs/Temp-NeuralSORT-kitti2-runtime`. Its protocol is `official_flexhook_inference_single_card`, with `runtime_dataset_samples=297706` and `batches=7443`; the last visible log line is batch 500. Do not reuse an existing `result.json` or `results` directory.
 

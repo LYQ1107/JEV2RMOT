@@ -2,9 +2,9 @@
 
 ## 结论
 
-状态：`NOT_COMPARABLE`。本轮没有执行 YesTrack 与 FlexHook 的公平第二阶段比较。
+状态：`PENDING_SHARED_YESTRACK`。FlexHook 的公共 `Temp-NeuralSORT-kitti2` 候选已在 A800 找到，但 YesTrack 官方 `v2best_track_result`/权重仍未下载；因此公平第二阶段比较尚未执行。
 
-用户指定的公共候选是 FlexHook 的 `Temp-NeuralSORT-kitti2`，再分别接入 YesTrack 与 FlexHook 的第二阶段。当前主机没有该目录；YesTrack 官方 `v2best_track_result` 也没有。NAS 中存在 TempRMOT 的历史最终 `predict.txt`，但它已经经过目标表达式选择，不能反向恢复候选池，也不能证明与 `Temp-NeuralSORT-kitti2` 同源。
+用户指定的公共候选是 FlexHook 的 `Temp-NeuralSORT-kitti2`，再分别接入 YesTrack 与 FlexHook 的第二阶段。A800 已有 FlexHook 候选及其 GT-free runtime 映射；YesTrack 官方 `v2best_track_result` 仍只有 Baidu 目录元数据。NAS 中存在 TempRMOT 的历史最终 `predict.txt`，但它已经经过目标表达式选择，不能反向恢复候选池，也不能证明与 `Temp-NeuralSORT-kitti2` 同源。
 
 因此不能用“两个原生结果的 HOTA 差值”解释成语言模块收益。`analysis/candidate_coverage.csv` 只保留阻塞记录。
 

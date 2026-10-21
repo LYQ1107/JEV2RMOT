@@ -2,3 +2,4 @@ method,environment,entrypoint,status,error
 YesTrack,base,refer_llm/llm_eval_from_mot.py,BLOCKED,"ModuleNotFoundError: transformers"
 YesTrack,RMOT2,refer_llm/llm_eval_from_mot.py,BLOCKED,"ImportError: Qwen3VLForConditionalGeneration missing from transformers 4.30.2"
 FlexHook,base,main.py,BLOCKED,"ModuleNotFoundError: ftfy"
+FlexHook,A800 remote,run_flexhook_official.py,RUNNING,"Official checkpoint loaded; runtime_dataset_samples=297706; last observed batch=500/7443; no final metrics yet"

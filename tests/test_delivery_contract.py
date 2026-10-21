@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Small, dependency-free delivery checks for the blocked-but-auditable run."""
+"""Small, dependency-free delivery checks for the blocked/running audit."""
 
 from __future__ import annotations
 
@@ -39,6 +39,7 @@ class DeliveryContractTest(unittest.TestCase):
             "error_events.csv",
             "temporal_error_chains.csv",
             "oracle_results.csv",
+            "a800_resource_manifest.csv",
             "representative_cases.json",
             "entrypoint_preflight.csv",
         ]
@@ -50,15 +51,18 @@ class DeliveryContractTest(unittest.TestCase):
             records = list(csv.DictReader(handle))
         self.assertGreaterEqual(len(records), 2)
         for record in records:
-            self.assertEqual(record["status"], "BLOCKED")
+            self.assertIn(record["status"], {"BLOCKED", "RUNNING", "PENDING"})
             for metric in ("HOTA", "DetA", "AssA", "IDF1"):
                 self.assertEqual(record[metric], "")
 
-    def test_oracle_rows_are_explicitly_blocked(self) -> None:
+    def test_oracle_rows_have_explicit_incomplete_status(self) -> None:
         with (ROOT / "analysis" / "oracle_results.csv").open(newline="", encoding="utf-8") as handle:
             records = list(csv.DictReader(handle))
         self.assertEqual({record["oracle"] for record in records}, {"O0", "O1", "O2", "O3"})
-        self.assertTrue(all(record["status"] == "BLOCKED" for record in records))
+        self.assertTrue(all(record["status"] in {"BLOCKED", "RUNNING", "PENDING"} for record in records))
+        for record in records:
+            for metric in ("HOTA", "DetA", "AssA", "IDF1", "delta_hota_vs_o0"):
+                self.assertEqual(record[metric], "")
 
     def test_no_upstream_worktree_changes(self) -> None:
         for repo in ("YesTrack", "FlexHook", "LLM2Jev"):

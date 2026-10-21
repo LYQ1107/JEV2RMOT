@@ -1,10 +1,10 @@
 # 资源审计
 
-审计时间：2026-10-21 UTC。项目状态：`PARTIAL/BLOCKED`。本报告只记录当前主机实际可读的资源，不把目录名或论文数字当作资源证据。
+审计时间：2026-10-21 UTC。项目状态：`PARTIAL / FLEXHOOK_RUNNING / YESTRACK_BLOCKED`。本报告只记录实际可读的资源，不把目录名或论文数字当作资源证据。
 
 ## 结论
 
-目标机器上有可用 GPU，但没有同时满足“完整 Refer-KITTI 图像/标签 + 官方候选轨迹 + 官方权重”的可运行三元组。因此本轮没有合法的 YesTrack/FlexHook 官方推理，也没有伪造 HOTA、Oracle 或 JEV headroom 数字。
+A800 上已经找到 FlexHook 的“完整 Refer-KITTI-V2 数据 + Temp-NeuralSORT-kitti2 候选 + 官方 checkpoint”三元组，并启动了官方单卡全量推理；本次复核最后记录为 `500/7443`，之后暂未看到新日志或结果文件，因此只记为未完成，不声称任务仍在正常推进。YesTrack 的官方 `yestrack.zip` 已能通过公开分享正常列目录，但下载接口仍返回签名错误，官方 `v1/v2` 权重和官方候选字节尚未落地。因此不能给出 YesTrack 官方指标，也不把 A800 上用户自训的 OneJev/GroundJEV 权重当作官方 YesTrack 替代品。
 
 ## 主机与 GPU
 
@@ -13,11 +13,11 @@
 | hostname | `cieelab` | 已记录 |
 | user / cwd | `liuyeqiang` / `/data1/liuyeqiang` | 已记录 |
 | GPU | 10 × Tesla V100-DGXS 32508 MiB，driver 470.141.03，CUDA 11.4 | 与官方 FlexHook 推荐的 CUDA 12.4 不同 |
-| 审计时空闲 GPU | 0、3、4、5、6、7、8、9 | 可用于后续小规模单卡推理，但不解决权重/数据缺失 |
+| 审计时空闲 GPU | 0、3、4、5、6、7、8、9 | 本机可用于小规模验证；A800 GPU3 另有全量 FlexHook 任务，未中断 |
 | 忙碌/不确定 GPU | 1、2 | 发现其他进程/显存占用，未触碰 |
 | 本地 `/data1` | 约 143G 可用 | 不复制大数据集 |
 | NAS `/data1/liuyeqiang/nas/A100` | SSHFS，约 3.7T 可用 | 可读取若干历史资产，远端遍历较慢 |
-| `/home/liuyeqiang/remote/A800` | SSHFS，约 438G 可用 | 挂载可读；直接 SSH 因 host key 未确认而未使用 |
+| `/home/liuyeqiang/remote/A800` | SSHFS，约 437G 可用 | 挂载可读；host key 已按 `a800-datasets` 配置核验；直接 SSH 仅被服务端限制为强制 SFTP/挂载用途 |
 
 没有停止、重启或修改其他 GPU 任务。审计期间被终止的进程均为本任务自己启动的远端遍历/审计进程。
 
@@ -29,7 +29,7 @@
 | FlexHook | [官方仓库](https://github.com/buptLwz/FlexHook) | `bd1acc38634b28525d54dc6e0fcb38335f0029f9` | clean，已核对为当前 `main` |
 | LLM2Jev | [官方仓库](https://github.com/Yinsongxu/LLM2Jev) | `93d4fcdcc81e0732026a65195eca3b45333af451` | clean，仅作设计参考，本轮未训练 |
 
-官方仓库链接：[YesTrack](https://github.com/ggbondrighthere24/YesTrack)、[FlexHook](https://github.com/buptLwz/FlexHook)、[LLM2Jev](https://github.com/Yinsongxu/LLM2Jev)。两个目标仓库的 GitHub Releases 均未提供可直接下载的 checkpoint；仓库本身也不含目标权重或完整数据。
+官方仓库链接：[YesTrack](https://github.com/ggbondrighthere24/YesTrack)、[FlexHook](https://github.com/buptLwz/FlexHook)、[LLM2Jev](https://github.com/Yinsongxu/LLM2Jev)。目标仓库代码本身不含目标权重或完整数据；FlexHook 资产已在 A800 的用户资源区找到，YesTrack 发布包目前只有公开目录元数据。
 
 对官方 FlexHook checkout 的所有 Python 文件做 AST 级语法检查，还发现两个源码级阻塞：`SwinTransformer/utils.py:22` 和 `deit/main.py:44` 的 `return checkpoint` 位于未闭合的 `try` 块之后。官方工作树保持未修改；该问题与资源缺失并列记录。
 
@@ -37,22 +37,30 @@
 
 | 资源 | 实际路径/现象 | 状态 |
 |---|---|---|
-| 用户指定 `/data2/user/LocateMOT` | 不存在 | `MISSING` |
+| 用户指定 `/data2/user/LocateMOT` | 当前主机不存在；A800 挂载下对应为 `/home/liuyeqiang/remote/A800/data2/user/LocateMOT` | 主机本地 `MISSING`，A800 `FOUND` |
 | 用户指定 `/home/Valadmin/A100` | 不存在 | `MISSING` |
 | 用户指定 `/data1/liuyeqiang/TempMam` | 不存在；NAS 中有同名历史归档 | 不能把归档当作当前工作区 |
 | 用户指定 `/data1/liuyeqiang/TempMam_frez` | 不存在 | `MISSING` |
 | NAS 中的 V2 表达式 | `/data1/liuyeqiang/nas/A100/codex_archive_20261014/TempMam/data/Dataset/refer-kitti-v2`，约 58M | 仅表达式与 zip，非完整数据集 |
 | V2 expression 目录 | `0000`–`0020` 共 21 个目录 | 可读取 |
 | V2 expression archive | `kittiv2_expression.zip`，约 7,116,114 bytes | 可读取 |
-| V2 `KITTI` | 符号链接指向 `/data1/liuyeqiang/RMOT/data/Dataset/refer-kitti/KITTI`，目标不存在 | 图像/标签 `BLOCKED` |
+| V2 `KITTI`（NAS 旧链接） | 符号链接指向 `/data1/liuyeqiang/RMOT/data/Dataset/refer-kitti/KITTI`，目标不存在 | 旧 NAS 副本 `BLOCKED` |
+| A800 V2 expression | `/home/liuyeqiang/remote/A800/data2/user/LocateMOT/data/refer_kitti_v2/expression`，9758 files，21 videos | `FOUND_COMPLETE` |
+| A800 V2 labels | `/home/liuyeqiang/remote/A800/data2/user/LocateMOT/data/refer_kitti_v2/labels_with_ids`，7162 files，21 videos | `FOUND_COMPLETE` |
+| A800 KITTI image_02 | `/home/liuyeqiang/remote/A800/data2/user/LocateMOT/data/kitti_tracking/training/image_02`，8008 images，21 videos | `FOUND_COMPLETE` |
+| A800 FlexHook GT/evaluation copy | `.../TTA-RMOT-assets/flexhook/refer-kitti-v2/labels.json`、`gt_template/`；metadata 记录 862 templates | `FOUND_EVALUATION_ONLY` |
 | V1 | NAS 归档中的 `refer-kitti-v1` / `TempRMOT` 链接指向缺失的本地 RMOT 数据 | `BLOCKED` |
-| 远端 A800 | `/home/liuyeqiang/remote/A800` 可列目录；目标资源名搜索未发现 | 数据/权重未确认 |
+| A800 FlexHook checkpoint | `.../TTA-RMOT-assets/flexhook/SOTA_ckpts/refer-kitti-v2-best.pth`，995,768,450 bytes，SHA256 `71db...d613` | `FOUND_OFFICIAL` |
+| A800 FlexHook candidates | `.../flexhook/tracker_outputs/Temp-NeuralSORT-kitti2`，4 test videos × car/pedestrian | `FOUND_CANDIDATE_INPUT` |
+| A800 YesTrack native runs | `.../LocateMOT-runs/YesTrack/training/yestrack_native_gpu7_v1/` 有 merged/adapter | `FOUND_NON_OFFICIAL`，不可替代官方 Qwen3-VL |
 
 ## Baidu 官方分享
 
-尝试读取用户给出的 YesTrack 分享（提取码 `z5kt`）和 FlexHook 分享（提取码 `d3qj`）。页面能返回 share id，但授权验证/列表接口随后返回提取码验证失败或 `errno=2` 链接错误；没有得到可下载的文件清单，因此没有绕过认证或猜测直链。
+YesTrack 分享（提取码 `z5kt`）已在不使用代理的普通 HTTPS 请求下完成提取码验证，`/share/list` 正常返回唯一文件 `/Yestrack/yestrack.zip`：`178,142,422` bytes，`fs_id=981448710771451`，分享 `shareid=57327686470`、`share_uk=3538711738`。随后按页面公开下载接口提交普通 `api/sharedownload` 请求，返回 `errno=113`（验证码/签名错误）；没有继续绕过签名、验证码或登录边界，也没有把 178 MB 的目录元数据误报成已下载权重。
 
-这不是 GPU 失败，而是外部资源读取失败。待用户提供可读的 NAS 路径、有效分享或直接文件后，才能继续官方复现。
+FlexHook 分享（提取码 `d3qj`）不再是当前阻塞项，因为官方 checkpoint、预训练 backbone、V2 数据和候选已经在 A800 找到。A800 资源明细见 [`analysis/a800_resource_manifest.csv`](../analysis/a800_resource_manifest.csv)。
+
+YesTrack 仍是外部发布包下载阻塞；FlexHook 已进入远端推理阶段。待 A800 全量结果封存或用户提供 YesTrack 官方文件后，才能继续完整官方比较。
 
 ## 环境
 
@@ -70,9 +78,9 @@
 
 ## 下一步解阻塞条件
 
-需要同时提供：
+当前剩余条件：
 
 - YesTrack `v2bestweight`、`v2best_track_result`、`refer_kitti_motc_gt_v2` 和完整 V2 图像/标签；
-- FlexHook `SOTA_ckpts/refer-kitti-v2-best`、`Temp-NeuralSORT-kitti2` 和完整 V2 图像/标签；
+- FlexHook 全量日志完成并取得 raw result/receipt，随后计算 TrackEval、Oracle 和错误案例；
 - 可写的输出空间或允许使用当前项目目录。
 
