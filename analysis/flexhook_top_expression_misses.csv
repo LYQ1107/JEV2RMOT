@@ -1,0 +1,11 @@
+video,expression,gt_boxes,matched_boxes,missing_boxes,candidate_recall,target_tracks,tracks_with_any_match,tracks_with_switch,id_switches,longest_missing_run
+0019,humans,6047,4230,1817,0.6995204234,61,59,29,72,77
+0019,individuals,6047,4230,1817,0.6995204234,61,59,29,72,77
+0019,individuals-on-foot,6047,4230,1817,0.6995204234,61,59,29,72,77
+0019,people,6047,4230,1817,0.6995204234,61,59,29,72,77
+0019,persons,6047,4230,1817,0.6995204234,61,59,29,72,77
+0019,someone-strolling,6047,4230,1817,0.6995204234,61,59,29,72,77
+0019,individuals-in-pants-walking,5200,3778,1422,0.7265384615,56,54,25,57,77
+0019,persons-wearing-pants,5200,3778,1422,0.7265384615,56,54,25,57,77
+0019,those-who-are-dressed-in-pants,5200,3778,1422,0.7265384615,56,54,25,57,77
+0019,t-shirt-wearing-pedestrians,4215,2897,1318,0.6873072361,40,38,21,56,77

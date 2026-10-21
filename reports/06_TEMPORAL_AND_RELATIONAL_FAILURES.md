@@ -6,9 +6,9 @@ YesTrack 的 TCP 保存每个 track ID 的历史最终 confidence，在窗口满
 
 FlexHook 的模型输出保存为 `video/object/frame/expression -> [negative_logit, positive_logit]`，随后 `test_utils.py` 依据 argmax 选择并从候选轨迹中取 bbox。该结构允许后续拆解“视觉/语言选择错误”和“候选身份/时序错误”，但本轮没有 raw result.json。
 
-## 本轮没有数值结论
+## 候选层时间统计
 
-A800 的 FlexHook 官方全量运行正在进行，但尚未得到完整 raw result，因此没有报告传播持续帧数、错误累积比例、ID switch、断裂长度或关系型错误率。任何这类数字都会把未完成运行误写成测量结果。
+A800 的 FlexHook 官方全量模型运行仍没有完整 raw result，因此不能报告模型的传播错误或官方 IDF1。但候选层已经可以独立统计：IoU 0.5 下，0005/0011/0013/0019 的最长连续候选缺失分别为 34/92/30/77 帧；候选 ID 切换分别为 326/189/381/3829。对应的覆盖、缺失和轨迹切换汇总见 [`analysis/flexhook_candidate_error_summary.csv`](../analysis/flexhook_candidate_error_summary.csv)。这些帧在候选池中不存在，即使完美 selection 也无法恢复。
 
 ## 对 JEV 的预判
 

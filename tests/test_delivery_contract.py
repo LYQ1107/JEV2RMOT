@@ -40,6 +40,10 @@ class DeliveryContractTest(unittest.TestCase):
             "temporal_error_chains.csv",
             "oracle_results.csv",
             "a800_resource_manifest.csv",
+            "flexhook_candidate_ceiling.csv",
+            "flexhook_identity_proxy.csv",
+            "flexhook_candidate_error_summary.csv",
+            "flexhook_top_expression_misses.csv",
             "representative_cases.json",
             "entrypoint_preflight.csv",
         ]

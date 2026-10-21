@@ -13,6 +13,7 @@ YesTrack 和 FlexHook 到底还有多少可修复空间，错误主要在哪里�
 - 对历史 TempRMOT V2 输出抽样 40 个表达式对，仅做格式/结构审计，明确标记为 `AUXILIARY_NOT_COMPARABLE`；
 - 生成了所需 CSV、Oracle 状态表和空的错误事件表，未填假数字。
 - 对 A800 FlexHook 候选完成 IoU 0.3/0.5/0.7 覆盖统计和候选 ID proxy 统计；结果写入 [`analysis/flexhook_candidate_ceiling.csv`](../analysis/flexhook_candidate_ceiling.csv) 与 [`analysis/flexhook_identity_proxy.csv`](../analysis/flexhook_identity_proxy.csv)。
+- 进一步按视频和表达式拆分候选缺失、最长连续缺失段与候选 ID 切换；0019 的候选覆盖最低（71.26%），缺失 88,282 个目标框、3,829 次 ID 切换，结果见 [`analysis/flexhook_candidate_error_summary.csv`](../analysis/flexhook_candidate_error_summary.csv)。
 - 重新清点 A800，生成 [`analysis/a800_resource_manifest.csv`](../analysis/a800_resource_manifest.csv)，记录完整数据、FlexHook 官方 checkpoint、TempRMOT baseline checkpoint/R50 pretrain、文件大小和非官方 YesTrack 实验资产边界；未复制大权重进 Git 仓库。
 
 因此目前能说的科学结论只有机制级结论：JEV 若继续，优先切入已有候选上的 selection + identity/short-term state decision；不能宣称它能修复候选缺失、bbox 几何错误或协议错位。是否值得做、可修复空间的大小，必须等 O0/O1/O2 和共享候选跑通后由数字决定。
@@ -21,5 +22,5 @@ YesTrack 和 FlexHook 到底还有多少可修复空间，错误主要在哪里�
 
 ## 解阻塞后的最短闭环
 
-下一步先等待/监控 A800 FlexHook 全量运行，封存 raw score/logit、代码/权重 receipt 和预测目录，再计算 candidate recall ceiling、O0/O1/O2、错误事件、时间链和 30 个可视化案例。并行地，YesTrack 需要官方 `yestrack.zip` 的真实下载字节；拿到后再运行同一候选池比较。只有完成这条闭环后，才能把 JEV 结论从“机制假设”升级为“有数字支撑的研究判断”。
+下一步仍需等待/监控 A800 FlexHook 全量运行，封存 raw score/logit、代码/权重 receipt 和预测目录，再计算官方 O0/O1/O2、模型错误事件、模型时间链和 30 个可视化案例；候选 recall ceiling 已完成。并行地，YesTrack 需要官方 `yestrack.zip` 的真实下载字节；拿到后再运行同一候选池比较。只有完成这条闭环后，才能把 JEV 结论从“候选上限已知”升级为“模型 O0→Oracle 的实际收益已知”。
 
