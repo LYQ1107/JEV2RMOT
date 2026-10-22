@@ -1,53 +1,45 @@
 # FINAL_REPORT
 
-## 结论先行
+## 直接结论
 
-有可提升空间，但不是“JEV 可以把第一阶段漏检全部救回来”。FlexHook Refer-KITTI-V2 的真实官方 O0 为 **HOTA 42.526 / DetA 30.629 / AssA 59.185 / IDF1 46.496**。固定同一候选池做离线反事实后：
+有提升空间，而且已经完成了同一候选源的统计。最可靠的结论是：候选已经存在时，YesTrack 二阶段仍能明显改善选择；候选不存在时，普通 JEV 无法修复，必须改第一阶段或候选生成。
 
-- 完美 selection：O1 HOTA **65.423**，相对 O0 **+22.897**；
-- selection + identity：O2 HOTA **69.125**，相对 O1 再 **+3.702**；
-- GT sanity：O3 四项指标均 **100**，仅证明评测协议正确，不是方法收益。
+## 原生 V2 结果
 
-因此 JEV 值得做，但研究切口应是“已有候选上的 selection + 竞争关系 + identity/短时状态联合决策”。第一阶段候选覆盖 IoU 0.5 只有 **362,304/491,286=73.746%**，至少 **26.254%** GT-frame 无候选；这部分不能靠冻结二阶段 JEV 修复。
+| 方法 | 候选 | 评测点 | HOTA | DetA | AssA | IDF1 | IDSW |
+|---|---|---:|---:|---:|---:|---:|---:|
+| YesTrack V2 | 官方 TempRMOT* | threshold 0.60 | 41.155 | 32.191 | 53.032 | 48.612 | 3,169 |
+| FlexHook V2 | A800 Temp-NeuralSORT-kitti2 | official argmax | 42.526 | 30.629 | 59.185 | 46.496 | 2,908 |
 
-## 实测错误来源
+这两行 native 不能直接比较：YesTrack 候选 IoU 0.5 recall 为 57.870%，FlexHook 为 73.746%。YesTrack threshold sweep 的最高 HOTA 是 0.65 的 41.179，主点仍按官方 V2 起始阈值 0.60。
 
-| 类别 | 数量 | 解释 |
-|---|---:|---|
-| 候选缺失 `CANDIDATE_MISSING` | 128,982 | GT-frame 的 26.254%，第一阶段/几何/帧协议问题 |
-| 官方窗口缺口 `MODEL_WINDOW_MISSING` | 7,750 | DataLoader 末帧采样边界导致没有 raw score，不能算语言错误 |
-| 合格候选上的选择假阴性 | 40,412 | 有候选、有 raw score 但 argmax 判 No，11.398% |
-| 选择假阳性 | 436,690 | 750,832 个正决策中未匹配当前表达式目标，58.161% |
+## 同一候选的公平对照
 
-假阴性平均 `p_yes≈0.10`，假阳性平均 `p_yes≈0.93`；错误不只是一个全局阈值附近的抖动。0019 是主失败视频：候选缺失 88,282、选择假阴性 18,607、选择假阳性 338,301。
+FlexHook 的 A800 `Temp-NeuralSORT-kitti2` 已按官方合并规则转换到 YesTrack，frame、bbox 和合并 ID 保持一致，862/862 个表达式完成推理，2,425,382 行 score 无错误。两套结果用同一 A800 FlexHook `gt_template` 和同一 TrackEval 重评：
 
-## 官方复现状态
+| 方法 | 候选 | 阈值/决策 | HOTA | DetA | AssA | IDF1 | IDSW |
+|---|---|---:|---:|---:|---:|---:|---:|
+| FlexHook O0 | 同一 Temp-NeuralSORT-kitti2 | official argmax | 42.526 | 30.629 | 59.185 | 46.496 | 2,908 |
+| YesTrack shared | 同一 Temp-NeuralSORT-kitti2 | score 0.60 | 47.607 | 37.944 | 59.818 | 55.302 | 2,585 |
 
-FlexHook 已完成 4-GPU 官方 forward，297,706 validation samples、862 expression sequences，raw result SHA-256 为 `4af904f8ea839c9cf00c6fa6e6ee5d85d799c116e89019b29da6a183b18c5c3d`；checkpoint SHA-256 为 `71dbd691e7633a3d20facb1ebc405908863aff786e5af30899d4cb666250d613`。详细 receipt 见 [`analysis/flexhook_official_run_receipt.json`](../analysis/flexhook_official_run_receipt.json)。
+受控差值：HOTA +5.081、DetA +7.315、AssA +0.633、IDF1 +8.806。score 0.50 时 YesTrack shared HOTA 47.284，结论不变。因此在这个固定候选上，YesTrack 二阶段优于 FlexHook O0；native 表中的差异不能被解读为 FlexHook 语言模块更强。
 
-YesTrack 仍为 `BLOCKED`：官方 Baidu 分享页能列出 `/Yestrack/yestrack.zip`，但普通直连下载返回 `errno=113` 签名错误。没有把 A800 上的 OneJev/GroundJEV 资产或论文数字冒充 YesTrack 实测，因此 YesTrack HOTA/IDF1 和同候选比较仍留空。
+## 错误来源和可修复空间
 
-## Oracle 解释
+| 口径 | candidate missing @IoU0.5 | selection FN | selection FP | selection oracle HOTA | identity oracle HOTA |
+|---|---:|---:|---:|---:|---:|
+| YesTrack native | 206,978 / 42.130% | 27,345 | 198,536 | 53.910 | 57.779 |
+| FlexHook/shared candidate | 128,982 / 26.254% | shared 34,503 @0.60 | shared 276,224 @0.60 | 65.423 | 69.125 |
 
-O1 保留原候选 bbox 和原 Track ID，只用 GT 选择 IoU≥0.5 的候选；O2 在 O1 框上将 ID 映射到 GT ID；O3 使用 GT 框/ID 做评测 sanity。三者都在模型 forward 之后生成，不参与 O0。
+共享候选的 IoU 0.3/0.5/0.7 recall 为 75.320%/73.746%/69.836%。因此 O1/O2 的上限主要由候选几何和身份决定；O1/O2 是离线反事实，不是已实现的 JEV 收益。共享 O1-O0@0.50 为 +18.139 HOTA，O2-O1 为 +3.702 HOTA，说明 selection 和身份连续性都值得研究。
 
-O1–O0 的 +22.897 HOTA 是选择/过滤和官方窗口覆盖的理想差距，不是 JEV 实际提升；O2–O1 的 +3.702 HOTA 是身份连续性的离线理想空间。候选覆盖率、Oracle 表和 raw-score 错误汇总分别见：
+## 最终建议
 
-- [`analysis/oracle_results.csv`](../analysis/oracle_results.csv)
-- [`analysis/flexhook_candidate_gap_breakdown.csv`](../analysis/flexhook_candidate_gap_breakdown.csv)
-- [`analysis/flexhook_model_error_summary.csv`](../analysis/flexhook_model_error_summary.csv)
+先做 frozen-candidate、候选内 JEV，而不是端到端替换：
 
-## 对 RMOT2JEV 的建议
+1. 无训练 baseline：表达式/全局阈值校准、同帧竞争抑制、候选排序、ID 稳定规则；
+2. 分别关闭 YesTrack 的 video refinement、TCP、TRP，做因果消融；
+3. 再训练融合表达式、候选框、竞争候选、轨迹历史和短时视觉状态的 JEV；
+4. 以 HOTA/DetA/AssA/IDF1、candidate recall、IDSW 和 0019 分层统计验收。
 
-先不要做“全模态端到端 JEV 替换”。推荐顺序：
-
-1. 修复并固定官方 DataLoader 末帧窗口协议，确保候选 frame-object 都有 raw score。
-2. 在冻结候选和官方分数上比较全局/表达式阈值、同帧竞争抑制、简单 ID 稳定规则。
-3. 若简单规则不能解释主要 FN/FP，再训练 JEV；输入应包含表达式、候选框、同帧竞争候选、Track ID 历史和短时视觉状态。
-4. 以 O0→规则→JEV 的 HOTA/DetA/AssA/IDF1，以及 0019 和关系类型分层结果作为验收。
-
-当前证据足以支持“做一个窄的候选内 JEV”，不足以支持“JEV 能解决主要端到端瓶颈”或“立即做跨方法结论”。
-
-## 交付状态
-
-项目整体仍为 `PARTIAL`：FlexHook V2 已完成；YesTrack 官方资源和公平共享候选比较仍 `BLOCKED/NOT_COMPARABLE`。所有缺失项都保留明确状态，没有用 0、论文数字或 Oracle 数字冒充模型结果。
+不能声称 JEV 能救回候选缺失，也不能把 O3 的约 100 分当作方法收益。资源、hash、权重下载、运行 receipt 和完整 CSV 见 [`analysis/yestrack_official_run_receipt.json`](../analysis/yestrack_official_run_receipt.json)、[`analysis/metrics.csv`](../analysis/metrics.csv)、[`analysis/oracle_results.csv`](../analysis/oracle_results.csv)。

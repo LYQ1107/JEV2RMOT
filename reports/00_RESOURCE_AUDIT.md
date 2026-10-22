@@ -1,10 +1,10 @@
 # 资源审计
 
-审计时间：2026-10-21 UTC。项目状态：`PARTIAL / FLEXHOOK_COMPLETE / YESTRACK_BLOCKED`。本报告只记录实际可读的资源，不把目录名或论文数字当作资源证据。
+审计时间：2026-10-22 UTC。项目状态：`FLEXHOOK_COMPLETE / YESTRACK_COMPLETE_FP16 / SHARED_CANDIDATE_COMPLETE`。本报告只记录实际可读的资源，不把目录名或论文数字当作资源证据。
 
 ## 结论
 
-A800 上已经找到 FlexHook 的“完整 Refer-KITTI-V2 数据 + Temp-NeuralSORT-kitti2 候选 + 官方 checkpoint”三元组，并完成 4-GPU 官方前向、raw result 封存和 862 表达式 TrackEval。继续清点还找到一份按路径/文件名对应的官方 TempRMOT Refer-KITTI-V2 baseline checkpoint（以及其 R50 Deformable-DETR 预训练），可用于独立 RMOT baseline，但不能冒充 YesTrack 或 FlexHook 权重。YesTrack 的官方 `yestrack.zip` 已能通过公开分享正常列目录，但下载接口仍返回签名错误，官方 `v1/v2` 权重和官方候选字节尚未落地。因此不能给出 YesTrack 官方指标，也不把 A800 上用户自训的 OneJev/GroundJEV 权重当作官方 YesTrack 替代品。
+A800 上已经找到 FlexHook 的“完整 Refer-KITTI-V2 数据 + Temp-NeuralSORT-kitti2 候选 + 官方 checkpoint”三元组，并完成 4-GPU 官方前向、raw result 封存和 862 表达式 TrackEval。继续清点还找到一份按路径/文件名对应的官方 TempRMOT Refer-KITTI-V2 baseline checkpoint（以及其 R50 Deformable-DETR 预训练），可用于独立 RMOT baseline，但不能冒充 YesTrack 或 FlexHook 权重。随后通过本地 BaiduPCS-Go 在不走代理的路径下载了 YesTrack 官方 `yestrack.zip`，解压得到 V1/V2 LoRA、V2 候选和 V1/V2 MOTC GT；Qwen3-VL 基座的直连下载超时，使用固定 revision 的 Hugging Face 代理回退完成。YesTrack V2 已完成 862 表达式推理和官方 TrackEval；运行硬件是本地 V100，不冒充 A800 硬件复现，也不把 A800 上用户自训的 OneJev/GroundJEV 权重当作官方 YesTrack。
 
 ## 主机与 GPU
 
@@ -13,8 +13,8 @@ A800 上已经找到 FlexHook 的“完整 Refer-KITTI-V2 数据 + Temp-NeuralSO
 | hostname | `cieelab` | 已记录 |
 | user / cwd | `liuyeqiang` / `/data1/liuyeqiang` | 已记录 |
 | GPU | 10 × Tesla V100-DGXS 32508 MiB，driver 470.141.03，CUDA 11.4 | 与官方 FlexHook 推荐的 CUDA 12.4 不同 |
-| 审计时空闲 GPU | 0、3、4、5、6、7、8、9 | 本机可用于小规模验证；A800 GPU3 另有全量 FlexHook 任务，未中断 |
-| 忙碌/不确定 GPU | 1、2 | 发现其他进程/显存占用，未触碰 |
+| 审计时空闲 GPU | 0、2、3、4、5、6、7、8、9 | YesTrack 使用 0、2–9；A800 GPU3 另有全量 FlexHook 任务，未中断 |
+| 忙碌/不确定 GPU | 1 | 发现其他进程/显存占用，未触碰；本地 GPU1 始终保持原任务状态 |
 | 本地 `/data1` | 约 143G 可用 | 不复制大数据集 |
 | NAS `/data1/liuyeqiang/nas/A100` | SSHFS，约 3.7T 可用 | 可读取若干历史资产，远端遍历较慢 |
 | `/home/liuyeqiang/remote/A800` | SSHFS，约 437G 可用 | 挂载可读；host key 已按 `a800-datasets` 配置核验；直接 SSH 仅被服务端限制为强制 SFTP/挂载用途 |
@@ -25,11 +25,11 @@ A800 上已经找到 FlexHook 的“完整 Refer-KITTI-V2 数据 + Temp-NeuralSO
 
 | 仓库 | 路径 | commit | 状态 |
 |---|---|---|---|
-| YesTrack | [官方仓库](https://github.com/ggbondrighthere24/YesTrack) | `ed42b8315b28c94dc595d83b0d49bf57002bb281` | clean，已核对为当前 `main` |
+| YesTrack | [官方仓库](https://github.com/ggbondrighthere24/YesTrack) | `ed42b8315b28c94dc595d83b0d49bf57002bb281` | clean，已核对为当前 `main`；V2 官方包已落地 |
 | FlexHook | [官方仓库](https://github.com/buptLwz/FlexHook) | `bd1acc38634b28525d54dc6e0fcb38335f0029f9` | clean，已核对为当前 `main` |
 | LLM2Jev | [官方仓库](https://github.com/Yinsongxu/LLM2Jev) | `93d4fcdcc81e0732026a65195eca3b45333af451` | clean，仅作设计参考，本轮未训练 |
 
-官方仓库链接：[YesTrack](https://github.com/ggbondrighthere24/YesTrack)、[FlexHook](https://github.com/buptLwz/FlexHook)、[LLM2Jev](https://github.com/Yinsongxu/LLM2Jev)。目标仓库代码本身不含目标权重或完整数据；FlexHook 资产已在 A800 的用户资源区找到，YesTrack 发布包目前只有公开目录元数据。
+官方仓库链接：[YesTrack](https://github.com/ggbondrighthere24/YesTrack)、[FlexHook](https://github.com/buptLwz/FlexHook)、[LLM2Jev](https://github.com/Yinsongxu/LLM2Jev)。目标仓库代码本身不含大权重或完整数据；FlexHook 资产在 A800 的用户资源区，YesTrack 发布包和基座下载到项目 ignored run/download 目录，轻量 hash/manifest 提交到报告仓库。
 
 对官方 FlexHook checkout 的所有 Python 文件做 AST 级语法检查，还发现两个源码级阻塞：`SwinTransformer/utils.py:22` 和 `deit/main.py:44` 的 `return checkpoint` 位于未闭合的 `try` 块之后。官方工作树保持未修改；该问题与资源缺失并列记录。
 
@@ -54,15 +54,15 @@ A800 上已经找到 FlexHook 的“完整 Refer-KITTI-V2 数据 + Temp-NeuralSO
 | A800 FlexHook candidates | `.../flexhook/tracker_outputs/Temp-NeuralSORT-kitti2`，4 test videos × car/pedestrian | `FOUND_CANDIDATE_INPUT` |
 | A800 TempRMOT baseline checkpoint | `.../TTA-RMOT-assets/checkpoints/temprmot_refer_kitti_v2_official_checkpoint_rk2.pth`，1,096,316,824 bytes，Zip-format PyTorch archive | `FOUND_OFFICIAL_BASELINE`，不属于 YesTrack/FlexHook |
 | A800 TempRMOT R50 pretrain | `.../TTA-RMOT-assets/checkpoints/r50_deformable_detr_plus_iterative_bbox_refinement-checkpoint.pth`，489,084,000 bytes | `FOUND_OFFICIAL_PRETRAIN`，不属于 YesTrack/FlexHook |
-| A800 YesTrack native runs | `.../LocateMOT-runs/YesTrack/training/yestrack_native_gpu7_v1/` 有 merged/adapter | `FOUND_NON_OFFICIAL`，不可替代官方 Qwen3-VL |
+| A800 YesTrack native runs | `.../LocateMOT-runs/YesTrack/training/yestrack_native_gpu7_v1/` 有 merged/adapter | `FOUND_NON_OFFICIAL`，未替代官方 Qwen3-VL |
 
 ## Baidu 官方分享
 
-YesTrack 分享（提取码 `z5kt`）已在不使用代理的普通 HTTPS 请求下完成提取码验证，`/share/list` 正常返回唯一文件 `/Yestrack/yestrack.zip`：`178,142,422` bytes，`fs_id=981448710771451`，分享 `shareid=57327686470`、`share_uk=3538711738`。随后按页面公开下载接口提交普通 `api/sharedownload` 请求，返回 `errno=113`（验证码/签名错误）；没有继续绕过签名、验证码或登录边界，也没有把 178 MB 的目录元数据误报成已下载权重。
+YesTrack 分享（提取码 `z5kt`）先在不使用代理的普通 HTTPS 请求下完成提取码验证；页面公开 `api/sharedownload` 曾返回 `errno=113`（验证码/签名错误）。随后本机已有的 `/home/liuyeqiang/.local/bin/BaiduPCS-Go` 使用 direct/no-proxy transfer 成功下载 `/Yestrack/yestrack.zip`：`178,142,422` bytes，SHA-256 `f303e4f2578ea011cc7861afc359be535e132bbb59308e22726621e37e0ca97b`，`unzip -t` 通过，7168 个归档条目。Baidu 远端文件保留在用户自己的网盘中，没有删除或绕过验证码。
 
 FlexHook 分享（提取码 `d3qj`）不再是当前阻塞项，因为官方 checkpoint、预训练 backbone、V2 数据和候选已经在 A800 找到。A800 资源明细见 [`analysis/a800_resource_manifest.csv`](../analysis/a800_resource_manifest.csv)。
 
-YesTrack 仍是外部发布包下载阻塞；本次还确认 A800 有 `BaiduPCS-Go` 客户端，但该二进制在本地主机因需要 glibc `>=2.32` 无法执行，而 A800 SSH key 是强制 SFTP、不能远程执行客户端。没有改用代理、绕过验证码或复制私有 cookie。FlexHook 全量结果已封存；剩余的完整官方比较只受 YesTrack 发布包和共享候选协议阻塞。FlexHook raw result、Oracle 和错误归因 receipt 已留在项目 run 目录，仓库只提交轻量 manifest/CSV/报告。
+归档内含 `v1bestweight`、`v2bestweight`、`v1best_track_result`、`v2best_track_result`、`refer_kitti_motc_gt` 和 `refer_kitti_motc_gt_v2`。V2 adapter SHA-256 为 `749d7c48bc8507105fb068adb539f5ebd58a587402d6e30542675c6e5a050b55`；V2 候选共 1,850,576 行、862 个表达式。基座 `Qwen/Qwen3-VL-2B-Instruct` 固定 HF revision `89644892e4d85e24eaac8bacfd4f463576704203`，直连超时后通过 proxy snapshot 下载。A800 SSH key 仍是强制 SFTP，未尝试远程执行客户端。FlexHook 与 YesTrack 原生结果、Oracle 和错误归因 receipt 均留在项目 run 目录，仓库只提交轻量 manifest/CSV/报告。
 
 ## 环境
 
@@ -72,18 +72,24 @@ YesTrack 仍是外部发布包下载阻塞；本次还确认 A800 有 `BaiduPCS-
 | RMOT2 | PyTorch 1.13.1+cu117，Transformers 4.30.2；无 `peft`；不足以直接运行当前 Qwen3-VL 代码 |
 | GMT | PyTorch 2.0.0+cu118；缺少目标 Transformers 等 |
 | Hugging Face cache | 约 9.9G；未发现 Qwen3-VL-2B 或 YesTrack LoRA |
+| YesTrack isolated deps | `runs/yestrack_pydeps`：Transformers 4.57.6、PEFT 0.18.0、Tokenizers 0.22.1、Accelerate 1.15.0；复用 worldmot311 的 Torch 2.6.0+cu118 |
+| YesTrack inference hardware | 9 张本地 V100-DGXS，`CUDA_VISIBLE_DEVICES=0,2,3,4,5,6,7,8,9`；GPU1 的其他任务未触碰；使用 fp16，不能宣称 A800 硬件等价 |
 | git-lfs | 未安装；目标仓库没有 LFS 对象可供恢复 |
 
 ## 可用的历史辅助资产
 
 `/data1/liuyeqiang/nas/A100/codex_archive_20261014/TempRMOT/exps/default_rk_v2/results_epoch2` 存在 4 个视频（0005、0011、0013、0019）的历史 TempRMOT `gt.txt`/`predict.txt` 结果目录。日志和配置明确表明这是 TempRMOT 的最终结果树，不是 YesTrack 的 `v2best_track_result`，也不是 FlexHook 的 `Temp-NeuralSORT-kitti2` 原始候选。因此只做格式/覆盖审计，输出见 [`legacy_temprmot_v2_inventory.csv`](../analysis/legacy_temprmot_v2_inventory.csv)，状态统一为 `AUXILIARY_NOT_COMPARABLE`。
 
-## 下一步解阻塞条件
+## 共享候选已完成
 
-当前剩余条件：
+- YesTrack 官方 V2 原生复现已完成；V1 资源已找到但本轮未运行 V1 全量。
+- FlexHook 的 `Temp-NeuralSORT-kitti2` 已转换为 862 条 YesTrack 表达式输入；frame、bbox 保持不变，行人 ID 使用 FlexHook 官方 `max_car_id` offset。
+- 共用候选推理完成 862/862 个表达式、2,425,382 行 score、0 个任务错误；候选源仍位于 A800，推理使用本地 9 张 V100 的 fp16，不能称为 A800 硬件复现。
+- 用同一 A800 `gt_template` 和同一 bundled TrackEval 重评：FlexHook O0 HOTA 42.526，YesTrack shared O0@0.60 HOTA 47.607；这才是受控的二阶段对照。YesTrack 原生行仍使用官方归档 GT，坐标精度略有不同，报告中不混用两种 GT。
 
-- YesTrack `v2bestweight`、`v2best_track_result`、`refer_kitti_motc_gt_v2` 和完整 V2 图像/标签；
-- YesTrack 官方 archive/权重/候选字节，以及同候选的 YesTrack/FlexHook 公平比较；
-- 如需独立复核 TempRMOT baseline，可直接使用 A800 上已找到的 rk2 checkpoint 与 R50 pretrain；它们不解除 YesTrack 官方权重阻塞；
-- 可写的输出空间或允许使用当前项目目录。
+## 当前剩余边界
+
+- 共享实验证明了候选内二阶段差异，但没有训练新的 JEV 参数；O1/O2 仍是离线反事实，不能直接当作实际收益。
+- 候选缺失、IoU 不足和 FlexHook 的末帧窗口缺口仍属于第一阶段/几何协议边界，不能由普通二阶段凭空恢复。
+- 原始大权重、图像和 run 输出保持在 ignored 目录或挂载路径；仓库提交 `analysis/yestrack_official_run_receipt.json`、CSV 和 Markdown 证据。
 

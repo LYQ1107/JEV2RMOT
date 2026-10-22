@@ -2,18 +2,49 @@
 
 ## 已完成的实测
 
-FlexHook raw result 已封存。每个候选帧包含 `negative_logit/positive_logit`，最终决策为 `argmax(score)>0`；O0 的 TrackEval 为 HOTA 42.526、IDSW 2,908。离线对齐得到 40,412 个合格候选上的选择假阴性和 436,690 个选择假阳性，连续事件链见 [`analysis/temporal_error_chains.csv`](../analysis/temporal_error_chains.csv)。
+FlexHook raw result 已封存。每个候选帧包含 negative/positive logit，最终决策为 argmax(score)>0；O0 的 TrackEval 为 HOTA 42.526、IDSW 2,908。离线对齐得到 40,412 个合格候选上的选择假阴性和 436,690 个选择假阳性，连续事件链见 `analysis/temporal_error_chains.csv`。
 
-连续链是描述性证据，不等同于已证明的 TCP/TRP 传播：FlexHook 没有 YesTrack 的 TCP/TRP 开关，且模型使用 4-frame window。要把链归因成“上一帧错误导致下一帧错误”，仍需同一候选上的窗口消融或逐帧重放；本轮没有把这种因果关系写成已证事实。
+YesTrack V2 的 862 个表达式已使用官方 prompts/crops、视频精炼、TCP 和 TRP 语义完成。原生 threshold 0.60 的 O0 为 HOTA 41.155、IDSW 3,169；官方候选 IoU 0.5 覆盖只有 57.870%。
 
-## 候选层与身份层
+## 同一候选下的错误分解
 
-IoU 0.5 下，0019 的候选缺失 88,282/307,226 GT-frame，最长连续缺失 77 帧；全局候选 ID proxy 有 4,725 次切换、2,363/8,043 条目标轨迹发生切换。O1 保留候选原 ID 后 IDSW=4,601，O2 做 GT identity mapping 后 IDSW=0，HOTA 从 65.423 增到 69.125。这给出了“身份/短时关联”可研究但不能直接承诺可实现的空间。
+共享 FlexHook 候选在 A800 GT 上覆盖 362,304/491,286 = 73.746%，缺失 128,982 个 GT boxes。YesTrack @0.60 对 2,425,382 行全部产生 score，之后得到：
 
-另有 314 个候选 frame-object 条目因官方 DataLoader 的末帧采样边界没有 raw score，对应 7,750 GT-frame，单列为 `MODEL_WINDOW_MISSING`。它属于官方输入窗口实现/评估协议边界，不应被 JEV 归因。
+| 类别 | 数量 | 解释 |
+|---|---:|---|
+| CANDIDATE_MISSING | 128,982 | GT boxes 的 26.254%，二阶段不可修复 |
+| MATCHED_TRUE_POSITIVE | 327,801 | score >= 0.60 且匹配当前表达式 GT |
+| REFER_FALSE_NEGATIVE | 34,503 | 有合格候选但 score < 0.60 |
+| REFER_FALSE_POSITIVE | 276,224 | score >= 0.60 但未匹配当前表达式 GT |
+| MODEL_WINDOW_MISSING | 0 | 共享候选的所有行均有 score |
 
-## 关系型研究含义
+按视频，共享候选 IoU 0.5 的 matched/missing 为：0005 `37,954/5,734`，0011 `76,675/27,449`，0013 `28,731/7,517`，0019 `218,944/88,282`。0019 贡献了 68.45% 的候选缺失，仍是第一阶段和长序列稳定性的优先对象。
 
-假阳性平均 `p_yes` 约 0.93，且主要集中在 0019；假阴性平均 `p_yes` 约 0.10。仅调一个全局阈值很难同时消除两类高置信错误。更合理的 JEV 入口是：在同一候选池上联合表达式语义、候选之间的竞争关系、空间/运动历史和候选 ID 连续性，再对 selection/identity 做决策。
+原生 YesTrack 的对应数字是 candidate missing 206,978、selection FN 27,345、selection FP 198,536；它们不能与共享候选数字混为一谈，因为 candidate pool 不同。
 
-但第一优先级仍是候选覆盖和窗口协议：至少 26.254% GT-frame 没有 IoU 0.5 候选，另有 1.577% 被官方测试窗口漏掉。普通二阶段模型不能凭空恢复这两类目标。
+## 身份和时间
+
+| 口径 | matched-frame recall | mean ID purity | ID switches | 有切换轨迹 |
+|---|---:|---:|---:|---:|
+| FlexHook candidate-only proxy | 73.746% | 0.9351 | 4,725 | 2,363 |
+| native YesTrack candidate proxy, score 0.50 | 53.130% | 0.9275 | 6,208 | 2,192 |
+| native YesTrack candidate proxy, score 0.60 | 51.696% | 0.9320 | 5,614 | 2,081 |
+| shared candidate + YesTrack, score 0.50 | 67.732% | 0.9443 | 3,800 | 1,963 |
+| shared candidate + YesTrack, score 0.60 | 65.746% | 0.9503 | 3,381 | 1,813 |
+
+这些 proxy 的分母和 selection 方式不同，主要用于定位身份/历史证据，不代替 official IDSW。共享 O1 保留原候选 ID 时 IDSW=4,601，O2 做 GT identity mapping 后 IDSW=0，HOTA 从 65.423 增到 69.125；这说明身份连续性有研究空间，但不证明实际 JEV 能达到 identity oracle。
+
+## 时间传播边界
+
+YesTrack 本轮保存了 video refinement、TCP 和 TRP 运行语义，但没有分别关闭它们做因果消融；FlexHook 也没有 YesTrack 的 TCP/TRP。下一步应固定候选和 checkpoint，依次比较：
+
+1. 单帧直接推理；
+2. 只开启 video refinement；
+3. 再开启 TCP；
+4. 最后开启 TRP 与 `infer_every_n_frames=4`。
+
+只有这样才能把连续错误从描述性现象提升为传播机制证据。当前不把任何链条直接归因给 TCP/TRP。
+
+## 研究含义
+
+同帧竞争、表达式语义、轨迹历史和短时视觉状态都可能提供额外信息。选择假阳性规模大，支持先做无训练竞争抑制、阈值校准和 ID 稳定规则，再决定是否训练 JEV；但候选缺失、IoU 不足和 FlexHook 末帧窗口缺口必须由第一阶段或几何协议处理。

@@ -1,34 +1,35 @@
 # JEV 研究决策
 
-## 结论：有空间，但应做窄切入，不应先做端到端替换
+## 结论：有空间，且共享候选已完成
 
-FlexHook V2 的实测闭环已经给出明确证据：
+统计已经闭环：
 
-- O0=42.526 HOTA；
-- 同候选 GT selection oracle O1=65.423，理论选择差距 +22.897 HOTA；
-- O1 加 identity oracle O2=69.125，再增加 +3.702 HOTA；
-- 但 IoU 0.5 候选覆盖只有 73.746%，26.254% GT-frame 不可能由冻结二阶段修复；
-- 在有合格候选和 raw score 的 GT-frame 上，假阴性 40,412、假阳性 436,690，且假阳性平均 `p_yes≈0.93`。
+- YesTrack native O0：HOTA 41.155（V2 推荐 threshold 0.60），官方候选 recall@IoU0.5 为 57.870%；
+- FlexHook native O0：HOTA 42.526，A800 候选 recall@IoU0.5 为 73.746%；
+- 同一 FlexHook 候选、同一 A800 GT、同一 TrackEval：YesTrack shared O0@0.60 HOTA 47.607，FlexHook O0 HOTA 42.526；
+- 受控 shared 差值为 HOTA +5.081、DetA +7.315、AssA +0.633、IDF1 +8.806；
+- 同一候选的 O1/O2 为 HOTA 65.423/69.125，且与 FlexHook O1/O2 完全一致；
+- shared 候选仍缺失 26.254% GT boxes，native YesTrack 候选缺失 42.130%。
 
-因此答案是：有可提升空间，而且主要存在于已有候选上的选择/竞争关系；但不能把 O1–O0 直接承诺为 JEV 收益，因为其中还包含官方窗口缺口和理想 GT 选择。身份关联的独立理想空间较小但真实存在：O2–O1 为 3.702 HOTA points。
+所以答案是：有可提升空间，而且证据足以支持开发一个窄的候选内 JEV；但普通二阶段不能凭空恢复候选缺失，O1/O2 也不能直接包装成实际收益。
 
-## 六个决策问题
+## 七个决策问题
 
 | 问题 | 结论 | 证据 |
 |---|---|---|
-| 是否有候选出现却被二阶段误判？ | YES | 40,412 个合格候选上的假阴性，436,690 个假阳性保留候选 |
-| 是否有可利用的身份断裂/IDSW？ | YES | O1 IDSW 4,601，O2 identity oracle 为 0；候选 proxy 有 4,725 次切换 |
-| 多候选能否提供独立信息？ | INSUFFICIENT_EVIDENCE | 假阳性规模很大，但本轮尚未做竞争候选消融 |
-| 历史语言/视觉证据能否纠错？ | INSUFFICIENT_EVIDENCE | 连续链已统计，但尚未做窗口/历史消融证明因果 |
-| 简单阈值/时序规则能否解决大部分？ | NO（全局阈值）/尚未证明（时序） | FN 平均 p_yes 约 0.10、FP 平均 p_yes 约 0.93，错误不是单一边界噪声 |
-| 相同候选下 YesTrack 与 FlexHook 谁更强？ | INSUFFICIENT_EVIDENCE | YesTrack 官方 archive/权重/候选仍 BLOCKED |
-| 是否值得继续训练 JEV？ | YES，限定为候选内联合决策 | 先做 frozen-candidate selection + identity/short-term state，对照 O0/O1/O2 |
+| 是否存在候选出现却被二阶段误判？ | YES | shared YesTrack @0.60 有 34,503 个 selection FN 和 276,224 个 selection FP；native YesTrack 为 27,345/198,536 |
+| 是否存在可利用的身份断裂和 IDSW？ | YES | shared O1 IDSW 4,601、O2 为 0；candidate proxy 仍有 3,381 次切换 |
+| 联合多个候选能否提供独立信息？ | PLAUSIBLE | 共享候选中 FP 规模大，同帧竞争和表达式语义有可利用信息；需先做规则 baseline |
+| 历史语言/视觉证据是否能纠错？ | PLAUSIBLE, 未完成因果证明 | TRP/TCP 语义已运行，但尚未做开关/窗口消融 |
+| 简单阈值和时序规则能否解决大部分？ | 尚未证明 | native threshold sweep 最高 HOTA 仅 41.179；共享候选还需按表达式/竞争结构做校准 |
+| 相同候选下谁更强？ | YesTrack shared O0 更强 | 同一 A800 GT：47.607 vs 42.526；阈值 0.50 时 shared YesTrack 为 47.284，结论不变 |
+| 是否值得继续训练 JEV？ | YES，限定为候选内联合决策 | selection/identity headroom 已被同候选统计隔离，下一步先做 frozen-candidate baseline |
 
-## 推荐研究切口
+## 推荐研究顺序
 
-1. 先修复/记录官方 DataLoader 末帧窗口问题，确保 raw score 覆盖完整候选池。
-2. 在同一候选上做不训练的 baseline：全局阈值、按表达式阈值、候选竞争抑制、简单轨迹 ID 稳定规则。
-3. 只有当这些规则不能解释 40,412 FN/436,690 FP 的主要部分时，才训练 JEV；输入应包括表达式、候选框/ID、候选历史和同帧竞争候选。
-4. 以 O0→规则→JEV 的 HOTA/DetA/AssA/IDF1 和按视频/关系类型的错误变化为验收标准。
+1. 先跑不训练 baseline：全局/按表达式阈值、同帧竞争抑制、分数校准和简单轨迹 ID 稳定规则。
+2. 固定 shared candidate，分别关闭 video refinement、TCP、TRP，区分模型判断、传播和候选 ID 的作用。
+3. 只有规则不能解释主要 FN/FP 后，才训练 JEV；输入包括表达式语义、候选框、同帧竞争候选、Track ID 历史和短时视觉状态。
+4. 以 O0 -> rule -> JEV 的 HOTA/DetA/AssA/IDF1、candidate recall、IDSW 和 0019/关系类别分层结果作为验收。
 
-不要把 26.254% 候选缺失、1.577% 官方窗口缺口或 bbox 几何错误包装成 JEV 能力。YesTrack 仍未取得官方字节前，不做跨方法强结论。
+不要把候选缺失、IoU 不足、FlexHook 末帧窗口缺口或 O3 GT sanity 包装成 JEV 能力。完整数字见 `analysis/yestrack_official_run_receipt.json`、`analysis/metrics.csv`、`analysis/candidate_coverage.csv` 和 `analysis/oracle_results.csv`。

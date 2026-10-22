@@ -4,3 +4,6 @@ YesTrack,RMOT2,refer_llm/llm_eval_from_mot.py,BLOCKED,"ImportError: Qwen3VLForCo
 FlexHook,base,main.py,BLOCKED,"ModuleNotFoundError: ftfy"
 FlexHook,A800 remote,run_flexhook_official.py,SUPERSEDED,"Earlier SSHFS run stopped at batch 500/7443 and is not used for metrics; completed local worldmot311 4-GPU run is recorded in flexhook_official_run_receipt.json"
 FlexHook,worldmot311 local,main.py,COMPLETE,"4-GPU official-checkpoint forward completed for 862 expressions; TrackEval O0 completed over 862 sequences"
+YesTrack,worldmot311+isolated_deps,scripts/yestrack_batched_eval.py,COMPLETE,"862/862 expressions and 1850576/1850576 rows; official prompts/crops/refinement/TCP/TRP semantics, batched independent samples, local V100 fp16"
+YesTrack,worldmot311+isolated_deps,scripts/yestrack_batched_eval.py (shared FlexHook candidate),COMPLETE,"862/862 expressions and 2425382/2425382 rows; same FlexHook Temp-NeuralSORT-kitti2 candidate, local V100 fp16, same-candidate TrackEval completed"
+YesTrack,worldmot311+isolated_deps,refer_llm/llm_eval_from_mot.py,COMPLETE,"One-expression official unbatched smoke agrees with batched runner on 1029 frame/id/box rows and binary decisions; probability values differ within fp16 batch tolerance"

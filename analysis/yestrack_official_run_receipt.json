@@ -1,0 +1,175 @@
+{
+  "status": "COMPLETE_WITH_REPRODUCTION_CAVEAT",
+  "repository": "ggbondrighthere24/YesTrack",
+  "code_commit": "ed42b8315b28c94dc595d83b0d49bf57002bb281",
+  "archive": {
+    "source": "Baidu:/Yestrack/yestrack.zip",
+    "sha256": "f303e4f2578ea011cc7861afc359be535e132bbb59308e22726621e37e0ca97b",
+    "size_bytes": 178142422,
+    "unzip_file_count": 7168,
+    "unzip_test": "PASS"
+  },
+  "released_assets": {
+    "v2_adapter": {
+      "path": "downloads/yestrack_public/extracted/yestrack/v2bestweight/adapter_model.safetensors",
+      "size_bytes": 34922600,
+      "sha256": "749d7c48bc8507105fb068adb539f5ebd58a587402d6e30542675c6e5a050b55"
+    },
+    "v1_adapter": {
+      "path": "downloads/yestrack_public/extracted/yestrack/v1bestweight/adapter_model.safetensors",
+      "size_bytes": 69788264,
+      "sha256": "763d15f53208f0cd8908b84095cc28526785e2f6d975347b1af73280252117bb"
+    },
+    "v2_candidate_root": "downloads/yestrack_public/extracted/yestrack/v2best_track_result",
+    "v2_gt_root": "downloads/yestrack_public/extracted/yestrack/refer_kitti_motc_gt_v2",
+    "v2_candidate_rows": 1850576,
+    "v2_expression_count": 862,
+    "base_model": {
+      "model": "Qwen/Qwen3-VL-2B-Instruct",
+      "revision": "89644892e4d85e24eaac8bacfd4f463576704203",
+      "download_mode": "proxy_fallback_after_direct_timeout"
+    }
+  },
+  "inference": {
+    "runner": "scripts/yestrack_batched_eval.py",
+    "semantics": "official prompts/crops + selective video refinement + TCP + TRP; independent samples batched",
+    "dependency_environment": "runs/yestrack_pydeps",
+    "dtype": "fp16",
+    "hardware": "9 local V100-DGXS cards (CUDA_VISIBLE_DEVICES=0,2,3,4,5,6,7,8,9); not A800 hardware",
+    "world_size": 9,
+    "tasks": 862,
+    "output_rows": 1850576,
+    "task_errors": 0,
+    "output_validation": {
+      "source_tasks": 862,
+      "output_tasks": 862,
+      "missing_tasks": 0,
+      "extra_tasks": 0,
+      "source_rows": 1850576,
+      "output_rows": 1850576,
+      "row_mismatches": 0
+    },
+    "receipt_sha256": "a985e046d423607e0f1929a3059b083c215ea2301186361bfa17356e0ac87088",
+    "log_sha256": "a6f974d4ec63e26d8156c13e18989b49652ff033598812611fbc64fa4b306306",
+    "isolated_official_script_smoke": {
+      "expression": "0005/automobiles-are-located-to-the-left",
+      "rows": 1029,
+      "structure_equal": true,
+      "decision_equal": true,
+      "max_abs_probability_difference": 0.003907,
+      "mean_abs_probability_difference": 0.0001300292,
+      "note": "Original unbatched official script and the isolated batched runner agree on frame/id/box rows and binary decisions; fp16 batch numerical values are not byte-identical."
+    }
+  },
+  "evaluation": {
+    "evaluator": "upstream/YesTrack/eval_refer_kitti_mot.py + bundled TrackEval",
+    "seqmap": "refer_kitti_motc_gt_v2/seqmaps/val.txt",
+    "threshold_sweep": [0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70],
+    "recommended_v2_starting_threshold": 0.60,
+    "max_hota_threshold": 0.65,
+    "metrics_at_0.60": {
+      "HOTA": 41.155,
+      "DetA": 32.191,
+      "AssA": 53.032,
+      "IDF1": 48.612,
+      "IDSW": 3169,
+      "DetRe": 46.004,
+      "DetPr": 49.618,
+      "GT_Dets": 491286,
+      "Dets": 455499
+    },
+    "metrics_at_0.65": {
+      "HOTA": 41.179,
+      "DetA": 32.261,
+      "AssA": 52.973,
+      "IDF1": 48.716,
+      "IDSW": 3085,
+      "DetRe": 45.619,
+      "DetPr": 50.255,
+      "GT_Dets": 491286,
+      "Dets": 445964
+    }
+  },
+  "oracle": {
+    "match_iou": 0.5,
+    "O0_at_0.50": {"HOTA": 41.028, "DetA": 31.894, "AssA": 53.198, "IDF1": 48.228},
+    "O1_at_0.50": {"HOTA": 53.910, "DetA": 50.050, "AssA": 58.608, "IDF1": 63.813},
+    "O2_at_0.50": {"HOTA": 57.779, "DetA": 50.285, "AssA": 66.805, "IDF1": 73.314},
+    "O3_at_0.50": {"HOTA": 99.997, "DetA": 99.997, "AssA": 99.997, "IDF1": 99.999},
+    "interpretation": "O1/O2/O3 are offline counterfactuals generated after inference; they are not measured JEV gains."
+  },
+  "shared_candidate": {
+    "status": "COMPLETE",
+    "candidate_source": "/home/liuyeqiang/remote/A800/data3/user/TTA-RMOT-assets/flexhook/tracker_outputs/Temp-NeuralSORT-kitti2",
+    "converter": "scripts/prepare_shared_yestrack_input.py",
+    "converter_manifest": "runs/yestrack_official_local_20261022/shared_candidate_flexhook_for_yestrack_v2/shared_candidate_manifest.json",
+    "format_contract": "frame/bbox preserved; pedestrian IDs offset by max car ID exactly as FlexHook generate_final_results; 862 symlinks/tasks",
+    "candidate_pool_rows": 10822,
+    "scored_rows": 2425382,
+    "tasks": 862,
+    "inference": {
+      "world_size": 9,
+      "dtype": "fp16",
+      "hardware": "9 local V100-DGXS cards; not A800 hardware",
+      "task_errors": 0,
+      "output_rows": 2425382,
+      "source_tasks": 862,
+      "output_tasks": 862,
+      "source_rows_by_video": {
+        "0005": 1064,
+        "0011": 2576,
+        "0013": 1018,
+        "0019": 6164
+      }
+    },
+    "same_gt_evaluation": {
+      "gt_source": "/home/liuyeqiang/remote/A800/data3/user/TTA-RMOT-assets/flexhook/refer-kitti-v2/gt_template",
+      "evaluator": "upstream/YesTrack/eval_refer_kitti_mot.py + bundled TrackEval",
+      "coverage_iou_03_05_07": [0.7532048542, 0.7374604609, 0.6983590007],
+      "metrics_at_0.60": {
+        "HOTA": 47.607,
+        "DetA": 37.944,
+        "AssA": 59.818,
+        "IDF1": 55.302,
+        "IDSW": 2585,
+        "DetRe": 60.285,
+        "DetPr": 49.033,
+        "GT_Dets": 491286,
+        "Dets": 604025
+      },
+      "metrics_at_0.50": {
+        "HOTA": 47.284,
+        "DetA": 37.359,
+        "AssA": 59.930,
+        "IDF1": 54.633,
+        "IDSW": 2766,
+        "GT_Dets": 491286,
+        "Dets": 632239
+      },
+      "oracle_at_0.50": {
+        "O0_HOTA": 47.284,
+        "O1_HOTA": 65.423,
+        "O2_HOTA": 69.125,
+        "O3_HOTA": 99.997,
+        "O1_delta_vs_O0": 18.139,
+        "O2_delta_vs_O0": 21.841,
+        "O2_delta_vs_O1": 3.702
+      },
+      "selection_at_0.60": {
+        "candidate_missing": 128982,
+        "candidate_matched": 362304,
+        "matched_true_positive": 327801,
+        "selection_false_negative": 34503,
+        "selection_false_positive": 276224,
+        "score_missing_rows": 0
+      },
+      "note": "FlexHook O0 and shared YesTrack were re-evaluated with the same A800 gt_template and same TrackEval; the official YesTrack GT is retained for the native YesTrack row."
+    }
+  },
+  "direct_download_audit": {
+    "archive_download": "BaiduPCS-Go direct/no-proxy succeeded",
+    "huggingface_direct": "timed out",
+    "huggingface_fallback": "proxy snapshot_download succeeded",
+    "a800_remote_shell": "not used; key is forced SFTP-only"
+  }
+}

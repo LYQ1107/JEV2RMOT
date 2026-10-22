@@ -3,6 +3,7 @@ upstream/*
 !upstream/.keep
 runs/**
 visualizations/**
+downloads/**
 __pycache__/
 *.pyc
 *.log

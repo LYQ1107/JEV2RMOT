@@ -1,25 +1,49 @@
 # Oracle headroom
 
-## FlexHook V2 已完成
+Oracle 只用于离线分析，GT 在模型 forward 之后才进入匹配和结果生成。O1/O2 不应被称作模型收益。
 
-固定候选池为 A800 的官方 `Temp-NeuralSORT-kitti2`，共 862 个表达式、491,286 个 GT boxes。O1/O2 使用 IoU 0.5 的逐帧一对一匹配；GT 只在模型 forward 之后进入离线反事实。
+## FlexHook V2
+
+固定候选池为 A800 的官方 Temp-NeuralSORT-kitti2，共 862 个表达式、491,286 个 GT boxes；O1/O2 使用 IoU 0.5 的逐帧一对一匹配。
 
 | Oracle | HOTA | DetA | AssA | IDF1 | 相对 O0 HOTA |
 |---|---:|---:|---:|---:|---:|
 | O0 官方 raw-score 输出 | 42.526 | 30.629 | 59.185 | 46.496 | 0 |
 | O1 固定候选 + GT 完美 selection | 65.423 | 64.270 | 66.878 | 77.244 | +22.897 |
 | O2 O1 + GT identity mapping | 69.125 | 64.414 | 74.397 | 84.889 | +26.599 |
-| O3 GT box + GT ID sanity | 100.000 | 100.000 | 100.000 | 100.000 | 不计收益 |
+| O3 GT box + GT ID sanity | 99.997 | 99.997 | 99.997 | 99.999 | 不计收益 |
 
-O1 保留原候选 bbox 和原合并 Track ID，只保留与当前表达式 GT 在 IoU 0.5 下合法匹配的候选；O2 进一步将已选候选的 ID 映射为匹配 GT ID，不新增框、不修改坐标。O3 只是验证 GT、帧号、seqmap 与 TrackEval 的转换正确，不能当作 JEV 提升。
+O1 保留候选 bbox 和原合并 Track ID，只保留与当前表达式 GT 在 IoU 0.5 下合法匹配的候选；O2 进一步将已选候选的 ID 映射为匹配 GT ID。
 
-## 解释
+## YesTrack 原生 V2
 
-- O1–O0 为 `22.897` HOTA points，是“选择/过滤 + 官方测试窗口缺口”的离线理想差距，不是 JEV 实际收益。
-- O2–O1 为 `3.702` HOTA points，是在已有候选框上的理想身份纠错空间；它不能证明实际 JEV 能修复所有 IDSW。
-- O1 的 DetRe 约 73.739%，O2 的 DetRe 约 73.746%，与候选覆盖 362,304/491,286=73.746% 一致；这确认第一阶段覆盖是硬上限。
-- O1 的 IDSW 仍为 4,601，O2 为 0；因此候选 ID/轨迹连续性是独立于语言 selection 的第二个瓶颈。
+原生候选为官方归档 TempRMOT*，候选覆盖 IoU 0.5 为 284,308/491,286 = 57.870%。为保持原生 O0/O1/O2 同一阈值，以下均为官方归档 GT、TrackEval score threshold 0.50；主运行点另行报告为 threshold 0.60。
 
-候选统计与 Oracle 必须区分：IoU 0.3/0.5/0.7 的候选覆盖为 75.32%/73.75%/69.84%，但这些覆盖率不是 HOTA。完整数字见 [`analysis/flexhook_candidate_ceiling.csv`](../analysis/flexhook_candidate_ceiling.csv)、[`analysis/oracle_results.csv`](../analysis/oracle_results.csv) 和 run 目录中的 `trackeval_o*.log`。
+| Oracle | HOTA | DetA | AssA | IDF1 | IDSW | 相对 O0@0.50 HOTA |
+|---|---:|---:|---:|---:|---:|---:|
+| O0 官方输出 | 41.028 | 31.894 | 53.198 | 48.228 | 3,316 | 0 |
+| O1 固定候选 + GT 完美 selection | 53.910 | 50.050 | 58.608 | 63.813 | 7,378 | +12.882 |
+| O2 O1 + GT identity mapping | 57.779 | 50.285 | 66.805 | 73.314 | 0 | +16.751 |
+| O3 GT box + GT ID sanity | 99.997 | 99.997 | 99.997 | 99.999 | 0 | 不计收益 |
 
-YesTrack 的 O0/O1/O2/O3 仍为 `BLOCKED`，因为官方 archive/权重/候选字节未取得；没有把 FlexHook Oracle 数字移植给 YesTrack。
+## 共享 FlexHook 候选 + YesTrack V2
+
+这是同候选、同 A800 GT、同评估器的控制实验。O0@0.50 是 YesTrack score threshold 0.50，O1/O2/O3 是离线反事实；O0@0.60 的主点为 HOTA 47.607。
+
+| Oracle | HOTA | DetA | AssA | IDF1 | IDSW | 相对 shared O0@0.50 HOTA |
+|---|---:|---:|---:|---:|---:|---:|
+| O0 YesTrack score @0.50 | 47.284 | 37.359 | 59.930 | 54.633 | 2,766 | 0 |
+| O1 固定候选 + GT 完美 selection | 65.423 | 64.270 | 66.878 | 77.244 | 4,601 | +18.139 |
+| O2 O1 + GT identity mapping | 69.125 | 64.414 | 74.397 | 84.889 | 0 | +21.841 |
+| O3 GT box + GT ID sanity | 99.997 | 99.997 | 99.997 | 99.999 | 0 | 不计收益 |
+
+共享 O1/O2 与 FlexHook O1/O2 完全一致，证明两者使用的是同一个候选几何/身份上限；shared O0 与 FlexHook O0 的差异来自二阶段评分/筛选。O1-O0 仍是理想 selection 上限，O2-O1 的 3.702 HOTA 是身份关联上限，不能直接承诺为实际 JEV 增益。
+
+## 研究含义
+
+- 候选已有时，YesTrack 的 shared O0 到 O1 仍有 +18.139 HOTA 的离线 selection headroom；这支持候选内 JEV 或规则 baseline。
+- 同一候选的 O1 到 O2 有 +3.702 HOTA，说明身份连续性有独立空间，但 O2 使用 GT ID，不是可部署方法。
+- 候选缺失 26.254% 的 GT boxes 不会被 O1/O2 恢复；第一阶段、候选召回和几何协议仍是硬边界。
+- O3 只代表评测 sanity，不计入方法收益。
+
+完整统计见 `analysis/candidate_coverage.csv`、`analysis/yestrack_official_run_receipt.json` 和 `analysis/oracle_results.csv`。
